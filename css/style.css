@@ -231,6 +231,38 @@ h1 span, h2 span {
   color: var(--gold);
 }
 
+.subtitle-container {
+    font-size: 20px;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.subtitle-container span.static {
+    color: var(--text-white);
+}
+
+.typewriter {
+    color: var(--gold);
+    font-weight: 700;
+}
+
+.cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.2em;
+    background-color: var(--gold);
+    margin-left: 2px;
+    animation: blink 0.8s infinite;
+    vertical-align: middle;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
 /* Sections */
 section {
   position: relative;

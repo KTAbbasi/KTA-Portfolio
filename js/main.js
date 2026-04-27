@@ -73,4 +73,69 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // Typewriter Animation
+    const typewriter = document.getElementById('typewriter');
+    if (typewriter) {
+        const words = [
+            "AI Product Photography",
+            "AI Beauty Campaigns",
+            "AI Food Photography",
+            "AI Campaign Visuals",
+            "AI Fashion Campaigns"
+        ];
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let typeSpeed = 100;
+
+        function type() {
+            const currentWord = words[wordIndex];
+            
+            if (isDeleting) {
+                typewriter.textContent = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+                typeSpeed = 50;
+            } else {
+                typewriter.textContent = currentWord.substring(0, charIndex + 1);
+                charIndex++;
+                typeSpeed = 100;
+            }
+
+            if (!isDeleting && charIndex === currentWord.length) {
+                isDeleting = true;
+                typeSpeed = 3000; // 3 seconds pause at the end
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                wordIndex = (wordIndex + 1) % words.length;
+                typeSpeed = 500;
+            }
+
+            setTimeout(type, typeSpeed);
+        }
+
+        setTimeout(type, 1000);
+    }
 });
+
+// Portfolio Filter Function
+function filterPortfolio(category) {
+    const items = document.querySelectorAll('.project-card');
+    const btns = document.querySelectorAll('.tab-btn');
+    
+    btns.forEach(btn => btn.classList.remove('active'));
+    // Find the button that was clicked (based on its onclick attribute)
+    btns.forEach(btn => {
+        if (btn.getAttribute('onclick').includes(`'${category}'`)) {
+            btn.classList.add('active');
+        }
+    });
+
+    items.forEach(item => {
+        if (category === 'all' || item.getAttribute('data-category').includes(category)) {
+            gsap.to(item, {opacity: 1, scale: 1, duration: 0.4, display: 'block'});
+        } else {
+            gsap.to(item, {opacity: 0, scale: 0.8, duration: 0.4, display: 'none'});
+        }
+    });
+}

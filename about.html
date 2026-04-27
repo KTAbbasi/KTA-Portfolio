@@ -10,6 +10,21 @@
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
     
+    <script>
+        window.onerror = function(msg) {
+            if (msg && msg.toLowerCase().includes("fetch")) return true;
+            return false;
+        };
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loader = document.querySelector('.loader');
+                if (loader) {
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.style.display = 'none', 500);
+                }
+            }, 2500);
+        });
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js" defer></script>
