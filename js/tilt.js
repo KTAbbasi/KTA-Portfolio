@@ -4,11 +4,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (window.innerWidth > 768) {
         VanillaTilt.init(tiltElements, {
-            max: 8,
-            speed: 400,
+            max: 15,
+            speed: 600,
             glare: true,
-            "max-glare": 0.15,
-            scale: 1.02
+            "max-glare": 0.2,
+            scale: 1.05
         });
     }
 });
