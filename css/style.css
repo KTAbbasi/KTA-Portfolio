@@ -337,6 +337,20 @@ section {
   margin-bottom: 40px;
 }
 
+.section-header-centered {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 60px;
+}
+
+.section-line {
+  width: 80px;
+  height: 1px;
+  background: var(--gold);
+  margin: 30px auto 50px auto;
+  opacity: 0.4;
+}
+
 /* Stat Cards */
 .stat-card {
   position: absolute;
