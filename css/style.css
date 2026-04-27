@@ -540,23 +540,34 @@ footer {
 .stat-2 { right: 80px; top: 220px; }
 .stat-3 { right: 140px; bottom: 150px; }
 
-/* Hero Profile Image Styles */
+/* Hero Profile Card Styles - Right-center glass card */
 .hero-profile-container {
     position: absolute;
-    right: 8%;
-    top: 55%;
+    right: 180px; /* Right-center positioning */
+    top: 50%;
     transform: translateY(-50%);
-    width: 28%; /* Medium size 25-30% */
+    width: 280px; /* Small-Medium */
+    height: 380px;
     z-index: 5;
-    pointer-events: none;
+    background: rgba(255, 255, 255, 0.03); /* Glassmorphism base */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(201, 168, 76, 0.25); /* Thin golden border */
+    border-radius: 30px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(201, 168, 76, 0.05);
+    animation: slowProfileFloat 6s ease-in-out infinite;
 }
 
 .hero-profile-img {
     width: 100%;
-    height: auto;
-    display: block;
-    filter: drop-shadow(0 20px 50px rgba(0,0,0,0.6)); /* Soft blur shadow */
-    animation: slowProfileFloat 5s ease-in-out infinite;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+    opacity: 0.95;
 }
 
 .hero-profile-glow {
@@ -564,16 +575,16 @@ footer {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 120%;
-    height: 120%;
-    background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+    width: 130%;
+    height: 130%;
+    background: radial-gradient(circle, rgba(201, 168, 76, 0.12) 0%, transparent 70%);
     filter: blur(50px);
     z-index: -1;
 }
 
 @keyframes slowProfileFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); } /* Slow float 10-15px */
+    0%, 100% { transform: translateY(-50%) translateX(0); }
+    50% { transform: translateY(-54%) translateX(5px); }
 }
 
 /* Mobile adjustments for profile image */
@@ -583,8 +594,11 @@ footer {
         right: auto;
         top: auto;
         transform: none;
-        width: 60%;
+        width: 100%;
+        max-width: 280px;
+        height: 380px;
         margin: 40px auto 0;
+        animation: none;
     }
 }
 
