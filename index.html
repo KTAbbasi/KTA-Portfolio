@@ -71,6 +71,7 @@
             margin-bottom: 20px;
             font-weight: 900;
             line-height: 0.95;
+            position: relative;
         }
 
         .hero-text .subtitle-container {
@@ -328,10 +329,16 @@
                     <span class="static">I create → </span>
                     <span id="typewriter" class="typewriter gold"></span>
                 </div>
-                <div class="cta-group" data-aos="fade-up" data-aos-delay="600">
+                <div class="cta-group" data-aos="fade-up" data-aos-delay="600" style="display: flex; align-items: center; gap: 20px;">
                     <a href="portfolio.html" class="btn-primary">See My Work</a>
                     <a href="contact.html" class="btn-secondary">Let's Create →</a>
                 </div>
+            </div>
+            
+            <!-- Moved Stat Card here to be closer to AI VISUALS -->
+            <div class="stat-card stat-1 float-anim" style="position: absolute; top: 0; left: 450px;">
+                <h3 class="stat-number" data-target="47">0</h3>
+                <p>Projects Completed</p>
             </div>
         </div>
 
@@ -341,13 +348,10 @@
         </div>
 
         <!-- Floating Stat Cards -->
-        <div class="stat-card stat-1 float-anim">
-            <h3 class="stat-number" data-target="47">0</h3>
-            <p>Projects Completed</p>
-        </div>
         <div class="stat-card stat-2 float-anim" style="animation-delay: 1s;">
             <h3 class="stat-number" data-target="48" data-unit="hrs">0</h3>
             <p>Delivery Time</p>
+            <span style="font-size: 8px; opacity: 0.5; display: block; text-transform: none; letter-spacing: 0;">(may vary by project size)</span>
         </div>
         <div class="stat-card stat-3 float-anim" style="animation-delay: 2s;">
             <h3 class="stat-number" data-target="17">0</h3>
@@ -524,7 +528,7 @@
             <div style="flex: 1; min-width: 250px;">
                 <div class="stat-number" data-target="48" data-unit="hrs" style="font-size: 96px; font-weight: 900; color: #fff;">0<span style="color: var(--gold);">hrs</span></div>
                 <p style="color: #888888; margin-top: 10px;">Delivery Time</p>
-                <span style="color: #555555; font-size: 12px;">(standard turnaround)</span>
+                <span style="color: #555555; font-size: 11px;">(may vary by project size)</span>
             </div>
             <div style="width: 1px; background: #6B1A1A; opacity: 0.6; height: 120px;" class="desktop-only"></div>
             <div style="flex: 1; min-width: 250px;">

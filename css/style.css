@@ -191,15 +191,21 @@ h1 span, h2 span {
   text-shadow: 0 0 30px rgba(201, 168, 76, 0.2);
 }
 
+.btn-primary, .btn-secondary {
+    height: 52px; /* Fixed height for perfect alignment */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .btn-primary {
   background-color: var(--gold);
   color: var(--bg-primary);
-  padding: 14px 36px;
+  padding: 0 36px;
   border-radius: 30px;
   font-weight: 700;
   font-size: 14px;
   text-decoration: none;
-  display: inline-block;
   transition: all 0.3s;
   border: none;
 }
@@ -212,12 +218,11 @@ h1 span, h2 span {
 .btn-secondary {
   border: 1px solid var(--maroon);
   color: var(--text-light);
-  padding: 14px 36px;
+  padding: 0 36px;
   border-radius: 30px;
   font-weight: 700;
   font-size: 14px;
   text-decoration: none;
-  display: inline-block;
   transition: all 0.3s;
 }
 
@@ -499,7 +504,7 @@ footer {
 }
 
 /* Stat Card Specific Positioning */
-.stat-1 { left: 100px; bottom: 120px; }
+.stat-1 { z-index: 60; }
 .stat-2 { right: 80px; top: 220px; }
 .stat-3 { right: 140px; bottom: 150px; }
 
