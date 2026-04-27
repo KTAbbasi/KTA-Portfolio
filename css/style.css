@@ -192,43 +192,41 @@ h1 span, h2 span {
 }
 
 .btn-primary, .btn-secondary {
-    height: 52px; /* Fixed height for perfect alignment */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  height: 56px; /* Optimized height for premium look */
+  display: inline-flex; /* Use inline-flex for better button behavior */
+  align-items: center;
+  justify-content: center;
+  padding: 0 40px; /* Standardized generous padding */
+  border-radius: 100px; /* Force perfect pill shape */
+  font-weight: 700;
+  font-size: 15px;
+  text-decoration: none;
+  transition: all 0.3s;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 
 .btn-primary {
   background-color: var(--gold);
   color: var(--bg-primary);
-  padding: 0 36px;
-  border-radius: 30px;
-  font-weight: 700;
-  font-size: 14px;
-  text-decoration: none;
-  transition: all 0.3s;
   border: none;
 }
 
 .btn-primary:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(201, 168, 76, 0.3);
+  transform: translateY(-3px); /* Subtle lift */
+  box-shadow: 0 10px 20px rgba(201, 168, 76, 0.2);
 }
 
 .btn-secondary {
   border: 1px solid var(--maroon);
   color: var(--text-light);
-  padding: 0 36px;
-  border-radius: 30px;
-  font-weight: 700;
-  font-size: 14px;
-  text-decoration: none;
-  transition: all 0.3s;
+  background: transparent;
 }
 
 .btn-secondary:hover {
   border-color: var(--gold);
   color: var(--gold);
+  background: rgba(201, 168, 76, 0.05);
 }
 
 .subtitle-container {
