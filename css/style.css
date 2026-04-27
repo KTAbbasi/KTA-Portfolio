@@ -337,6 +337,10 @@ section {
   margin-bottom: 40px;
 }
 
+.section-headline span {
+  color: var(--gold);
+}
+
 .section-header-centered {
   text-align: center;
   max-width: 800px;
@@ -349,6 +353,88 @@ section {
   background: var(--gold);
   margin: 30px auto 50px auto;
   opacity: 0.4;
+}
+
+/* Process Section */
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  margin-top: 80px;
+  position: relative;
+}
+
+.process-grid::before {
+  content: "";
+  position: absolute;
+  top: 50px;
+  left: 15%;
+  right: 15%;
+  height: 1px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+  z-index: 0;
+}
+
+.process-item {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.process-number {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 120px;
+  font-weight: 900;
+  color: #fff;
+  opacity: 0.05;
+  z-index: -1;
+  line-height: 1;
+}
+
+.process-icon-box {
+  width: 60px;
+  height: 60px;
+  background: #0E0505;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 30px;
+  color: var(--gold);
+  font-size: 24px;
+}
+
+.process-item h3 {
+  font-size: 16px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.process-item p {
+  color: #888;
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 250px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .process-grid {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+  .process-grid::before {
+    display: none;
+  }
+  .process-number {
+    font-size: 100px;
+  }
 }
 
 /* Stat Cards */
