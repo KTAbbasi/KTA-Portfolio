@@ -39,14 +39,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const x = (window.innerWidth / 2 - e.clientX) / 50;
             const y = (window.innerHeight / 2 - e.clientY) / 50;
             
-            gsap.to(".hero-image-wrapper img", {
+            gsap.to(".hero-profile-img", {
                 x: x,
                 y: y,
                 duration: 1,
                 ease: "power2.out"
             });
             
-            gsap.to(".hero-image-glow", {
+            gsap.to(".hero-profile-glow", {
                 x: x * 1.5,
                 y: y * 1.5,
                 duration: 1.5,

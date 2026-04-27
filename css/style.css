@@ -540,12 +540,52 @@ footer {
 .stat-2 { right: 80px; top: 220px; }
 .stat-3 { right: 140px; bottom: 150px; }
 
-/* Portrait Masking */
-.hero-image-wrapper img {
-  height: 100%;
-  object-fit: contain;
-  mask-image: linear-gradient(to right, transparent, black 15%);
-  -webkit-mask-image: linear-gradient(to right, transparent, black 15%);
+/* Hero Profile Image Styles */
+.hero-profile-container {
+    position: absolute;
+    right: 8%;
+    top: 55%;
+    transform: translateY(-50%);
+    width: 28%; /* Medium size 25-30% */
+    z-index: 5;
+    pointer-events: none;
+}
+
+.hero-profile-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 20px 50px rgba(0,0,0,0.6)); /* Soft blur shadow */
+    animation: slowProfileFloat 5s ease-in-out infinite;
+}
+
+.hero-profile-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+    filter: blur(50px);
+    z-index: -1;
+}
+
+@keyframes slowProfileFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); } /* Slow float 10-15px */
+}
+
+/* Mobile adjustments for profile image */
+@media (max-width: 992px) {
+    .hero-profile-container {
+        position: relative;
+        right: auto;
+        top: auto;
+        transform: none;
+        width: 60%;
+        margin: 40px auto 0;
+    }
 }
 
 
