@@ -18,7 +18,6 @@
     <script>
         // Fail-safe for "fetch" error and loader visibility
         window.onerror = function(msg) {
-            if (msg && msg.toLowerCase().includes("fetch")) return true; // Ignore fetch errors
             return false;
         };
         // Backup to hide loader if JS fails
@@ -330,6 +329,7 @@
             <div class="hero-text">
                 <div class="badge" data-aos="fade-down">✦ AI Visual Content Studio</div>
                 <h1 data-aos="fade-up" data-aos-delay="200">AI VISUALS<br>THAT <span>SELL.</span></h1>
+                <div class="section-line" data-aos="fade-up" data-aos-delay="300" style="margin-left: 0; width: 60px;"></div>
                 
                 <!-- Stat Card placed relative to headings -->
                 <div class="stat-card stat-1 float-anim" style="position: absolute; top: -20px; right: 280px; z-index: 20; min-width: 150px;">
@@ -352,7 +352,7 @@
 
         <div class="hero-profile-container" data-aos="fade-left" data-aos-delay="400">
             <div class="hero-profile-glow"></div>
-            <img src="/images/hero-komal.png" alt="Creator Profile" class="hero-profile-img">
+            <img src="images/hero-komal.png" alt="Creator Profile" class="hero-profile-img">
         </div>
 
         <!-- Floating Stat Cards -->
@@ -464,8 +464,8 @@
                 <div class="project-card tilt-card" data-category="photography">
                     <div class="swiper project-carousel" style="width: 100%; aspect-ratio: 4/5; border-radius: 20px; overflow: hidden;">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide"><img src="/images/jewelry-1.jpg" alt="Jewelry AI Visual 1" style="width:100%; height:100%; object-fit:cover;"></div>
-                            <div class="swiper-slide"><img src="/images/jewelry-2.jpg" alt="Jewelry AI Visual 2" style="width:100%; height:100%; object-fit:cover;"></div>
+                            <div class="swiper-slide"><img src="images/jewelry-1.jpg" alt="Jewelry AI Visual 1" style="width:100%; height:100%; object-fit:cover;"></div>
+                            <div class="swiper-slide"><img src="images/jewelry-2.jpg" alt="Jewelry AI Visual 2" style="width:100%; height:100%; object-fit:cover;"></div>
                         </div>
                         <div class="swiper-pagination"></div>
                         <div class="swiper-button-next"></div>
@@ -481,13 +481,13 @@
                 <div class="project-card tilt-card" data-category="campaigns">
                     <div class="swiper project-carousel" style="width: 100%; aspect-ratio: 4/5; border-radius: 20px; overflow: hidden;">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide"><img src="/images/lipgloss-1.jpg" alt="Velour Bloom 1" style="width:100%; height:100%; object-fit:cover;"></div>
-                            <div class="swiper-slide"><img src="/images/lipgloss-2.jpg" alt="Velour Bloom 2" style="width:100%; height:100%; object-fit:cover;"></div>
-                            <div class="swiper-slide"><img src="/images/lipgloss-3.jpg" alt="Velour Bloom 3" style="width:100%; height:100%; object-fit:cover;"></div>
-                            <div class="swiper-slide"><img src="/images/lipgloss-4.jpg" alt="Velour Bloom 4" style="width:100%; height:100%; object-fit:cover;"></div>
-                            <div class="swiper-slide"><img src="/images/lipgloss-5.jpg" alt="Velour Bloom 5" style="width:100%; height:100%; object-fit:cover;"></div>
-                            <div class="swiper-slide"><img src="/images/lipgloss-6.jpg" alt="Velour Bloom 6" style="width:100%; height:100%; object-fit:cover;"></div>
-                            <div class="swiper-slide"><img src="/images/lipgloss-7.jpg" alt="Velour Bloom 7" style="width:100%; height:100%; object-fit:cover;"></div>
+                            <div class="swiper-slide"><img src="images/lipgloss-1.jpg" alt="Velour Bloom 1" style="width:100%; height:100%; object-fit:cover;"></div>
+                            <div class="swiper-slide"><img src="images/lipgloss-2.jpg" alt="Velour Bloom 2" style="width:100%; height:100%; object-fit:cover;"></div>
+                            <div class="swiper-slide"><img src="images/lipgloss-3.jpg" alt="Velour Bloom 3" style="width:100%; height:100%; object-fit:cover;"></div>
+                            <div class="swiper-slide"><img src="images/lipgloss-4.jpg" alt="Velour Bloom 4" style="width:100%; height:100%; object-fit:cover;"></div>
+                            <div class="swiper-slide"><img src="images/lipgloss-5.jpg" alt="Velour Bloom 5" style="width:100%; height:100%; object-fit:cover;"></div>
+                            <div class="swiper-slide"><img src="images/lipgloss-6.jpg" alt="Velour Bloom 6" style="width:100%; height:100%; object-fit:cover;"></div>
+                            <div class="swiper-slide"><img src="images/lipgloss-7.jpg" alt="Velour Bloom 7" style="width:100%; height:100%; object-fit:cover;"></div>
                         </div>
                         <div class="swiper-pagination"></div>
                         <div class="swiper-button-next"></div>
@@ -503,12 +503,12 @@
                 <div class="project-card tilt-card" data-category="food">
                     <div class="swiper project-carousel" style="width: 100%; aspect-ratio: 4/5; border-radius: 20px; overflow: hidden;">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide"><img src="/images/food-1.jpg" alt="Korean Food 1" style="width:100%; height:100%; object-fit:cover;"></div>
-                            <div class="swiper-slide"><img src="/images/food-2.jpg" alt="Korean Food 2" style="width:100%; height:100%; object-fit:cover;"></div>
-                            <div class="swiper-slide"><img src="/images/food-3.jpg" alt="Korean Food 3" style="width:100%; height:100%; object-fit:cover;"></div>
-                            <div class="swiper-slide"><img src="/images/food-4.jpg" alt="Korean Food 4" style="width:100%; height:100%; object-fit:cover;"></div>
-                            <div class="swiper-slide"><img src="/images/food-5.jpg" alt="Korean Food 5" style="width:100%; height:100%; object-fit:cover;"></div>
-                            <div class="swiper-slide"><img src="/images/food-6.jpg" alt="Korean Food 6" style="width:100%; height:100%; object-fit:cover;"></div>
+                            <div class="swiper-slide"><img src="images/food-1.jpg" alt="Korean Food 1" style="width:100%; height:100%; object-fit:cover;"></div>
+                            <div class="swiper-slide"><img src="images/food-2.jpg" alt="Korean Food 2" style="width:100%; height:100%; object-fit:cover;"></div>
+                            <div class="swiper-slide"><img src="images/food-3.jpg" alt="Korean Food 3" style="width:100%; height:100%; object-fit:cover;"></div>
+                            <div class="swiper-slide"><img src="images/food-4.jpg" alt="Korean Food 4" style="width:100%; height:100%; object-fit:cover;"></div>
+                            <div class="swiper-slide"><img src="images/food-5.jpg" alt="Korean Food 5" style="width:100%; height:100%; object-fit:cover;"></div>
+                            <div class="swiper-slide"><img src="images/food-6.jpg" alt="Korean Food 6" style="width:100%; height:100%; object-fit:cover;"></div>
                         </div>
                         <div class="swiper-pagination"></div>
                         <div class="swiper-button-next"></div>
@@ -551,7 +551,12 @@
     </section>
 
     <!-- Stats Counter -->
-    <section style="min-height: auto; padding: 100px 80px;">
+    <section id="stats" style="min-height: auto; padding: 100px 80px;">
+        <div class="section-header-centered" data-aos="fade-up">
+            <span class="section-eyebrow">OUR EXPERTISE</span>
+            <h2 class="section-headline">Results In<br><span>Numbers.</span></h2>
+            <div class="section-line"></div>
+        </div>
         <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; gap: 40px; text-align: center; flex-wrap: wrap;">
             <div style="flex: 1; min-width: 250px;">
                 <div class="stat-number" data-target="47" style="font-size: 96px; font-weight: 900; color: var(--gold);">0</div>
@@ -613,6 +618,22 @@
         </div>
     </section>
 
+    <!-- AI Tools Section -->
+    <section style="background: #130303; text-align: center;" data-aos="fade-up">
+        <div class="section-header-centered">
+            <span class="section-eyebrow" data-aos="fade-up" data-aos-delay="100">POWERED BY</span>
+            <h2 class="section-headline" data-aos="fade-up" data-aos-delay="200">The Tools Behind<br>The <span>Magic.</span></h2>
+            <div class="section-line"></div>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 40px;" data-aos="fade-up" data-aos-delay="300">
+            <div class="pill-badge" style="padding: 10px 24px; font-size: 14px; background: rgba(107, 26, 26, 0.2); border: 1px solid #6B1A1A;">Midjourney</div>
+            <div class="pill-badge" style="padding: 10px 24px; font-size: 14px; background: rgba(107, 26, 26, 0.2); border: 1px solid #6B1A1A;">Naro Banana Pro</div>
+            <div class="pill-badge" style="padding: 10px 24px; font-size: 14px; background: rgba(107, 26, 26, 0.2); border: 1px solid #6B1A1A;">Runway</div>
+            <div class="pill-badge" style="padding: 10px 24px; font-size: 14px; background: rgba(107, 26, 26, 0.2); border: 1px solid #6B1A1A;">Kling 3.0</div>
+            <div class="pill-badge" style="padding: 10px 24px; font-size: 14px; background: rgba(107, 26, 26, 0.2); border: 1px solid #6B1A1A;">Luma Dream</div>
+        </div>
+    </section>
+
     <!-- Testimonials -->
     <section id="testimonials">
         <div style="max-width: 1200px; margin: 0 auto;">
@@ -634,7 +655,7 @@
                             <p style="color: #888888; font-size: 12px; margin: 0;">E-commerce Brand Owner</p>
                             <span class="pill-badge" style="background: var(--maroon); font-size: 9px; margin-top: 10px;">Via Email</span>
                         </div>
-                        <img src="/images/review-01.png" style="width: 80px; border: 1px solid var(--gold); border-radius: 4px; transform: rotate(-2deg);" alt="Proof">
+                        <img src="images/review-01.png" style="width: 80px; border: 1px solid var(--gold); border-radius: 4px; transform: rotate(-2deg);" alt="Proof">
                     </div>
                 </div>
                 <!-- More reviews would go here -->
