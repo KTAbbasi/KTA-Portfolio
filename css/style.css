@@ -358,23 +358,26 @@ footer {
     position: relative;
 }
 
-.footer-circle {
+.footer-circle-container {
     position: absolute;
-    left: -60px;
-    top: 0;
-    width: 40px;
-    height: 40px;
-    border: 1px solid var(--gold);
-    border-radius: 50%;
+    left: -70px;
+    top: 5px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 10px;
 }
 
-.footer-circle-dot {
+.footer-dot {
     width: 6px;
     height: 6px;
     background: var(--gold);
+    border-radius: 50%;
+}
+
+.footer-circle {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--gold);
     border-radius: 50%;
 }
 
@@ -457,14 +460,14 @@ footer {
 .connect-box {
     width: 38px;
     height: 38px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.08); /* More subtle border */
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--text-muted);
-    border-radius: 4px;
+    border-radius: 10px; /* Rounded corners as per image */
     background: transparent;
     transition: 0.3s;
 }
