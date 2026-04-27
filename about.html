@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me | KTA AI Visual Studio</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js" defer></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+    
+    <script src="js/main.js" defer></script>
+    <script src="js/animations.js" defer></script>
+    <script src="js/tilt.js" defer></script>
+
+    <style>
+        .about-hero {
+            display: flex;
+            min-height: 100vh;
+            padding: 0;
+            background: #0E0505;
+        }
+
+        .about-left {
+            flex: 1;
+            position: relative;
+            background: radial-gradient(circle, #3D0000 0%, transparent 70%);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .about-left img {
+            height: 80vh;
+            object-fit: contain;
+            position: relative;
+            z-index: 2;
+        }
+
+        .about-left .glow {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, var(--gold) 0%, transparent 60%);
+            opacity: 0.08;
+            filter: blur(80px);
+            z-index: 1;
+        }
+
+        .about-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 80px;
+        }
+
+        .social-row {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #888888;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .social-link:hover {
+            color: var(--gold);
+        }
+
+        .skill-bar-container {
+            margin-bottom: 25px;
+        }
+
+        .skill-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .skill-bar {
+            height: 6px;
+            background: rgba(107, 26, 26, 0.3);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .skill-fill {
+            height: 100%;
+            background: var(--gold);
+            width: 0;
+            transition: width 1.5s ease-out;
+        }
+
+        @media (max-width: 1024px) {
+            .about-hero { flex-direction: column; }
+            .about-left { height: 60vh; }
+            .about-right { padding: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="loader">
+        <div class="loader-logo">KTA<span>.</span></div>
+    </div>
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+
+    <nav>
+        <div class="nav-left">
+            <a href="index.html" class="logo">KTA<span>.</span></a>
+        </div>
+        <div class="nav-center">
+            <a href="index.html">Home</a>
+            <a href="portfolio.html">Portfolio</a>
+            <a href="services.html">Services</a>
+            <a href="about.html" class="active">About</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="nav-right">
+            <a href="contact.html" class="btn-pill">Let's Create</a>
+        </div>
+    </nav>
+
+    <section class="about-hero">
+        <div class="glow-bg glow-1"></div>
+        <div class="glow-bg glow-2"></div>
+        <div class="about-left" style="position: relative; z-index: 5;">
+            <div class="glow"></div>
+            <img src="images/hero-komal.png" alt="Komal Tariq Abbasi" data-aos="fade-up">
+        </div>
+        <div class="about-right" style="position: relative; z-index: 10;">
+            <span class="section-eyebrow" data-aos="fade-left">MEET KOMAL</span>
+            <h1 class="section-headline" data-aos="fade-left" data-aos-delay="100">AI Visual<br><span>Creator.</span></h1>
+            <p style="color: #888; margin-bottom: 20px;" data-aos="fade-left" data-aos-delay="200">Based in Rawalpindi, Pakistan</p>
+            
+            <div class="social-row" data-aos="fade-left" data-aos-delay="300">
+                <a href="https://www.linkedin.com/in/komal-tariq-a-4b1639266/" class="social-link" target="_blank">Connect on LinkedIn</a>
+                <a href="https://www.behance.net/ktabbasi12" class="social-link" target="_blank">View my Behance</a>
+                <a href="mailto:ktabbasi364@gmail.com" class="social-link">ktabbasi364@gmail.com</a>
+            </div>
+        </div>
+    </section>
+
+    <section style="background: #130303;">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; gap: 80px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 300px;" data-aos="fade-right">
+                <span class="section-eyebrow">WHO I AM</span>
+                <span style="font-size: 80px; color: var(--gold); opacity: 0.1; line-height: 1;">“</span>
+                <h3 style="font-size: 32px; font-weight: 900; line-height: 1.4;">Luxury-grade AI visuals, without the studio cost.</h3>
+            </div>
+            <div style="flex: 1.5; min-width: 300px; color: #888; font-size: 17px; line-height: 1.8;" data-aos="fade-left">
+                <p style="margin-bottom: 24px;">Komal Tariq Abbasi is an AI Visual Creator based in Rawalpindi, Pakistan — specializing in luxury-grade AI product photography, campaigns, and brand visuals.</p>
+                <p style="margin-bottom: 24px;">I transform ordinary products into extraordinary visual stories using cutting-edge AI tools — delivering studio-quality results without the studio cost or timeline.</p>
+                <p style="margin-bottom: 24px;">AI has changed the game for visual content creation. I use the most advanced AI tools available to create visuals that compete with top-tier studios — faster, smarter, and at a fraction of the cost.</p>
+                <p>I work with eCommerce brands, beauty labels, food businesses, and luxury product companies who want visuals that don't just look good — they convert.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <span class="section-eyebrow">WHAT I DO BEST</span>
+            <div style="display: flex; gap: 80px; flex-wrap: wrap; margin-top: 50px;">
+                <div style="flex: 1; min-width: 300px;">
+                    <div class="skill-bar-container">
+                        <div class="skill-label"><span>AI Product Photography</span><span>98%</span></div>
+                        <div class="skill-bar"><div class="skill-fill" style="width: 98%;"></div></div>
+                    </div>
+                    <div class="skill-bar-container">
+                        <div class="skill-label"><span>AI Ads & Campaigns</span><span>95%</span></div>
+                        <div class="skill-bar"><div class="skill-fill" style="width: 95%;"></div></div>
+                    </div>
+                </div>
+                <div style="flex: 1; min-width: 300px;">
+                    <ul class="service-list" style="columns: 2; list-style: none;">
+                        <li style="margin-bottom: 15px; color: #888;"><span style="color: var(--gold); margin-right: 10px;">▸</span>AI Fashion Campaigns</li>
+                        <li style="margin-bottom: 15px; color: #888;"><span style="color: var(--gold); margin-right: 10px;">▸</span>AI Beauty Campaigns</li>
+                        <li style="margin-bottom: 15px; color: #888;"><span style="color: var(--gold); margin-right: 10px;">▸</span>AI Food Photography</li>
+                        <li style="margin-bottom: 15px; color: #888;"><span style="color: var(--gold); margin-right: 10px;">▸</span>AI Photoshoots</li>
+                        <li style="margin-bottom: 15px; color: #888;"><span style="color: var(--gold); margin-right: 10px;">▸</span>Visual Content Creation</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Tools Section -->
+    <section style="background: #130303; text-align: center;">
+        <span class="section-eyebrow">POWERED BY</span>
+        <h2 class="section-headline">The Tools Behind<br>The <span>Magic.</span></h2>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 40px;">
+            <div class="pill-badge" style="padding: 10px 24px; font-size: 14px; background: rgba(107, 26, 26, 0.2); border: 1px solid #6B1A1A;">Midjourney</div>
+            <div class="pill-badge" style="padding: 10px 24px; font-size: 14px; background: rgba(107, 26, 26, 0.2); border: 1px solid #6B1A1A;">Naro Banana Pro</div>
+            <div class="pill-badge" style="padding: 10px 24px; font-size: 14px; background: rgba(107, 26, 26, 0.2); border: 1px solid #6B1A1A;">Runway</div>
+            <div class="pill-badge" style="padding: 10px 24px; font-size: 14px; background: rgba(107, 26, 26, 0.2); border: 1px solid #6B1A1A;">Kling 3.0</div>
+            <div class="pill-badge" style="padding: 10px 24px; font-size: 14px; background: rgba(107, 26, 26, 0.2); border: 1px solid #6B1A1A;">Luma Dream</div>
+        </div>
+    </section>
+
+    <footer style="background: #080202; border-top: 1px solid #6B1A1A; padding: 60px 80px 40px;">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; color: #444; font-size: 11px;">
+            <p>© 2025 Komal Tariq Abbasi. All rights reserved.</p>
+            <p>Made with AI ✦</p>
+        </div>
+    </footer>
+</body>
+</html>

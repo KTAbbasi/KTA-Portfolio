@@ -1,0 +1,92 @@
+/* Floating Animation */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+.float-anim {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Marquee Scroll */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-inner {
+  display: flex;
+  white-space: nowrap;
+  animation: marquee 30s linear infinite;
+  gap: 40px;
+}
+
+.marquee-inner:hover {
+  animation-play-state: paused;
+}
+
+/* Scroll Arrow Animation */
+@keyframes bounce-down {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-5px); }
+}
+
+.scroll-indicator .arrow {
+  animation: bounce-down 2s infinite;
+  display: block;
+  margin-top: 10px;
+  color: var(--gold);
+  font-size: 20px;
+}
+
+/* Stagger Entrance */
+[data-aos] {
+  transition-duration: 600ms;
+}
+
+/* Connecting Line Animation */
+@keyframes drawLine {
+  from { stroke-dashoffset: 1000; }
+  to { stroke-dashoffset: 0; }
+}
+
+.connecting-line {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  transition: stroke-dashoffset 2s ease-out;
+}
+
+.connecting-line.active {
+  stroke-dashoffset: 0;
+}
+
+/* Shine Effect for Buttons */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to bottom right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.13) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(45deg);
+  transition: all 0.7s;
+  pointer-events: none;
+}
+
+.btn-primary:hover::after {
+  left: 100%;
+  top: 100%;
+}

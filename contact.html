@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | KTA AI Visual Studio</title>
+    
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js" defer></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+    
+    <script src="js/main.js" defer></script>
+    <script src="js/tilt.js" defer></script>
+
+    <style>
+        .contact-container {
+            display: flex;
+            gap: 60px;
+            max-width: 1200px;
+            margin: 60px auto 0;
+            flex-wrap: wrap;
+        }
+
+        .contact-left, .contact-right {
+            flex: 1;
+            min-width: 350px;
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 48px;
+            border: 1px solid rgba(107, 26, 26, 0.3);
+        }
+
+        .contact-right {
+            border-color: rgba(107, 26, 26, 0.5);
+        }
+
+        .info-item {
+            margin-bottom: 30px;
+        }
+
+        .info-label {
+            color: var(--gold);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .info-value {
+            color: var(--text-white);
+            font-size: 18px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .info-value:hover {
+            color: var(--gold);
+        }
+
+        .response-badge {
+            background: rgba(107, 26, 26, 0.3);
+            border: 1px solid #6B1A1A;
+            border-radius: 12px;
+            padding: 16px;
+            color: var(--gold);
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 40px;
+            display: inline-block;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 10px;
+            letter-spacing: 0.1em;
+        }
+
+        .form-control {
+            width: 100%;
+            background: rgba(14, 5, 5, 0.8);
+            border: 1px solid #6B1A1A;
+            border-radius: 8px;
+            padding: 14px 18px;
+            color: white;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 15px rgba(201, 168, 76, 0.2);
+        }
+
+        .form-control::placeholder {
+            color: #444;
+        }
+
+        textarea.form-control {
+            height: 120px;
+            resize: none;
+        }
+
+        .success-message {
+            display: none;
+            color: #4CAF50;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .contact-left, .contact-right { padding: 30px; min-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="loader">
+        <div class="loader-logo">KTA<span>.</span></div>
+    </div>
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+
+    <nav>
+        <div class="nav-left">
+            <a href="index.html" class="logo">KTA<span>.</span></a>
+        </div>
+        <div class="nav-center">
+            <a href="index.html">Home</a>
+            <a href="portfolio.html">Portfolio</a>
+            <a href="services.html">Services</a>
+            <a href="about.html">About</a>
+            <a href="contact.html" class="active">Contact</a>
+        </div>
+        <div class="nav-right">
+            <a href="contact.html" class="btn-pill">Let's Create</a>
+        </div>
+    </nav>
+
+    <header style="text-align: center; padding: 120px 80px 0; position: relative; overflow: hidden;">
+        <div class="glow-bg glow-1"></div>
+        <div class="glow-bg glow-2"></div>
+        <span class="section-eyebrow" data-aos="fade-down" style="position: relative; z-index: 10;">GET IN TOUCH</span>
+        <h1 class="section-headline" data-aos="fade-up" style="position: relative; z-index: 10;">Let's Build Something<br><span>Premium.</span></h1>
+        <p style="color: #888; position: relative; z-index: 10;">Tell me about your project, product, and vision.</p>
+    </header>
+
+    <div class="contact-container">
+        <!-- Info Column -->
+        <div class="contact-left" data-aos="fade-right">
+            <div class="info-item">
+                <span class="info-label">Email</span>
+                <a href="mailto:ktabbasi364@gmail.com" class="info-value">ktabbasi364@gmail.com</a>
+            </div>
+            <div class="info-item">
+                <span class="info-label">LinkedIn</span>
+                <a href="https://www.linkedin.com/in/komal-tariq-a-4b1639266/" target="_blank" class="info-value">Komal Tariq Abbasi</a>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Behance</span>
+                <a href="https://www.behance.net/ktabbasi12" target="_blank" class="info-value">ktabbasi12</a>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Location</span>
+                <span class="info-value">Rawalpindi, Pakistan</span>
+            </div>
+
+            <div class="response-badge">
+                ⚡ Replies within 24 hours
+            </div>
+
+            <div style="margin-top: 40px;">
+                <a href="https://www.linkedin.com/in/komal-tariq-a-4b1639266/" target="_blank" class="btn-primary" style="width: 100%; text-align: center; border-radius: 12px; padding: 18px;">
+                    DM me on LinkedIn →
+                    <span style="display: block; font-size: 10px; font-weight: 500; margin-top: 4px; color: #000; opacity: 0.6;">Type 'VISUALS' to get started</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Form Column -->
+        <div class="contact-right" data-aos="fade-left">
+            <form id="contact-form">
+                <div class="form-group">
+                    <label>YOUR NAME</label>
+                    <input type="text" class="form-control" placeholder="e.g. Sarah Ahmed" required>
+                </div>
+                <div class="form-group">
+                    <label>BRAND / COMPANY</label>
+                    <input type="text" class="form-control" placeholder="Your brand name">
+                </div>
+                <div class="form-group">
+                    <label>SERVICE NEEDED</label>
+                    <select class="form-control" style="appearance: none;">
+                        <option>Select a service...</option>
+                        <option>AI Product Photography</option>
+                        <option>AI Campaign Visuals</option>
+                        <option>AI Photoshoots</option>
+                        <option>AI Ads & Video Content</option>
+                        <option>Not sure — let's discuss</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>YOUR MESSAGE</label>
+                    <textarea class="form-control" placeholder="Tell me about your project, product, and vision..."></textarea>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; border-radius: 8px;">Send Message →</button>
+                <div class="success-message" id="success-msg">
+                    ✓ Message received! I'll reply within 24 hours.
+                </div>
+            </form>
+            <p style="color: #555; font-size: 13px; margin-top: 20px; text-align: center;">Prefer direct contact? DM me on LinkedIn with the word 'VISUALS'</p>
+        </div>
+    </div>
+
+    <footer style="background: #080202; border-top: 1px solid #6B1A1A; padding: 60px 80px 40px; margin-top: 80px;">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; color: #444; font-size: 11px;">
+            <p>© 2025 Komal Tariq Abbasi. All rights reserved.</p>
+            <p>Made with AI ✦</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = this.querySelector('button');
+            const msg = document.getElementById('success-msg');
+            
+            btn.innerHTML = 'Sending...';
+            
+            setTimeout(() => {
+                btn.style.display = 'none';
+                msg.style.display = 'block';
+                // mailto fallback
+                window.location.href = "mailto:ktabbasi364@gmail.com?subject=Inquiry from Portfolio&body=Hello Komal, I am interested in working with you.";
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
