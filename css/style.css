@@ -21,6 +21,58 @@
   --font-poppins: 'Poppins', sans-serif;
 }
 
+.project-card {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.card-link-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    text-decoration: none;
+    pointer-events: none; /* Let clicks pass through to project-card and its children */
+}
+
+.project-carousel .swiper-button-next,
+.project-carousel .swiper-button-prev,
+.project-carousel .swiper-pagination {
+    z-index: 20 !important;
+    pointer-events: auto; /* Ensure controls are clickable */
+}
+
+/* Swiper Customization */
+.swiper-pagination-bullet {
+    background: var(--gold) !important;
+    opacity: 0.3;
+}
+
+.swiper-pagination-bullet-active {
+    opacity: 1;
+}
+
+.swiper-button-next:after, .swiper-button-prev:after {
+    font-size: 14px !important;
+    font-weight: 900;
+}
+
+.project-carousel .swiper-button-next,
+.project-carousel .swiper-button-prev {
+    opacity: 0;
+    transition: 0.3s ease;
+    background: rgba(0,0,0,0.5);
+    width: 30px !important;
+    height: 30px !important;
+    border-radius: 50%;
+    color: var(--gold) !important;
+}
+
+.project-card:hover .swiper-button-next,
+.project-card:hover .swiper-button-prev {
+    opacity: 1;
+}
+
 * {
   margin: 0;
   padding: 0;

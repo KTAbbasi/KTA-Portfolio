@@ -2,18 +2,64 @@ document.addEventListener('DOMContentLoaded', () => {
     // Project Sliders
     const projectSliders = document.querySelectorAll('.project-carousel');
     projectSliders.forEach(container => {
-        new Swiper(container, {
-            effect: "cards",
-            grabCursor: true,
-            loop: true,
-            autoplay: {
+        const slides = container.querySelectorAll('.swiper-slide');
+        const hasMultipleSlides = slides.length > 1;
+        const projectCard = container.closest('.project-card');
+
+        const swiper = new Swiper(container, {
+            effect: "fade",
+            fadeEffect: { crossFade: true },
+            grabCursor: hasMultipleSlides,
+            loop: hasMultipleSlides,
+            autoplay: hasMultipleSlides ? {
                 delay: 3000,
                 disableOnInteraction: false,
-            },
+            } : false,
             pagination: {
                 el: container.querySelector('.swiper-pagination'),
                 clickable: true,
+                dynamicBullets: true,
             },
+            navigation: {
+                nextEl: container.querySelector('.swiper-button-next'),
+                prevEl: container.querySelector('.swiper-button-prev'),
+            },
+        });
+
+        // Initialize autoplay as stopped if multiple slides
+        if (hasMultipleSlides) {
+            swiper.autoplay.stop();
+        }
+
+        if (!hasMultipleSlides) {
+            container.querySelector('.swiper-button-next')?.remove();
+            container.querySelector('.swiper-button-prev')?.remove();
+            container.querySelector('.swiper-pagination')?.remove();
+        } else {
+            // Start autoplay on hover
+            projectCard.addEventListener('mouseenter', () => {
+                swiper.autoplay.start();
+            });
+
+            projectCard.addEventListener('mouseleave', () => {
+                swiper.autoplay.stop();
+                swiper.slideTo(0);
+            });
+        }
+
+        // Handle Card Click (Ignore swiper controls)
+        projectCard.addEventListener('click', (e) => {
+            const isControl = e.target.closest('.swiper-button-next') || 
+                              e.target.closest('.swiper-button-prev') || 
+                              e.target.closest('.swiper-pagination-bullet');
+            
+            if (!isControl) {
+                const link = projectCard.querySelector('.card-link-overlay')?.getAttribute('href') || 
+                             projectCard.dataset.link;
+                if (link) {
+                    window.open(link, '_blank');
+                }
+            }
         });
     });
 
