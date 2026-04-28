@@ -29,20 +29,39 @@ document.addEventListener('DOMContentLoaded', () => {
     // Page Loader
     const loader = document.querySelector('.loader');
     const loaderLogo = document.querySelector('.loader-logo');
+    const loaderLine = document.querySelector('.loader-line');
     
-    gsap.to(loaderLogo, {
-        opacity: 1,
-        duration: 0.8,
-        delay: 0.2
-    });
-
-    setTimeout(() => {
-        gsap.to(loader, {
-            yPercent: -100,
+    if (loaderLogo && loaderLine) {
+        const loaderTl = gsap.timeline();
+        
+        loaderTl.to(loaderLogo, {
+            opacity: 1,
             duration: 0.8,
-            ease: "power4.inOut"
-        });
-    }, 1500);
+            delay: 0.2
+        })
+        .to(loaderLine, {
+            width: '120px',
+            duration: 1,
+            ease: "power2.inOut"
+        }, "-=0.3");
+
+        setTimeout(() => {
+            gsap.to(loader, {
+                yPercent: -100,
+                duration: 0.8,
+                ease: "power4.inOut"
+            });
+        }, 2200);
+    } else if (loader) {
+        // Fallback if elements not found
+        setTimeout(() => {
+            gsap.to(loader, {
+                yPercent: -100,
+                duration: 0.8,
+                ease: "power4.inOut"
+            });
+        }, 1500);
+    }
 
     // Mobile Navigation
     const navToggle = document.querySelector('.mobile-nav-toggle');

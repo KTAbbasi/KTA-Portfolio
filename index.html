@@ -328,6 +328,7 @@
     <!-- Page Loader -->
     <div class="loader">
         <div class="loader-logo">KTA<span>.</span></div>
+        <div class="loader-line"></div>
     </div>
 
     <!-- Custom Cursor -->
@@ -721,51 +722,252 @@
             </div>
             
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 60px;">
-                <!-- Review 1 -->
-                <div class="service-card tilt-card" style="background: rgba(19, 3, 3, 0.6); backdrop-filter: blur(10px); padding: 32px;">
-                    <div style="color: #FFD700; font-size: 16px; margin-bottom: 15px;">⭐⭐⭐⭐⭐</div>
-                    <div style="position: absolute; top: 0; right: 20px; font-size: 80px; font-weight: 900; color: var(--gold); opacity: 0.05;">"</div>
-                    <p style="color: #CCCCCC; font-size: 16px; margin-bottom: 24px;">"You nailed it! The photos are stunning and perfectly aligned with my brand. Thank you for your creativity and professionalism."</p>
+                <!-- Review 1: Chloe Harper -->
+                <div class="service-card tilt-card" style="background: rgba(19, 3, 3, 0.6); backdrop-filter: blur(10px); padding: 32px; border: 1px solid rgba(107, 26, 26, 0.2);">
+                    <div style="color: #FFD700; font-size: 14px; margin-bottom: 15px;">★★★★★</div>
+                    <div style="position: absolute; top: 10px; right: 20px; font-size: 60px; font-weight: 900; color: var(--gold); opacity: 0.05;">"</div>
+                    <p style="color: #CCCCCC; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"Absolutely blown away by the quality. You really understood the vibe I was going for and delivered something stunning. Can't wait to work together again!"</p>
                     <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                         <div>
-                            <p style="font-weight: 600; font-size: 14px; margin: 0;">Ella Jenkins</p>
-                            <p style="color: #888888; font-size: 12px; margin: 0;">E-commerce Brand Owner</p>
-                            <span class="pill-maroon" style="font-size: 9px; margin-top: 10px;">Via Email</span>
+                            <p style="font-weight: 700; font-size: 15px; margin: 0; color: var(--text-white);">Chloe Harper</p>
+                            <p style="color: #888888; font-size: 12px; margin: 0;">Verified Client</p>
+                            <span class="pill-maroon" style="font-size: 9px; margin-top: 10px; padding: 4px 10px;">VERIFIED PROOF</span>
                         </div>
-                        <img src="images/review-01.png" style="width: 80px; border: 1px solid var(--gold); border-radius: 4px; transform: rotate(-2deg);" alt="Proof">
+                        <div style="position: relative;">
+                            <div style="width: 70px; height: 50px; background: #000; border: 1px solid var(--gold); border-radius: 4px; overflow: hidden; transform: rotate(-3deg); box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
+                                <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.5;" alt="Review Image">
+                                <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.4);">
+                                    <span style="font-size: 10px; color: var(--gold); font-weight: 900;">✓</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Review 2 -->
-                <div class="service-card tilt-card" style="background: rgba(19, 3, 3, 0.6); backdrop-filter: blur(10px); padding: 32px;">
-                    <div style="color: #FFD700; font-size: 16px; margin-bottom: 15px;">⭐⭐⭐⭐⭐</div>
-                    <div style="position: absolute; top: 0; right: 20px; font-size: 80px; font-weight: 900; color: var(--gold); opacity: 0.05;">"</div>
-                    <p style="color: #CCCCCC; font-size: 16px; margin-bottom: 24px;">"The attention to detail in these AI visuals is incredible. It saved us weeks of production time and thousands in costs."</p>
+                <!-- Review 2: Lucas White -->
+                <div class="service-card tilt-card" style="background: rgba(19, 3, 3, 0.6); backdrop-filter: blur(10px); padding: 32px; border: 1px solid rgba(107, 26, 26, 0.2);">
+                    <div style="color: #FFD700; font-size: 14px; margin-bottom: 15px;">★★★★★</div>
+                    <div style="position: absolute; top: 10px; right: 20px; font-size: 60px; font-weight: 900; color: var(--gold); opacity: 0.05;">"</div>
+                    <p style="color: #CCCCCC; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"Excellent experience from start to finish. The attention to detail is next level. You've officially become my go-to for all future projects."</p>
                     <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                         <div>
-                            <p style="font-weight: 600; font-size: 14px; margin: 0;">Sarah Mitchell</p>
-                            <p style="color: #888888; font-size: 12px; margin: 0;">Brand Strategy</p>
-                            <span class="pill-maroon" style="font-size: 9px; margin-top: 10px;">Via LinkedIn</span>
+                            <p style="font-weight: 700; font-size: 15px; margin: 0; color: var(--text-white);">Lucas White</p>
+                            <p style="color: #888888; font-size: 12px; margin: 0;">Verified Client</p>
+                            <span class="pill-maroon" style="font-size: 9px; margin-top: 10px; padding: 4px 10px;">VERIFIED PROOF</span>
                         </div>
-                        <img src="images/review-02.png" style="width: 80px; border: 1px solid var(--gold); border-radius: 4px; transform: rotate(2deg);" alt="Proof">
+                        <div style="position: relative;">
+                            <div style="width: 70px; height: 50px; background: #000; border: 1px solid var(--gold); border-radius: 4px; overflow: hidden; transform: rotate(3deg); box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
+                                <img src="https://images.unsplash.com/photo-1551288049-bbbda536ad0a?q=80&w=2070&auto=format&fit=crop" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.5;" alt="Review Image">
+                                <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.4);">
+                                    <span style="font-size: 10px; color: var(--gold); font-weight: 900;">✓</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Review 3 -->
-                <div class="service-card tilt-card" style="background: rgba(19, 3, 3, 0.6); backdrop-filter: blur(10px); padding: 32px;">
-                    <div style="color: #FFD700; font-size: 16px; margin-bottom: 15px;">⭐⭐⭐⭐⭐</div>
-                    <div style="position: absolute; top: 0; right: 20px; font-size: 80px; font-weight: 900; color: var(--gold); opacity: 0.05;">"</div>
-                    <p style="color: #CCCCCC; font-size: 16px; margin-bottom: 24px;">"Exactly what we were looking for. High-end visuals that perfectly capture our minimalist aesthetic. Highly recommended!"</p>
+                <!-- Review 3: Isabella Scott -->
+                <div class="service-card tilt-card" style="background: rgba(19, 3, 3, 0.6); backdrop-filter: blur(10px); padding: 32px; border: 1px solid rgba(107, 26, 26, 0.2);">
+                    <div style="color: #FFD700; font-size: 14px; margin-bottom: 15px;">★★★★★</div>
+                    <div style="position: absolute; top: 10px; right: 20px; font-size: 60px; font-weight: 900; color: var(--gold); opacity: 0.05;">"</div>
+                    <p style="color: #CCCCCC; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"So talented and easy to work with. You took my ideas and turned them into something truly unique. Highly recommend!"</p>
                     <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                         <div>
-                            <p style="font-weight: 600; font-size: 14px; margin: 0;">David Chen</p>
-                            <p style="color: #888888; font-size: 12px; margin: 0;">Fashion Label Owner</p>
-                            <span class="pill-maroon" style="font-size: 9px; margin-top: 10px;">Via Upwork</span>
+                            <p style="font-weight: 700; font-size: 15px; margin: 0; color: var(--text-white);">Isabella Scott</p>
+                            <p style="color: #888888; font-size: 12px; margin: 0;">Creative Lead</p>
+                            <span class="pill-maroon" style="font-size: 9px; margin-top: 10px; padding: 4px 10px;">VERIFIED PROOF</span>
                         </div>
-                        <img src="images/review-03.png" style="width: 80px; border: 1px solid var(--gold); border-radius: 4px; transform: rotate(-1deg);" alt="Proof">
+                        <div style="position: relative;">
+                            <div style="width: 70px; height: 50px; background: #000; border: 1px solid var(--gold); border-radius: 4px; overflow: hidden; transform: rotate(-2deg); box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
+                                <img src="https://images.unsplash.com/photo-1579546671307-b3c8c326b77e?q=80&w=2070&auto=format&fit=crop" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.5;" alt="Review Image">
+                                <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.4);">
+                                    <span style="font-size: 10px; color: var(--gold); font-weight: 900;">✓</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 30px;">
+                <!-- Review 4: Jackson Turner -->
+                <div class="service-card tilt-card" style="background: rgba(19, 3, 3, 0.6); backdrop-filter: blur(10px); padding: 32px; border: 1px solid rgba(107, 26, 26, 0.2);">
+                    <div style="color: #FFD700; font-size: 14px; margin-bottom: 15px;">★★★★★</div>
+                    <div style="position: absolute; top: 10px; right: 20px; font-size: 60px; font-weight: 900; color: var(--gold); opacity: 0.05;">"</div>
+                    <p style="color: #CCCCCC; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"Fast turnaround, amazing quality, and great communication. The final results exceeded expectations. Will definitely be back!"</p>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                        <div>
+                            <p style="font-weight: 700; font-size: 15px; margin: 0; color: var(--text-white);">Jackson Turner</p>
+                            <p style="color: #888888; font-size: 12px; margin: 0;">E-com Founder</p>
+                            <span class="pill-maroon" style="font-size: 9px; margin-top: 10px; padding: 4px 10px;">VERIFIED PROOF</span>
+                        </div>
+                        <div style="position: relative;">
+                            <div style="width: 70px; height: 50px; background: #000; border: 1px solid var(--gold); border-radius: 4px; overflow: hidden; transform: rotate(2deg); box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
+                                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.5;" alt="Review Image">
+                                <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.4);">
+                                    <span style="font-size: 10px; color: var(--gold); font-weight: 900;">✓</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 5: Sophia Bennett -->
+                <div class="service-card tilt-card" style="background: rgba(19, 3, 3, 0.6); backdrop-filter: blur(10px); padding: 32px; border: 1px solid rgba(107, 26, 26, 0.2);">
+                    <div style="color: #FFD700; font-size: 14px; margin-bottom: 15px;">★★★★★</div>
+                    <div style="position: absolute; top: 10px; right: 20px; font-size: 60px; font-weight: 900; color: var(--gold); opacity: 0.05;">"</div>
+                    <p style="color: #CCCCCC; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"Excellent work from start to finish. KT understood the brief perfectly and brought our ideas to life. Very talented and easy to work with."</p>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                        <div>
+                            <p style="font-weight: 700; font-size: 15px; margin: 0; color: var(--text-white);">Sophia Bennett</p>
+                            <p style="color: #888888; font-size: 12px; margin: 0;">Verified Client</p>
+                            <span class="pill-maroon" style="font-size: 9px; margin-top: 10px; padding: 4px 10px;">VERIFIED PROOF</span>
+                        </div>
+                        <div style="position: relative;">
+                            <div style="width: 70px; height: 50px; background: #000; border: 1px solid var(--gold); border-radius: 4px; overflow: hidden; transform: rotate(-1deg); box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
+                                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.5;" alt="Review Image">
+                                <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.4);">
+                                    <span style="font-size: 10px; color: var(--gold); font-weight: 900;">✓</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 6: Michael Reeves -->
+                <div class="service-card tilt-card" style="background: rgba(19, 3, 3, 0.6); backdrop-filter: blur(10px); padding: 32px; border: 1px solid rgba(107, 26, 26, 0.2);">
+                    <div style="color: #FFD700; font-size: 14px; margin-bottom: 15px;">★★★★★</div>
+                    <div style="position: absolute; top: 10px; right: 20px; font-size: 60px; font-weight: 900; color: var(--gold); opacity: 0.05;">"</div>
+                    <p style="color: #CCCCCC; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"Super impressed with the final result. The quality, attention to detail, and storytelling were all outstanding. KT is a true professional!"</p>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                        <div>
+                            <p style="font-weight: 700; font-size: 15px; margin: 0; color: var(--text-white);">Michael Reeves</p>
+                            <p style="color: #888888; font-size: 12px; margin: 0;">Verified Client</p>
+                            <span class="pill-maroon" style="font-size: 9px; margin-top: 10px; padding: 4px 10px;">VERIFIED PROOF</span>
+                        </div>
+                        <div style="position: relative;">
+                            <div style="width: 70px; height: 50px; background: #000; border: 1px solid var(--gold); border-radius: 4px; overflow: hidden; transform: rotate(3deg); box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
+                                <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1974&auto=format&fit=crop" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.5;" alt="Review Image">
+                                <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.4);">
+                                    <span style="font-size: 10px; color: var(--gold); font-weight: 900;">✓</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hidden Container for More Reviews -->
+            <div id="more-reviews" style="display: none; transition: all 0.5s ease;">
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 30px;">
+                    <!-- Review 7: James Walker -->
+                    <div class="service-card tilt-card" style="background: rgba(19, 3, 3, 0.6); backdrop-filter: blur(10px); padding: 32px; border: 1px solid rgba(107, 26, 26, 0.2);">
+                        <div style="color: #FFD700; font-size: 14px; margin-bottom: 15px;">★★★★★</div>
+                        <p style="color: #CCCCCC; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"KT did an amazing job! The video was high quality, creative, and delivered way faster than expected. Communication was smooth and professional."</p>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                            <div>
+                                <p style="font-weight: 700; font-size: 15px; margin: 0; color: var(--text-white);">James Walker</p>
+                                <p style="color: #888888; font-size: 12px; margin: 0;">Verified Client</p>
+                                <span class="pill-maroon" style="font-size: 9px; margin-top: 10px; padding: 4px 10px;">VERIFIED PROOF</span>
+                            </div>
+                            <div style="width: 70px; height: 50px; background: #000; border: 1px solid var(--gold); border-radius: 4px; overflow: hidden; transform: rotate(-2deg);">
+                                <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2032&auto=format&fit=crop" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.5;" alt="Review">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review 8: Emily Lawson -->
+                    <div class="service-card tilt-card" style="background: rgba(19, 3, 3, 0.6); backdrop-filter: blur(10px); padding: 32px; border: 1px solid rgba(107, 26, 26, 0.2);">
+                        <div style="color: #FFD700; font-size: 14px; margin-bottom: 15px;">★★★★★</div>
+                        <p style="color: #CCCCCC; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"Great experience working with KT. The video exceeded our expectations and really helped our brand stand out. Highly recommend!"</p>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                            <div>
+                                <p style="font-weight: 700; font-size: 15px; margin: 0; color: var(--text-white);">Emily Lawson</p>
+                                <p style="color: #888888; font-size: 12px; margin: 0;">Brand Manager</p>
+                                <span class="pill-maroon" style="font-size: 9px; margin-top: 10px; padding: 4px 10px;">VERIFIED PROOF</span>
+                            </div>
+                            <div style="width: 70px; height: 50px; background: #000; border: 1px solid var(--gold); border-radius: 4px; overflow: hidden; transform: rotate(1deg);">
+                                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.5;" alt="Review">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review 9: Noah Lawson -->
+                    <div class="service-card tilt-card" style="background: rgba(19, 3, 3, 0.6); backdrop-filter: blur(10px); padding: 32px; border: 1px solid rgba(107, 26, 26, 0.2);">
+                        <div style="color: #FFD700; font-size: 14px; margin-bottom: 15px;">★★★★★</div>
+                        <p style="color: #CCCCCC; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"Incredible work! The visuals came out even better than I imagined. Super professional and very responsive throughout the whole process."</p>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                            <div>
+                                <p style="font-weight: 700; font-size: 15px; margin: 0; color: var(--text-white);">Noah Lawson</p>
+                                <p style="color: #888888; font-size: 12px; margin: 0;">Verified Client</p>
+                                <span class="pill-maroon" style="font-size: 9px; margin-top: 10px; padding: 4px 10px;">VERIFIED PROOF</span>
+                            </div>
+                            <div style="width: 70px; height: 50px; background: #000; border: 1px solid var(--gold); border-radius: 4px; overflow: hidden; transform: rotate(-1deg);">
+                                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.5;" alt="Review">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 30px;">
+                    <!-- Review 10: Sarah Mitchell -->
+                    <div class="service-card tilt-card" style="background: rgba(19, 3, 3, 0.6); backdrop-filter: blur(10px); padding: 32px; border: 1px solid rgba(107, 26, 26, 0.2);">
+                        <div style="color: #FFD700; font-size: 14px; margin-bottom: 15px;">★★★★★</div>
+                        <p style="color: #CCCCCC; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"The attention to detail in these AI visuals is incredible. It saved us weeks of production time and thousands in costs. Absolutely a game changer for our brand."</p>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                            <div>
+                                <p style="font-weight: 700; font-size: 15px; margin: 0; color: var(--text-white);">Sarah Mitchell</p>
+                                <p style="color: #888888; font-size: 12px; margin: 0;">Brand Strategy</p>
+                                <span class="pill-maroon" style="font-size: 9px; margin-top: 10px; padding: 4px 10px;">VERIFIED PROOF</span>
+                            </div>
+                            <div style="width: 70px; height: 50px; background: #000; border: 1px solid var(--gold); border-radius: 4px; overflow: hidden; transform: rotate(2deg);">
+                                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.5;" alt="Review">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- See All Button -->
+            <div style="text-align: center; margin-top: 50px;" id="see-all-container">
+                <button onclick="toggleReviews(true)" class="btn-primary" style="cursor: pointer; border: none; font-size: 14px; padding: 15px 40px;">
+                    SEE ALL REVIEWS <span style="margin-left: 8px;">↓</span>
+                </button>
+            </div>
+
+            <!-- See Less Button (Inside more-reviews or after it) -->
+            <div id="see-less-container" style="display: none; text-align: center; margin-top: 40px;">
+                <button onclick="toggleReviews(false)" class="btn-primary" style="cursor: pointer; border: none; font-size: 14px; padding: 15px 40px; background: transparent; border: 1px solid var(--gold); color: var(--gold);">
+                    SEE LESS <span style="margin-left: 8px;">↑</span>
+                </button>
+            </div>
+
+            <script>
+                function toggleReviews(show) {
+                    const moreReviews = document.getElementById('more-reviews');
+                    const seeAllBtn = document.getElementById('see-all-container');
+                    const seeLessBtn = document.getElementById('see-less-container');
+                    
+                    if (show) {
+                        moreReviews.style.display = 'block';
+                        seeAllBtn.style.display = 'none';
+                        seeLessBtn.style.display = 'block';
+                        
+                        // Smooth scroll to the newly opened reviews
+                        setTimeout(() => {
+                            moreReviews.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 100);
+                    } else {
+                        moreReviews.style.display = 'none';
+                        seeAllBtn.style.display = 'block';
+                        seeLessBtn.style.display = 'none';
+                        
+                        // Scroll back to the top of the reviews section
+                        document.querySelector('#testimonials .section-header-centered').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            </script>
+
         </div>
     </section>
 
