@@ -53,6 +53,7 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
     
     <script src="js/main.js" defer></script>
+    <script src="js/animations.js" defer></script>
     <script src="js/tilt.js" defer></script>
     <script src="js/slider.js" defer></script>
 
@@ -220,13 +221,13 @@
     </header>
 
     <div class="portfolio-tabs">
-        <button class="tab-btn active" onclick="filterPage('all')">All</button>
-        <button class="tab-btn" onclick="filterPage('photography')">Photography</button>
-        <button class="tab-btn" onclick="filterPage('campaigns')">Campaigns</button>
-        <button class="tab-btn" onclick="filterPage('fashion')">Fashion</button>
-        <button class="tab-btn" onclick="filterPage('food')">Food</button>
-        <button class="tab-btn" onclick="filterPage('beauty')">Beauty</button>
-        <button class="tab-btn" onclick="filterPage('video')">Video</button>
+        <button class="tab-btn active" onclick="filterPage('all', this)">All</button>
+        <button class="tab-btn" onclick="filterPage('photography', this)">Photography</button>
+        <button class="tab-btn" onclick="filterPage('campaigns', this)">Campaigns</button>
+        <button class="tab-btn" onclick="filterPage('fashion', this)">Fashion</button>
+        <button class="tab-btn" onclick="filterPage('food', this)">Food</button>
+        <button class="tab-btn" onclick="filterPage('beauty', this)">Beauty</button>
+        <button class="tab-btn" onclick="filterPage('video', this)">Video</button>
     </div>
 
     <div class="portfolio-grid" id="main-grid">
@@ -371,20 +372,51 @@
 
 
     <script>
-        function filterPage(category) {
+        // Ensure portfolio is filtered to 'all' on load to make items visible
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                if (typeof filterPage === 'function') {
+                    filterPage('all');
+                }
+            }, 500); // Small delay to let AOS and other scripts settle
+        });
+
+        function filterPage(category, btn) {
             const items = document.querySelectorAll('.project-card');
             const btns = document.querySelectorAll('.tab-btn');
             
-            btns.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            // Handle active button state
+            btns.forEach(b => b.classList.remove('active'));
+            if (btn) {
+                btn.classList.add('active');
+            } else {
+                // Find matching button on load
+                btns.forEach(b => {
+                    if (b.innerText.toLowerCase() === category.toLowerCase()) {
+                        b.classList.add('active');
+                    }
+                });
+            }
 
             items.forEach(item => {
-                if (category === 'all' || item.getAttribute('data-category').includes(category)) {
-                    gsap.to(item, {opacity: 1, scale: 1, duration: 0.4, display: 'block'});
+                const itemCategories = item.getAttribute('data-category') || '';
+                if (category === 'all' || itemCategories.includes(category)) {
+                    gsap.to(item, {
+                        opacity: 1, 
+                        scale: 1, 
+                        duration: 0.4, 
+                        display: 'block',
+                        clearProps: "all"
+                    });
                 } else {
                     gsap.to(item, {opacity: 0, scale: 0.8, duration: 0.4, display: 'none'});
                 }
             });
+            
+            // Re-trigger AOS
+            if (window.AOS) {
+                setTimeout(() => AOS.refresh(), 500);
+            }
         }
     </script>
 </body>
