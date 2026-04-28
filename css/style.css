@@ -12,8 +12,8 @@
   --maroon-glow:    #3D0000;
   --text-white:     #FFFFFF;
   --text-light:     #CCCCCC;
-  --text-muted:     #888888;
-  --text-dim:       #555555;
+  --text-muted:     #999999;
+  --text-dim:       #666666;
   --text-handle:    #444444;
   --glass-bg:       rgba(255, 255, 255, 0.03);
   --glass-border:   rgba(201, 168, 76, 0.1);
@@ -100,7 +100,7 @@ body {
   color: var(--text-light);
   font-family: var(--font-montserrat);
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.7;
   overflow-x: hidden;
   cursor: none;
   scroll-behavior: smooth;
@@ -735,31 +735,32 @@ footer {
 /* Hero Profile Card Styles - Right-center glass card */
 .hero-profile-container {
     position: absolute;
-    right: 180px; /* Right-center positioning */
+    right: 180px; 
     top: 50%;
     transform: translateY(-50%);
-    width: 280px; /* Small-Medium */
-    height: 380px;
+    width: 320px; 
+    aspect-ratio: 9/16;
     z-index: 5;
-    background: rgba(255, 255, 255, 0.03); /* Glassmorphism base */
+    background: rgba(255, 255, 255, 0.03); 
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(201, 168, 76, 0.25); /* Thin golden border */
+    border: 1px solid rgba(201, 168, 76, 0.25); 
     border-radius: 30px;
-    padding: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 0; 
+    overflow: hidden; /* Critical for cropping */
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(201, 168, 76, 0.05);
     animation: slowProfileFloat 6s ease-in-out infinite;
 }
 
 .hero-profile-img {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    border-radius: 20px;
-    opacity: 0.95;
+    object-fit: cover; /* Ensures pixel-perfect fill */
+    opacity: 1;
+    display: block;
 }
 
 .hero-profile-glow {
@@ -788,7 +789,8 @@ footer {
         transform: none;
         width: 100%;
         max-width: 280px;
-        height: 380px;
+        aspect-ratio: 9/16;
+        height: auto;
         margin: 40px auto 0;
         animation: none;
     }
