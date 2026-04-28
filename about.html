@@ -11,9 +11,30 @@
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
     
     <script>
+        // Emergency fix for "fetch" read-only property error in certain environments
+        (function() {
+            var _originalFetch = window.fetch;
+            try {
+                Object.defineProperty(window, 'fetch', {
+                    get: function() { return _originalFetch; },
+                    set: function(val) { console.warn('Blocked attempt to override window.fetch'); },
+                    configurable: true,
+                    enumerable: true
+                });
+            } catch (e) {
+                // If it's already non-configurable, we can't do much but at least we tried
+            }
+        })();
+
+        // Fail-safe for loader visibility
         window.onerror = function(msg) {
+            if (msg && (msg.includes('fetch') || msg.includes('getter'))) {
+                return true; // Suppress the read-only fetch error
+            }
             return false;
         };
+
+        // Backup to hide loader if JS fails
         window.addEventListener('load', function() {
             setTimeout(function() {
                 const loader = document.querySelector('.loader');
@@ -124,6 +145,28 @@
             transition: width 1.5s ease-out;
         }
 
+        .pill-maroon {
+            background: rgba(28, 8, 8, 0.7);
+            border: 1px solid var(--maroon-light, #8B1A1A);
+            color: #FFFFFF;
+            padding: 12px 28px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .pill-maroon:hover {
+            border-color: var(--gold, #C9A84C);
+            background: rgba(107, 26, 26, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        }
+
         @media (max-width: 1024px) {
             .about-hero { flex-direction: column; }
             .about-left { height: 60vh; }
@@ -224,21 +267,17 @@
             <div class="section-line"></div>
         </div>
         <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 40px;" data-aos="fade-up" data-aos-delay="300">
-            <div class="pill-badge" style="padding: 10px 24px; font-size: 14px; background: rgba(107, 26, 26, 0.2); border: 1px solid #6B1A1A;">Midjourney</div>
-            <div class="pill-badge" style="padding: 10px 24px; font-size: 14px; background: rgba(107, 26, 26, 0.2); border: 1px solid #6B1A1A;">Naro Banana Pro</div>
-            <div class="pill-badge" style="padding: 10px 24px; font-size: 14px; background: rgba(107, 26, 26, 0.2); border: 1px solid #6B1A1A;">Runway</div>
-            <div class="pill-badge" style="padding: 10px 24px; font-size: 14px; background: rgba(107, 26, 26, 0.2); border: 1px solid #6B1A1A;">Kling 3.0</div>
-            <div class="pill-badge" style="padding: 10px 24px; font-size: 14px; background: rgba(107, 26, 26, 0.2); border: 1px solid #6B1A1A;">Luma Dream</div>
+            <div class="pill-maroon">Midjourney</div>
+            <div class="pill-maroon">Naro Banana Pro</div>
+            <div class="pill-maroon">Runway</div>
+            <div class="pill-maroon">Kling 3.0</div>
+            <div class="pill-maroon">Luma Dream</div>
         </div>
     </section>
 
     <footer id="footer">
         <div class="footer-container">
             <div class="footer-brand">
-                <div class="footer-circle-container">
-                    <div class="footer-dot"></div>
-                    <div class="footer-circle"></div>
-                </div>
                 <a href="index.html" class="logo">KTA<span>.</span></a>
                 <p class="title">AI Product Photographer & Visual Creator</p>
                 <p class="loc">Rawalpindi, Pakistan</p>

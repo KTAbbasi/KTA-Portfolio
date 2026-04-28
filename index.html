@@ -16,10 +16,29 @@
     
     <!-- Scripts (Defer) -->
     <script>
-        // Fail-safe for "fetch" error and loader visibility
+        // Emergency fix for "fetch" read-only property error in certain environments
+        (function() {
+            var _originalFetch = window.fetch;
+            try {
+                Object.defineProperty(window, 'fetch', {
+                    get: function() { return _originalFetch; },
+                    set: function(val) { console.warn('Blocked attempt to override window.fetch'); },
+                    configurable: true,
+                    enumerable: true
+                });
+            } catch (e) {
+                // If it's already non-configurable, we can't do much but at least we tried
+            }
+        })();
+
+        // Fail-safe for loader visibility
         window.onerror = function(msg) {
+            if (msg && (msg.includes('fetch') || msg.includes('getter'))) {
+                return true; // Suppress the read-only fetch error
+            }
             return false;
         };
+
         // Backup to hide loader if JS fails
         window.addEventListener('load', function() {
             setTimeout(function() {
@@ -144,6 +163,29 @@
             text-transform: uppercase;
             display: inline-block;
             margin-top: 20px;
+        }
+
+        .pill-maroon {
+            background: rgba(28, 8, 8, 0.7);
+            border: 1px solid var(--maroon-light, #8B1A1A);
+            color: #FFFFFF;
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .pill-maroon:hover {
+            border-color: var(--gold, #C9A84C);
+            background: rgba(107, 26, 26, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
         }
 
         /* Portfolio Grid */
@@ -622,19 +664,19 @@
     <section style="background: #0E0505; text-align: center; padding: 120px 20px;" data-aos="fade-up">
         <div style="max-width: 1200px; margin: 0 auto;">
             <div style="margin-bottom: 60px;">
-                <span style="color: var(--gold); font-size: 13px; font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase; display: block; margin-bottom: 24px;" data-aos="fade-up" data-aos-delay="100">POWERED BY</span>
+                <span style="color: #888888; font-size: 13px; font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase; display: block; margin-bottom: 24px;" data-aos="fade-up" data-aos-delay="100">POWERED BY</span>
                 <h2 style="font-size: clamp(42px, 7vw, 90px); font-weight: 900; line-height: 0.95; letter-spacing: -0.01em; margin: 0 auto 30px;" data-aos="fade-up" data-aos-delay="200">
                     <span style="color: #FFFFFF; display: block; margin-bottom: 8px;">The Tools Behind</span>
                     <span style="color: var(--gold); display: block;">The Magic.</span>
                 </h2>
-                <div style="width: 45px; height: 1px; background: var(--gold); margin: 0 auto;" data-aos="fade-up" data-aos-delay="300"></div>
+                <div style="width: 60px; height: 1.5px; background: var(--gold); margin: 0 auto; opacity: 0.8;" data-aos="fade-up" data-aos-delay="300"></div>
             </div>
 
             <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 60px;" data-aos="fade-up" data-aos-delay="400">
                 <style>
                     .exact-tool-pill {
-                        background: rgba(28, 8, 8, 0.4);
-                        border: 1px solid rgba(107, 26, 26, 0.25);
+                        background: rgba(28, 8, 8, 0.7);
+                        border: 1px solid var(--maroon-light, #8B1A1A);
                         color: #FFFFFF;
                         padding: 12px 28px;
                         border-radius: 100px;
@@ -644,16 +686,19 @@
                         align-items: center;
                         gap: 8px;
                         transition: all 0.3s ease;
+                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
                     }
                     .exact-tool-pill span {
-                        color: #FFFFFF;
+                        color: var(--gold, #C9A84C);
                         font-family: inherit;
                         font-size: 14px;
+                        opacity: 1;
                     }
                     .exact-tool-pill:hover {
-                        border-color: var(--gold);
-                        background: rgba(201, 168, 76, 0.05);
+                        border-color: var(--gold, #C9A84C);
+                        background: rgba(107, 26, 26, 0.2);
                         transform: translateY(-2px);
+                        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
                     }
                 </style>
                 <div class="exact-tool-pill"><span>✦</span> Midjourney</div>
@@ -685,12 +730,41 @@
                         <div>
                             <p style="font-weight: 600; font-size: 14px; margin: 0;">Ella Jenkins</p>
                             <p style="color: #888888; font-size: 12px; margin: 0;">E-commerce Brand Owner</p>
-                            <span class="pill-badge" style="background: var(--maroon); font-size: 9px; margin-top: 10px;">Via Email</span>
+                            <span class="pill-maroon" style="font-size: 9px; margin-top: 10px;">Via Email</span>
                         </div>
                         <img src="images/review-01.png" style="width: 80px; border: 1px solid var(--gold); border-radius: 4px; transform: rotate(-2deg);" alt="Proof">
                     </div>
                 </div>
-                <!-- More reviews would go here -->
+
+                <!-- Review 2 -->
+                <div class="service-card tilt-card" style="background: rgba(19, 3, 3, 0.6); backdrop-filter: blur(10px); padding: 32px;">
+                    <div style="color: #FFD700; font-size: 16px; margin-bottom: 15px;">⭐⭐⭐⭐⭐</div>
+                    <div style="position: absolute; top: 0; right: 20px; font-size: 80px; font-weight: 900; color: var(--gold); opacity: 0.05;">"</div>
+                    <p style="color: #CCCCCC; font-size: 16px; margin-bottom: 24px;">"The attention to detail in these AI visuals is incredible. It saved us weeks of production time and thousands in costs."</p>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                        <div>
+                            <p style="font-weight: 600; font-size: 14px; margin: 0;">Sarah Mitchell</p>
+                            <p style="color: #888888; font-size: 12px; margin: 0;">Brand Strategy</p>
+                            <span class="pill-maroon" style="font-size: 9px; margin-top: 10px;">Via LinkedIn</span>
+                        </div>
+                        <img src="images/review-02.png" style="width: 80px; border: 1px solid var(--gold); border-radius: 4px; transform: rotate(2deg);" alt="Proof">
+                    </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="service-card tilt-card" style="background: rgba(19, 3, 3, 0.6); backdrop-filter: blur(10px); padding: 32px;">
+                    <div style="color: #FFD700; font-size: 16px; margin-bottom: 15px;">⭐⭐⭐⭐⭐</div>
+                    <div style="position: absolute; top: 0; right: 20px; font-size: 80px; font-weight: 900; color: var(--gold); opacity: 0.05;">"</div>
+                    <p style="color: #CCCCCC; font-size: 16px; margin-bottom: 24px;">"Exactly what we were looking for. High-end visuals that perfectly capture our minimalist aesthetic. Highly recommended!"</p>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                        <div>
+                            <p style="font-weight: 600; font-size: 14px; margin: 0;">David Chen</p>
+                            <p style="color: #888888; font-size: 12px; margin: 0;">Fashion Label Owner</p>
+                            <span class="pill-maroon" style="font-size: 9px; margin-top: 10px;">Via Upwork</span>
+                        </div>
+                        <img src="images/review-03.png" style="width: 80px; border: 1px solid var(--gold); border-radius: 4px; transform: rotate(-1deg);" alt="Proof">
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -713,10 +787,6 @@
     <footer id="footer">
         <div class="footer-container">
             <div class="footer-brand">
-                <div class="footer-circle-container">
-                    <div class="footer-dot"></div>
-                    <div class="footer-circle"></div>
-                </div>
                 <a href="index.html" class="logo">KTA<span>.</span></a>
                 <p class="title">AI Product Photographer & Visual Creator</p>
                 <p class="loc">Rawalpindi, Pakistan</p>

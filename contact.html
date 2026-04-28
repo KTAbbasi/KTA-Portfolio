@@ -11,9 +11,30 @@
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
     
     <script>
+        // Emergency fix for "fetch" read-only property error in certain environments
+        (function() {
+            var _originalFetch = window.fetch;
+            try {
+                Object.defineProperty(window, 'fetch', {
+                    get: function() { return _originalFetch; },
+                    set: function(val) { console.warn('Blocked attempt to override window.fetch'); },
+                    configurable: true,
+                    enumerable: true
+                });
+            } catch (e) {
+                // If it's already non-configurable, we can't do much but at least we tried
+            }
+        })();
+
+        // Fail-safe for loader visibility
         window.onerror = function(msg) {
+            if (msg && (msg.includes('fetch') || msg.includes('getter'))) {
+                return true; // Suppress the read-only fetch error
+            }
             return false;
         };
+
+        // Backup to hide loader if JS fails
         window.addEventListener('load', function() {
             setTimeout(function() {
                 const loader = document.querySelector('.loader');
@@ -80,8 +101,8 @@
         }
 
         .response-badge {
-            background: rgba(107, 26, 26, 0.3);
-            border: 1px solid #6B1A1A;
+            background: rgba(28, 8, 8, 0.7);
+            border: 1px solid var(--maroon-light, #8B1A1A);
             border-radius: 12px;
             padding: 16px;
             color: var(--gold);
@@ -89,6 +110,13 @@
             font-weight: 600;
             margin-top: 40px;
             display: inline-block;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .response-badge:hover {
+            border-color: var(--gold);
+            transform: translateY(-2px);
         }
 
         .form-group {
@@ -247,10 +275,6 @@
     <footer id="footer">
         <div class="footer-container">
             <div class="footer-brand">
-                <div class="footer-circle-container">
-                    <div class="footer-dot"></div>
-                    <div class="footer-circle"></div>
-                </div>
                 <a href="index.html" class="logo">KTA<span>.</span></a>
                 <p class="title">AI Product Photographer & Visual Creator</p>
                 <p class="loc">Rawalpindi, Pakistan</p>

@@ -221,8 +221,8 @@ nav {
 .badge {
   display: inline-flex;
   align-items: center;
-  background: rgba(107, 26, 26, 0.4);
-  border: 1px solid var(--maroon);
+  background: rgba(28, 8, 8, 0.7);
+  border: 1px solid var(--maroon-light, #8B1A1A);
   padding: 6px 16px;
   border-radius: 30px;
   color: var(--gold);
@@ -231,6 +231,14 @@ nav {
   letter-spacing: 0.15em;
   margin-bottom: 24px;
   text-transform: uppercase;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.badge:hover {
+  border-color: var(--gold);
+  background: rgba(107, 26, 26, 0.2);
+  transform: translateY(-2px);
 }
 
 h1, h2 {

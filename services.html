@@ -12,9 +12,30 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     
     <script>
+        // Emergency fix for "fetch" read-only property error in certain environments
+        (function() {
+            var _originalFetch = window.fetch;
+            try {
+                Object.defineProperty(window, 'fetch', {
+                    get: function() { return _originalFetch; },
+                    set: function(val) { console.warn('Blocked attempt to override window.fetch'); },
+                    configurable: true,
+                    enumerable: true
+                });
+            } catch (e) {
+                // If it's already non-configurable, we can't do much but at least we tried
+            }
+        })();
+
+        // Fail-safe for loader visibility
         window.onerror = function(msg) {
+            if (msg && (msg.includes('fetch') || msg.includes('getter'))) {
+                return true; // Suppress the read-only fetch error
+            }
             return false;
         };
+
+        // Backup to hide loader if JS fails
         window.addEventListener('load', function() {
             setTimeout(function() {
                 const loader = document.querySelector('.loader');
@@ -221,10 +242,6 @@
     <footer id="footer">
         <div class="footer-container">
             <div class="footer-brand">
-                <div class="footer-circle-container">
-                    <div class="footer-dot"></div>
-                    <div class="footer-circle"></div>
-                </div>
                 <a href="index.html" class="logo">KTA<span>.</span></a>
                 <p class="title">AI Product Photographer & Visual Creator</p>
                 <p class="loc">Rawalpindi, Pakistan</p>
