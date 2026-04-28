@@ -344,6 +344,10 @@ section {
   z-index: 10;
 }
 
+.about-hero, .portfolio-hero, .services-hero, .contact-hero {
+    padding-top: 160px !important;
+}
+
 .section-eyebrow {
   font-size: 11px;
   font-weight: 700;
@@ -731,11 +735,11 @@ footer {
 .stat-1 { 
     position: absolute; 
     top: -20px; 
-    right: 280px; 
+    right: 220px; 
     z-index: 60; 
 }
-.stat-2 { right: 80px; top: 220px; }
-.stat-3 { right: 140px; bottom: 150px; }
+.stat-2 { right: 20px; top: 220px; }
+.stat-3 { right: 80px; bottom: 150px; }
 
 /* Hero Profile Card Styles - Right-center glass card */
 .hero-profile-container {
@@ -775,7 +779,7 @@ footer {
 /* Specific home page positioning */
 .hero .hero-profile-container {
     position: absolute;
-    right: 180px;
+    right: 120px;
     top: 50%;
     transform: translateY(-50%);
 }
@@ -996,6 +1000,10 @@ footer {
 
     .stat-number {
         font-size: 32px !important;
+    }
+
+    .desktop-only {
+        display: none !important;
     }
 }
 
