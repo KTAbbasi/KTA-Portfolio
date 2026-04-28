@@ -61,62 +61,89 @@
         .service-section {
             display: flex;
             align-items: center;
-            padding: 120px 80px;
-            gap: 80px;
-            min-height: 80vh;
+            padding: 160px 80px;
+            gap: 100px;
+            min-height: 90vh;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            background: #110505;
         }
 
         .service-section:nth-child(even) {
             flex-direction: row-reverse;
-            background: #130303;
+            background: #0E0505;
         }
 
         .service-content {
             flex: 1;
             position: relative;
+            z-index: 2;
         }
 
         .service-visual {
-            flex: 1;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            flex: 1.2;
+            position: relative;
+            z-index: 2;
         }
 
-        .service-content .num {
+        /* Large Background Number */
+        .bg-num {
             position: absolute;
-            top: -40px;
-            left: 0;
-            font-size: 120px;
+            top: 40px;
+            font-size: 200px;
             font-weight: 900;
-            color: var(--gold);
+            color: #FFFFFF;
             opacity: 0.05;
-            z-index: -1;
+            line-height: 1;
+            pointer-events: none;
+            z-index: 1;
+            font-family: var(--font-montserrat);
         }
 
-        .service-content h3 {
-            font-size: 48px;
+        .bg-num.right { right: 80px; }
+        .bg-num.left { left: 80px; }
+
+        .service-eyebrow {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .service-content h2 {
+            font-size: clamp(42px, 5.5vw, 68px);
             font-weight: 900;
-            color: var(--text-white);
-            margin-bottom: 24px;
+            color: #FFFFFF;
+            margin-bottom: 30px;
+            line-height: 1.05;
+            font-family: var(--font-montserrat);
         }
 
         .service-content .description {
             font-size: 18px;
-            color: var(--text-light);
-            margin-bottom: 30px;
+            color: #888888;
+            margin-bottom: 35px;
+            line-height: 1.6;
+            font-weight: 500;
         }
 
         .service-list {
             list-style: none;
-            margin-bottom: 40px;
+            margin-bottom: 45px;
         }
 
         .service-list li {
             position: relative;
             padding-left: 28px;
-            margin-bottom: 12px;
-            color: #888888;
+            margin-bottom: 15px;
+            color: #999999;
+            font-size: 15px;
+            font-weight: 500;
         }
 
         .service-list li::before {
@@ -124,11 +151,128 @@
             position: absolute;
             left: 0;
             color: var(--gold);
+            font-size: 14px;
+        }
+
+        /* Layout Grid for Visuals */
+        .visual-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .visual-card {
+            background: linear-gradient(145deg, #1A0A0A, #120606);
+            border: 1px solid rgba(201, 168, 76, 0.08);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .visual-card:hover {
+            border-color: rgba(201, 168, 76, 0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        /* Specific grids for different services */
+        .grid-01 {
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 380px 200px;
+        }
+        .grid-01 .area-main { grid-column: span 2; }
+
+        .grid-02 {
+            grid-template-columns: 1fr;
+            grid-template-rows: 340px 180px;
+        }
+
+        .grid-03 {
+            grid-template-columns: 1fr 2fr;
+            grid-template-rows: 280px 160px 160px;
+        }
+        .grid-03 .area-main { grid-column: span 2; }
+        .grid-03 .area-tall { grid-row: span 2; }
+
+        .grid-04 {
+            grid-template-columns: 1fr;
+            grid-template-rows: 450px;
+        }
+
+        .card-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            color: #666;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .card-placeholder i, .card-placeholder svg {
+            width: 40px;
+            height: 40px;
+            opacity: 0.6;
+        }
+
+        .card-placeholder span {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.5;
+            line-height: 1.5;
+        }
+
+        .video-btn-play {
+            width: 80px;
+            height: 80px;
+            background: rgba(201, 168, 76, 0.2);
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 5;
+        }
+
+        .video-btn-play:hover {
+            background: var(--gold);
+            color: #110505;
+            transform: scale(1.1);
+        }
+
+        .video-btn-play span {
+            margin-left: 5px;
+            font-size: 32px;
+        }
+
+        .video-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(201, 168, 76, 0.2);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-size: 10px;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 30px;
+            letter-spacing: 1px;
+            z-index: 10;
         }
 
         @media (max-width: 1024px) {
-            .service-section { flex-direction: column !important; padding: 80px 40px; gap: 40px; }
-            .service-content h3 { font-size: 36px; }
+            .service-section { flex-direction: column !important; padding: 100px 40px; gap: 60px; }
+            .bg-num { display: none; }
+            .service-content h2 { font-size: 42px; }
+            .service-visual { width: 100%; }
         }
     </style>
 </head>
@@ -157,22 +301,35 @@
         </div>
     </nav>
 
-    <header style="height: 50vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding-top: 100px; position: relative; overflow: hidden;">
-        <div class="glow-bg glow-1"></div>
-        <div class="glow-bg glow-2"></div>
-        <div class="section-header-centered" data-aos="fade-up">
-            <span class="section-eyebrow">SERVICES</span>
-            <h1 class="section-headline">What I Create<br>For <span>You.</span></h1>
-            <div class="section-line"></div>
+    <header style="height: 75vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding-top: 80px; position: relative; overflow: hidden; background: #0E0505;">
+        <div class="glow-bg glow-1" style="background: radial-gradient(circle, rgba(139, 26, 26, 0.15) 0%, transparent 70%);"></div>
+        <div class="glow-bg glow-2" style="background: radial-gradient(circle, rgba(201, 168, 76, 0.05) 0%, transparent 70%);"></div>
+        
+        <div style="position: relative; z-index: 10;" data-aos="fade-up">
+            <span style="color: #888888; font-size: 11px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; display: block; margin-bottom: 40px; opacity: 0.8;">SERVICES</span>
+            
+            <h1 style="font-size: clamp(48px, 9vw, 100px); font-weight: 900; line-height: 0.95; margin-bottom: 30px; font-family: var(--font-montserrat); letter-spacing: -3px; text-transform: none;">
+                <span style="color: #FFFFFF; display: block;">What I Create</span>
+                <span style="color: var(--gold); display: block;">For You.</span>
+            </h1>
+            
+            <div style="width: 60px; height: 2px; background: var(--gold); margin: 0 auto 35px; opacity: 0.6;"></div>
+            
+            <p style="color: #888888; font-size: clamp(16px, 1.8vw, 20px); max-width: 600px; margin: 0 auto; line-height: 1.6; font-weight: 500; opacity: 0.9;">
+                Premium AI-powered visual content for brands that refuse to settle.
+            </p>
         </div>
     </header>
 
     <!-- Service 1 -->
     <section class="service-section" data-aos="fade-up">
-        <div class="service-content" data-aos="fade-up" data-aos-delay="200">
-            <div class="num">01</div>
-            <span class="pill-badge" style="margin-bottom: 10px;">MOST POPULAR</span>
-            <h3>AI Product Photography</h3>
+        <div class="bg-num right">01</div>
+        <div class="service-content" data-aos="fade-right">
+            <span class="service-eyebrow">
+                <span class="pill-badge">01</span>
+                <span>MOST POPULAR</span>
+            </span>
+            <h2>AI Product<br>Photography</h2>
             <p class="description">Transform your products into luxury visual assets. Using advanced AI tools, I create studio-quality product photography that elevates your brand and drives conversions — without the studio cost or timeline.</p>
             <ul class="service-list">
                 <li>Luxury background environments</li>
@@ -180,64 +337,221 @@
                 <li>Multiple angles & compositions</li>
                 <li>Brand-consistent visual style</li>
                 <li>High-resolution final files</li>
+                <li>Delivered in 48 hours</li>
             </ul>
             <a href="contact.html" class="btn-primary">Start a Project →</a>
         </div>
-        <div class="service-visual tilt-card" data-aos="fade-left">
-            <div class="swiper project-carousel">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/5e81d8208761263.66f06a1bd2813.png" style="width:100%; aspect-ratio:4/5; object-fit:cover;"></div>
-                    <div class="swiper-slide"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/ef0f64208761263.66f06a1bd1c6e.png" style="width:100%; aspect-ratio:4/5; object-fit:cover;"></div>
+        <div class="service-visual" data-aos="fade-left">
+            <div class="visual-grid grid-01">
+                <div class="visual-card area-main">
+                    <div class="card-placeholder">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z"/><path d="M12 8l4 4-4 4M8 12h8"/></svg>
+                        <span>Jewelry AI Visual Campaign<br>Place project images in /images/</span>
+                    </div>
                 </div>
-                <div class="swiper-pagination"></div>
+                <div class="visual-card">
+                    <div class="card-placeholder">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                    </div>
+                </div>
+                <div class="visual-card">
+                    <div class="card-placeholder">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a5 5 0 0 0-5 5v3a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Service 2 -->
     <section class="service-section" data-aos="fade-up">
-        <div class="service-content" data-aos="fade-up" data-aos-delay="200">
-            <div class="num">02</div>
-            <h3>AI Campaigns</h3>
-            <p class="description">Full campaign visual systems built entirely with AI. From concept to final deliverable — cohesive, premium, and brand-aligned.</p>
+        <div class="bg-num left">02</div>
+        <div class="service-content" data-aos="fade-left">
+            <span class="service-eyebrow">02</span>
+            <h2>AI Campaign<br>Visuals</h2>
+            <p class="description">Full campaign visual systems built entirely with AI. From concept to final deliverable — cohesive, premium, and brand-aligned. Tell your brand story with visuals that command attention.</p>
             <ul class="service-list">
-                <li>Creative concept development</li>
-                <li>Cohesive visual across channels</li>
-                <li>Brand storytelling elements</li>
-                <li>Rapid iteration & refinement</li>
+                <li>End-to-end campaign visual system</li>
+                <li>Brand story narratives</li>
+                <li>Social media asset sets</li>
+                <li>Ad-ready formats (multiple sizes)</li>
+                <li>Cohesive color & mood consistency</li>
+                <li>Campaign strategy included</li>
             </ul>
-            <a href="contact.html" class="btn-primary">Get a Quote →</a>
+            <a href="contact.html" class="btn-primary">Start a Campaign →</a>
         </div>
-        <div class="service-visual tilt-card" data-aos="glass-fade" data-aos-delay="400">
-            <div class="swiper project-carousel">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide"><img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/4e6270211287609.671e6e0b7a8ba.png" style="width:100%; aspect-ratio:4/5; object-fit:cover;"></div>
+        <div class="service-visual" data-aos="fade-right">
+            <div class="visual-grid grid-02">
+                <div class="visual-card">
+                    <div class="card-placeholder">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                        <span>VELOUR BLOOM Campaign<br>Place campaign images in /images/</span>
+                    </div>
                 </div>
-                <div class="swiper-pagination"></div>
+                <div class="visual-card">
+                    <div class="card-placeholder">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                        <span>AI Campaign Banner</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service 3 -->
+    <section class="service-section" data-aos="fade-up">
+        <div class="bg-num right">03</div>
+        <div class="service-content" data-aos="fade-right">
+            <span class="service-eyebrow">03</span>
+            <h2>AI Photoshoots</h2>
+            <p class="description">Al-generated photoshoots for fashion, beauty, and lifestyle brands. Real-looking, luxury results — no model booking, no location hassle, no weather dependency. Just stunning imagery, every time.</p>
+            <ul class="service-list">
+                <li>Fashion & lifestyle photography</li>
+                <li>Beauty & cosmetics shoots</li>
+                <li>AI model generation (any look)</li>
+                <li>Unlimited location environments</li>
+                <li>Multiple outfit & styling options</li>
+                <li>Magazine-quality finishing</li>
+            </ul>
+            <a href="contact.html" class="btn-primary">Book a Shoot →</a>
+        </div>
+        <div class="service-visual" data-aos="fade-left">
+            <div class="visual-grid grid-03">
+                <div class="visual-card area-main">
+                    <div class="card-placeholder">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>
+                        <span>AI Fashion Campaign — NOOR<br>Place fashion images in /images/</span>
+                    </div>
+                </div>
+                <div class="visual-card area-tall">
+                    <div class="card-placeholder">💄</div>
+                </div>
+                <div class="visual-card">
+                    <div class="card-placeholder">👗</div>
+                </div>
+                <div class="visual-card">
+                    <div class="card-placeholder">🌸</div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Service 4 -->
-    <section class="service-section" style="background: var(--bg-primary);" data-aos="fade-up">
-        <div class="service-content" data-aos="fade-up" data-aos-delay="200">
-            <div class="num">04</div>
-            <h3>AI Ads & Video Content</h3>
-            <p class="description">Scroll-stopping AI video ads and motion content. Built for performance, designed for attention.</p>
-            <p style="color: var(--gold); font-size: 12px; margin-bottom: 30px;">(Coming Soon - Inquire for details)</p>
-            <a href="contact.html" class="btn-primary">Learn More →</a>
+    <section class="service-section" data-aos="fade-up">
+        <div class="bg-num left">04</div>
+        <div class="service-content" data-aos="fade-left">
+            <span class="service-eyebrow">04</span>
+            <h2>AI Ads & Video<br>Content</h2>
+            <p class="description">Scroll-stopping Al video ads and motion content. Built for performance, designed for attention. Reach your audience where they are and convert them into customers.</p>
+            <ul class="service-list">
+                <li>AI-generated video ads (15s, 30s, 60s)</li>
+                <li>Motion graphics & transitions</li>
+                <li>Social media video formats</li>
+                <li>Product demo animations</li>
+                <li>Brand story video content</li>
+                <li>Ad-optimized for Meta, TikTok, YouTube</li>
+            </ul>
+            <a href="contact.html" class="btn-primary">Discuss a Video →</a>
+            <p style="color: #666; font-size: 12px; margin-top: 20px; font-style: italic;">* Video ad production — inquire for timeline</p>
         </div>
-        <div class="service-visual tilt-card" data-aos="glass-fade" data-aos-delay="400">
-            <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/76c4e1210871957.6717a6c981881.png" style="width:100%; aspect-ratio:16/9; object-fit:cover;">
+        <div class="service-visual" data-aos="fade-right">
+            <div class="visual-grid grid-04">
+                <div class="visual-card">
+                    <span class="video-badge">VIDEO AD</span>
+                    <div class="card-placeholder" style="gap: 10px;">
+                        <div class="video-btn-play"><span>▶</span></div>
+                        <span style="margin-top: 10px; opacity: 0.8; font-weight: 600;">APEX AI STUDIO — Video Ad</span>
+                        <span style="font-size: 9px; opacity: 0.5;">Click to view on Behance</span>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="#" style="color: #FFFFFF; font-size: 13px; text-decoration: none; font-weight: 600; opacity: 0.6; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">Watch APEX AI STUDIO →</a>
+            </div>
         </div>
     </section>
 
-    <section style="background: #130303; text-align: center; padding: 120px 80px;">
-        <div class="section-header-centered" data-aos="fade-up">
-            <h2 class="section-headline" style="font-size: 48px;">Not sure which<br>service you <span>need?</span></h2>
-            <div class="section-line"></div>
-            <p style="color: #888; font-size: 18px; margin-bottom: 40px;">Let's figure it out together. Reach out via the form below or send a direct message.</p>
-            <a href="contact.html" class="btn-primary">Get in Touch →</a>
+    <!-- Not Sure Where to Start? -->
+    <section style="background: #0E0505; text-align: center; padding: 120px 24px; position: relative; overflow: hidden; border-top: 1px solid rgba(255,255,255,0.03);">
+        <div style="max-width: 1200px; margin: 0 auto; position: relative; z-index: 10;" data-aos="fade-up">
+            <span style="color: #888888; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; display: block; margin-bottom: 30px; opacity: 0.8;">NOT SURE WHERE TO START?</span>
+            
+            <h2 style="font-size: clamp(38px, 7vw, 76px); font-weight: 900; line-height: 1; margin: 0 auto 30px; max-width: 800px; font-family: var(--font-montserrat); color: #FFFFFF; text-transform: none;">
+                Not sure which service<br><span style="color: var(--gold);">you need?</span>
+            </h2>
+            
+            <p style="color: #666666; font-size: 16px; margin: 0 auto 40px; max-width: 500px; line-height: 1.6; font-weight: 500;">
+                Let's figure it out together. DM me with your project idea and I'll recommend the best approach.
+            </p>
+            
+            <a href="contact.html" style="display: inline-flex; align-items: center; background: var(--gold); color: #110505; padding: 18px 45px; border-radius: 50px; font-size: 14px; font-weight: 700; text-decoration: none; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); box-shadow: 0 10px 20px rgba(201, 168, 76, 0.2);" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 30px rgba(201, 168, 76, 0.3)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 20px rgba(201, 168, 76, 0.2)'">
+                Get in Touch <span style="margin-left: 10px; font-size: 18px; line-height: 1;">→</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- AI Tools Section -->
+    <section style="background: #110505; text-align: center; padding: 120px 20px; border-top: 1px solid rgba(255,255,255,0.03);" data-aos="fade-up">
+        <div style="max-width: 1200px; margin: 0 auto;">
+            <div style="margin-bottom: 60px;">
+                <span style="color: #888888; font-size: 13px; font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase; display: block; margin-bottom: 24px;" data-aos="fade-up" data-aos-delay="100">POWERED BY</span>
+                <h2 style="font-size: clamp(42px, 7vw, 90px); font-weight: 900; line-height: 0.95; letter-spacing: -0.01em; margin: 0 auto 30px;" data-aos="fade-up" data-aos-delay="200">
+                    <span style="color: #FFFFFF; display: block; margin-bottom: 8px;">The Tools Behind</span>
+                    <span style="color: var(--gold); display: block;">The Magic.</span>
+                </h2>
+                <div style="width: 60px; height: 1.5px; background: var(--gold); margin: 0 auto; opacity: 0.8;" data-aos="fade-up" data-aos-delay="300"></div>
+            </div>
+
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 60px;" data-aos="fade-up" data-aos-delay="400">
+                <style>
+                    .exact-tool-pill {
+                        background: rgba(28, 8, 8, 0.7);
+                        border: 1px solid var(--maroon-light, #8B1A1A);
+                        color: #FFFFFF;
+                        padding: 12px 28px;
+                        border-radius: 100px;
+                        font-size: 14px;
+                        font-weight: 600;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                    }
+                    .exact-tool-pill span {
+                        color: var(--gold, #C9A84C);
+                        font-family: inherit;
+                        font-size: 14px;
+                        opacity: 1;
+                    }
+                    .exact-tool-pill:hover {
+                        border-color: var(--gold, #C9A84C);
+                        background: rgba(107, 26, 26, 0.2);
+                        transform: translateY(-2px);
+                        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+                    }
+                </style>
+                <div class="exact-tool-pill"><span>✦</span> Midjourney</div>
+                <div class="exact-tool-pill"><span>✦</span> Naro Banana Pro</div>
+                <div class="exact-tool-pill"><span>✦</span> Image 2.0</div>
+                <div class="exact-tool-pill"><span>✦</span> Seedance 2.0</div>
+                <div class="exact-tool-pill"><span>✦</span> Kling 3.0</div>
+                <div class="exact-tool-pill"><span>✦</span> Runway</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Banner (Exactly like index.html) -->
+    <section style="min-height: auto; padding: 150px 80px; position: relative; overflow: hidden; background: linear-gradient(135deg, #1C0808 0%, #0E0505 100%);">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: 900; font-size: 400px; color: #fff; opacity: 0.02; pointer-events: none;">DM</div>
+        <div style="max-width: 1200px; margin: 0 auto; position: relative; z-index: 10;">
+            <div class="section-header-centered" data-aos="fade-up">
+                <span class="section-eyebrow">LET'S CREATE TOGETHER</span>
+                <h2 class="section-headline">Ready to Elevate<br>Your <span>Brand?</span></h2>
+                <div class="section-line"></div>
+                <p style="font-size: 18px; color: #888888; margin-top: -20px; margin-bottom: 40px;">Send a message to <strong>REQUEST A QUOTE</strong> and get started.</p>
+                <a href="contact.html" class="btn-primary">GET STARTED →</a>
+            </div>
         </div>
     </section>
 
