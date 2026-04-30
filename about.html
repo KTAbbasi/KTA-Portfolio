@@ -67,15 +67,8 @@
             position: relative;
             background: radial-gradient(circle, #3D0000 0%, transparent 70%);
             display: flex;
-            align-items: flex-end;
+            align-items: center;
             justify-content: center;
-        }
-
-        .about-left img {
-            height: 80vh;
-            object-fit: contain;
-            position: relative;
-            z-index: 2;
         }
 
         .about-left .glow {
@@ -166,6 +159,11 @@
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
         }
 
+        @keyframes aboutProfileFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
         @media (max-width: 1024px) {
             .about-hero { flex-direction: column; }
             .about-left { height: 60vh; }
@@ -214,10 +212,10 @@
         <div class="glow-bg glow-1"></div>
         <div class="glow-bg glow-2" style="background: radial-gradient(circle, var(--gold) 0%, transparent 70%); opacity: 0.05;"></div>
         
-        <div class="about-left" style="flex: 1; min-width: 300px; background: transparent; padding: 0; align-items: center; justify-content: center; position: relative;">
-            <div class="hero-profile-container full-crop" style="position: relative; right: auto; top: 0; transform: none; animation: aboutProfileFloat 6s ease-in-out infinite;">
+        <div class="about-left" style="flex: 1; min-width: 300px; padding: 40px; display: flex; align-items: center; justify-content: center; position: relative; z-index: 5;">
+            <div class="hero-profile-container full-crop" style="position: relative; width: 100%; max-width: 380px; margin: 0 auto; animation: aboutProfileFloat 6s ease-in-out infinite;">
                 <div class="hero-profile-glow"></div>
-                <img src="https://drive.google.com/thumbnail?id=1Vw5klPGuePIeLcVdYFJk8hVbgOqhsPwW&sz=w1000" alt="Komal Tariq Abbasi" class="hero-profile-img">
+                <img src="https://lh3.googleusercontent.com/d/1Vw5klPGuePIeLcVdYFJk8hVbgOqhsPwW" alt="Komal Tariq Abbasi" class="hero-profile-img" style="width: 100%; height: 100%; object-fit: cover; border-radius: 30px;" referrerPolicy="no-referrer">
             </div>
         </div>
 
