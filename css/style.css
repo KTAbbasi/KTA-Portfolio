@@ -42,6 +42,25 @@
     pointer-events: auto;
 }
 
+.overlay-content-link {
+    text-decoration: none !important;
+    color: inherit !important;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.overlay-content-link h3,
+.overlay h3 {
+    color: var(--text-white) !important;
+    text-decoration: none !important;
+    margin-bottom: 8px; /* Restoring margin usually provided inline */
+}
+
+.overlay-content-link:hover h3 {
+    color: var(--gold) !important;
+}
+
 .project-carousel .swiper-button-next,
 .project-carousel .swiper-button-prev,
 .project-carousel .swiper-pagination {

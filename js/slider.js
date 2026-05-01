@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
             grabCursor: hasMultipleSlides,
             loop: hasMultipleSlides,
             autoplay: hasMultipleSlides ? {
-                delay: 3000,
+                delay: 1000,
                 disableOnInteraction: false,
             } : false,
             pagination: {
@@ -47,20 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Handle Card Click (Ignore swiper controls)
-        projectCard.addEventListener('click', (e) => {
-            const isControl = e.target.closest('.swiper-button-next') || 
-                              e.target.closest('.swiper-button-prev') || 
-                              e.target.closest('.swiper-pagination-bullet');
-            
-            if (!isControl) {
-                const link = projectCard.querySelector('.card-link-overlay')?.getAttribute('href') || 
-                             projectCard.dataset.link;
-                if (link) {
-                    window.open(link, '_blank');
-                }
-            }
-        });
+        // Hover autoplay logic is handled above, removing the global card click listener
+        // to allow native HTML link behavior on specific elements only.
     });
 
     // Before/After Slider
