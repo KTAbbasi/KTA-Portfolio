@@ -320,7 +320,7 @@
             </div>
             <div class="overlay">
                 <a href="https://www.behance.net/gallery/248169927/AI-FOODMEUU-PHOTOGRAPHY" target="_blank" class="overlay-content-link">
-                    <h3>Korean Food Menu</h3>
+                    <h3>KOREAN FOOD MENU</h3>
                     <p class="pill-maroon">VIEW FULL PROJECT</p>
                 </a>
             </div>
@@ -341,7 +341,7 @@
             </div>
             <div class="overlay">
                 <a href="https://www.behance.net/gallery/248169113/AI-FOODMENU-PHOTORAPHY" target="_blank" class="overlay-content-link">
-                    <h3>PAKISTANI FOOD PHOTOGRAPHY</h3>
+                    <h3>PAKISTANI FOOD</h3>
                     <p class="pill-maroon">VIEW FULL PROJECT</p>
                 </a>
             </div>
@@ -362,7 +362,31 @@
             </div>
             <div class="overlay">
                 <a href="https://www.behance.net/gallery/248169377/AI-FOODMENU-PHOTOGRAPHY" target="_blank" class="overlay-content-link">
-                    <h3>ENGLISH DESSERT PHOTOGRAPHY</h3>
+                    <h3>DESSERTS</h3>
+                    <p class="pill-maroon">VIEW FULL PROJECT</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- Project: CRISÉ Chips -->
+        <div class="project-card tilt-card" data-category="photography food" data-aos="fade-up" data-aos-delay="400">
+            <div class="swiper project-carousel">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><img src="https://lh3.googleusercontent.com/d/1Xy1AxqkUwldZOm_yCINx7-gfuFcjMMA9" alt="CRISÉ 1" style="width:100%; height:100%; object-fit:cover;" referrerPolicy="no-referrer"></div>
+                    <div class="swiper-slide"><img src="https://lh3.googleusercontent.com/d/1DLbWquATaeQ4DovUVoHwEyhOyBDLKRge" alt="CRISÉ 2" style="width:100%; height:100%; object-fit:cover;" referrerPolicy="no-referrer"></div>
+                    <div class="swiper-slide"><img src="https://lh3.googleusercontent.com/d/1ToE3_nfJfd71Jsl35P_T7JEuFjxxmFQy" alt="CRISÉ 3" style="width:100%; height:100%; object-fit:cover;" referrerPolicy="no-referrer"></div>
+                    <div class="swiper-slide"><img src="https://lh3.googleusercontent.com/d/1tWgegMewFx6ust_CQDQbJ-Pf9JhV_ruw" alt="CRISÉ 4" style="width:100%; height:100%; object-fit:cover;" referrerPolicy="no-referrer"></div>
+                    <div class="swiper-slide"><img src="https://lh3.googleusercontent.com/d/1vcCG_rC3sdfaxL7QTKt8LU6WFXUlWmow" alt="CRISÉ 5" style="width:100%; height:100%; object-fit:cover;" referrerPolicy="no-referrer"></div>
+                    <div class="swiper-slide"><img src="https://lh3.googleusercontent.com/d/1zWGOBTkFA1VnTdGNn4b8-yABkIs-glUh" alt="CRISÉ 6" style="width:100%; height:100%; object-fit:cover;" referrerPolicy="no-referrer"></div>
+                    <div class="swiper-slide"><img src="https://lh3.googleusercontent.com/d/1CMsjR7zEMQdTC2Eqq0WSNDXRND7VElBA" alt="CRISÉ 7" style="width:100%; height:100%; object-fit:cover;" referrerPolicy="no-referrer"></div>
+                </div>
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+            <div class="overlay">
+                <a href="https://www.behance.net/gallery/246597789/AI-Generated-Product-PhotographySea-Salt-Light-Spice" target="_blank" class="overlay-content-link">
+                    <h3>CRISÉ - SEA SALT & LIGHT SPICE</h3>
                     <p class="pill-maroon">VIEW FULL PROJECT</p>
                 </a>
             </div>
@@ -385,7 +409,7 @@
             </div>
             <div class="overlay">
                 <a href="https://www.behance.net/gallery/248033005/AI-FASHION-CAMPAIGN-NOOR" target="_blank" class="overlay-content-link">
-                    <h3>NOOR - Fashion</h3>
+                    <h3>NOOR - FASHION</h3>
                     <p class="pill-maroon">VIEW FULL PROJECT</p>
                 </a>
             </div>
@@ -548,24 +572,51 @@
                 });
             }
 
+            const toShow = [];
+            const toHide = [];
+
             items.forEach(item => {
                 const itemCategories = item.getAttribute('data-category') || '';
                 if (category === 'all' || itemCategories.includes(category)) {
-                    gsap.to(item, {
-                        opacity: 1, 
-                        scale: 1, 
-                        duration: 0.4, 
-                        display: 'block',
-                        clearProps: "all"
-                    });
+                    toShow.push(item);
                 } else {
-                    gsap.to(item, {opacity: 0, scale: 0.8, duration: 0.4, display: 'none'});
+                    toHide.push(item);
                 }
             });
-            
-            // Re-trigger AOS
-            if (window.AOS) {
-                setTimeout(() => AOS.refresh(), 500);
+
+            // Animate Hiding items
+            if (toHide.length > 0) {
+                gsap.to(toHide, {
+                    opacity: 0,
+                    scale: 0.9,
+                    duration: 0.3,
+                    display: 'none',
+                    ease: 'power2.in',
+                    overwrite: true
+                });
+            }
+
+            // Animate Showing items with a smooth stagger
+            if (toShow.length > 0) {
+                gsap.set(toShow, { display: 'block' });
+                
+                gsap.fromTo(toShow, 
+                    { opacity: 0, scale: 0.9 },
+                    { 
+                        opacity: 1, 
+                        scale: 1, 
+                        duration: 0.5, 
+                        stagger: 0.08, 
+                        ease: 'back.out(1.2)',
+                        delay: 0.1,
+                        clearProps: "transform,opacity",
+                        overwrite: true,
+                        onComplete: () => {
+                            // Re-trigger AOS for the shown items if needed
+                            if (window.AOS) AOS.refresh();
+                        }
+                    }
+                );
             }
         }
     </script>

@@ -143,18 +143,56 @@ function filterPortfolio(category) {
     const btns = document.querySelectorAll('.tab-btn');
     
     btns.forEach(btn => btn.classList.remove('active'));
-    // Find the button that was clicked (based on its onclick attribute)
+    
+    // Update active button state
     btns.forEach(btn => {
-        if (btn.getAttribute('onclick').includes(`'${category}'`)) {
+        const onclickAttr = btn.getAttribute('onclick') || '';
+        if (onclickAttr.includes(`'${category}'`)) {
             btn.classList.add('active');
         }
     });
 
+    const toShow = [];
+    const toHide = [];
+
     items.forEach(item => {
-        if (category === 'all' || item.getAttribute('data-category').includes(category)) {
-            gsap.to(item, {opacity: 1, scale: 1, duration: 0.4, display: 'block'});
+        const itemCat = item.getAttribute('data-category') || '';
+        if (category === 'all' || itemCat.includes(category)) {
+            toShow.push(item);
         } else {
-            gsap.to(item, {opacity: 0, scale: 0.8, duration: 0.4, display: 'none'});
+            toHide.push(item);
         }
     });
+
+    // Animate Hiding items
+    if (toHide.length > 0) {
+        gsap.to(toHide, {
+            opacity: 0,
+            scale: 0.9,
+            duration: 0.3,
+            display: 'none',
+            ease: 'power2.in',
+            overwrite: true
+        });
+    }
+
+    // Animate Showing items with a slight stagger for "engaging" feel
+    if (toShow.length > 0) {
+        // Set initial state for showing items if they were hidden
+        gsap.set(toShow, { display: 'block' });
+        
+        gsap.fromTo(toShow, 
+            { opacity: 0, scale: 0.9 },
+            { 
+                opacity: 1, 
+                scale: 1, 
+                duration: 0.5, 
+                stagger: 0.08, 
+                ease: 'back.out(1.2)',
+                delay: 0.1, // Slight delay to let hiding finishes
+                clearProps: "transform,opacity",
+                overwrite: true
+            }
+        );
+    }
 }
