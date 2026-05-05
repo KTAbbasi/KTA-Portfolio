@@ -16,6 +16,8 @@ const AdminDashboard = () => {
         topCountry: 'None'
     });
 
+    const myId = localStorage.getItem('kta_visitor_id');
+
     // Mock data for initial preview / fallback
     const mockEvents = [
         { type: 'page_view', country: 'Pakistan', timestamp: new Date().toISOString() },
@@ -98,14 +100,22 @@ const AdminDashboard = () => {
             <header className="flex justify-between items-center border-b border-maroon-light pb-6">
                 <div>
                     <h1 className="text-3xl font-black text-white">AUDIENCE <span className="text-gold">INSIGHTS</span></h1>
-                    <p className="text-text-muted mt-2">Private tracking for KTA. Studio</p>
+                    <p className="text-text-muted mt-2">Private tracking for KTA. Studio | <span className="text-gold/60 text-[10px]">YOUR ID: {myId}</span></p>
                 </div>
-                <button 
-                  onClick={() => { sessionStorage.clear(); window.location.reload(); }}
-                  className="px-4 py-2 border border-maroon rounded-full text-xs font-bold hover:border-gold transition-all"
-                >
-                  LOGOUT
-                </button>
+                <div className="flex gap-4">
+                    <button 
+                      onClick={() => window.location.reload()}
+                      className="px-4 py-2 bg-maroon-light/20 border border-maroon-light rounded-full text-xs font-bold hover:border-gold transition-all"
+                    >
+                      REFRESH
+                    </button>
+                    <button 
+                      onClick={() => { sessionStorage.clear(); window.location.reload(); }}
+                      className="px-4 py-2 border border-maroon rounded-full text-xs font-bold hover:border-gold transition-all"
+                    >
+                      LOGOUT
+                    </button>
+                </div>
             </header>
 
             {/* KPI Cards */}
@@ -198,6 +208,7 @@ const AdminDashboard = () => {
                     <table className="w-full text-left">
                         <thead>
                             <tr className="text-xs uppercase tracking-tighter text-text-muted bg-black/20">
+                                <th className="p-4 font-black">Visitor ID</th>
                                 <th className="p-4 font-black">Type</th>
                                 <th className="p-4 font-black">Location</th>
                                 <th className="p-4 font-black">Info / Project</th>
@@ -206,7 +217,10 @@ const AdminDashboard = () => {
                         </thead>
                         <tbody className="divide-y divide-maroon-light/50">
                             {events.map((e, i) => (
-                                <tr key={i} className="hover:bg-white/5 transition-colors">
+                                <tr key={i} className={`hover:bg-white/5 transition-colors ${e.visitorId === myId ? 'bg-gold/5' : ''}`}>
+                                    <td className="p-4">
+                                        <code className="text-[10px] text-gold/80">{e.visitorId === myId ? 'YOU (Admin)' : e.visitorId?.substring(0, 8) + '...'}</code>
+                                    </td>
                                     <td className="p-4">
                                         <span className={`px-2 py-1 rounded-full text-[10px] font-bold ${e.type === 'page_view' ? 'bg-blue-500/10 text-blue-400' : 'bg-gold/10 text-gold'}`}>
                                             {e.type.replace('_', ' ')}

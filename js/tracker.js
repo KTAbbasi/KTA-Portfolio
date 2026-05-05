@@ -87,6 +87,9 @@
 
     // Track project interactions
     function setupInteractions() {
+        // Tag as admin if authenticated
+        const isAdmin = sessionStorage.getItem('kta_admin_authed') === 'true';
+
         document.addEventListener('click', (e) => {
             const link = e.target.closest('a');
             if (link && (link.href.includes('behance.net') || link.classList.contains('overlay-content-link'))) {
@@ -97,7 +100,8 @@
                 trackEvent('project_click', { 
                     project: projectName, 
                     target: link.href,
-                    country: sessionStorage.getItem('kta_visitor_country')
+                    country: sessionStorage.getItem('kta_visitor_country'),
+                    isAdmin: isAdmin
                 });
             }
         });
