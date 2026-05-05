@@ -5,8 +5,14 @@ import {
   BarChart, Bar, Cell, PieChart, Pie
 } from 'recharts';
 import { Users, Eye, Globe, Clock, LayoutDashboard, Database } from 'lucide-react';
+import { collection, getDocs, query, orderBy, limit } from 'firebase/firestore';
+import { getFirebaseDb } from './js/firebase-init.js';
 
-console.log('AdminDashboard script started...');
+console.log('AdminDashboard script executing...');
+
+// Debug: Signal that script is running
+const statusEl = document.getElementById('mounting-status');
+if (statusEl) statusEl.innerText = 'DASHBOARD SCRIPT LOADED...';
 
 interface AnalyticsEvent {
     id?: string;
@@ -55,38 +61,40 @@ const AdminDashboard = () => {
     useEffect(() => {
         if (!isAuthed) return;
         
-        const fetchData = async () => {
-            console.log('Fetching analytics data...');
-            setLoading(true);
-            try {
-                // 1. Initialize Firebase
-                const { getFirebaseDb } = await import('./firebase-init.js');
-                const db = await getFirebaseDb();
+    const fetchData = async () => {
+        console.log('Fetching analytics data...');
+        setLoading(true);
+        try {
+            // 1. Get Firebase DB
+            const db = await getFirebaseDb();
+            
+            if (db) {
+                const q = query(
+                    collection(db, 'analytics_events'), 
+                    orderBy('timestamp', 'desc'), 
+                    limit(1000)
+                );
+                const snapshot = await getDocs(q);
+                const cloudEvents = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as AnalyticsEvent[];
                 
-                if (db) {
-                    const { collection, getDocs, query, orderBy, limit } = await import('firebase/firestore');
-                    const q = query(collection(db, 'analytics_events'), orderBy('timestamp', 'desc'), limit(1000));
-                    const snapshot = await getDocs(q);
-                    const cloudEvents = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                    
-                    setEvents(cloudEvents);
-                    processStats(cloudEvents);
-                } else {
-                    // Fallback to local if no Firebase
-                    const localData = getSafe('kta_analytics_local');
-                    if (localData) {
-                        const parsed = JSON.parse(localData);
-                        setEvents(parsed);
-                        processStats(parsed);
-                    }
+                setEvents(cloudEvents);
+                processStats(cloudEvents);
+            } else {
+                // Fallback to local
+                const localData = getSafe('kta_analytics_local');
+                if (localData) {
+                    const parsed = JSON.parse(localData);
+                    setEvents(parsed);
+                    processStats(parsed);
                 }
-                setLoading(false);
-            } catch (e: any) {
-                console.warn('Dashboard fetch error:', e);
-                setLoading(false);
             }
-        };
-        fetchData();
+        } catch (e: any) {
+            console.warn('Dashboard fetch error:', e);
+        } finally {
+            setLoading(false);
+        }
+    };
+    fetchData();
 
         // Safety timeout
         const timer = setTimeout(() => setLoading(false), 10000);
@@ -96,15 +104,17 @@ const AdminDashboard = () => {
     if (!isAuthed) {
         return (
             <div className="flex items-center justify-center min-h-screen bg-[#0E0505]">
-                <div className="bg-[#130303] p-10 rounded-2xl border border-maroon-light w-full max-w-sm text-center">
+                <div className="bg-[#130303] p-10 rounded-2xl border border-maroon-light w-full max-w-sm text-center shadow-2xl">
                     <h2 className="text-gold text-2xl font-black mb-6 uppercase tracking-widest">Admin Access</h2>
+                    <p className="text-xs text-gold/40 mb-4 uppercase">KTA. STUDIO INSIGHTS</p>
                     <input 
                         type="password" 
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
                         placeholder="Enter Password" 
-                        className="w-full p-3 bg-[#0E0505] border border-maroon-light rounded-lg text-white mb-4 outline-none focus:border-gold transition-colors"
+                        className="w-full p-3 bg-[#0E0505] border border-maroon-light rounded-lg text-white mb-4 outline-none focus:border-gold transition-colors text-center"
+                        autoFocus
                     />
                     <button 
                         onClick={handleLogin}
@@ -112,7 +122,7 @@ const AdminDashboard = () => {
                     >
                         LOGIN
                     </button>
-                    {error && <p className="text-red-500 mt-4 text-sm">Invalid Password</p>}
+                    {error && <p className="text-red-500 mt-4 text-sm font-bold animate-shake">INVALID ACCESS KEY</p>}
                 </div>
             </div>
         );
@@ -131,7 +141,7 @@ const AdminDashboard = () => {
         setStats({
             totalViews: data.filter(e => e.type === 'page_view').length,
             uniqueVisitors: uniqueIps.size,
-            avgDuration: 42, // Mock average
+            avgDuration: 42, 
             topCountry: top ? top[0] : 'None'
         });
     };
@@ -161,7 +171,17 @@ const AdminDashboard = () => {
             <p className="font-black tracking-widest animate-pulse">SYNCHRONIZING ANALYTICS...</p>
         </div>
     );
-    if (!myId) return <div className="flex items-center justify-center min-h-screen text-red-500">Visitor ID Missing. Please visit home page first.</div>;
+
+    if (!myId) return (
+        <div className="flex flex-col items-center justify-center min-h-screen bg-[#0E0505] text-gold text-center p-8">
+            <Database size={48} className="mb-4 opacity-50" />
+            <h2 className="text-2xl font-black mb-2">VISITOR ID MISSING</h2>
+            <p className="text-text-muted mb-6">You must visit the <a href="/" className="text-gold underline">home page</a> first to initialize your tracking ID.</p>
+            <button onClick={() => window.location.href = '/'} className="px-6 py-2 border border-gold rounded-full font-bold hover:bg-gold hover:text-black transition-all">
+                GO HOME
+            </button>
+        </div>
+    );
 
     return (
         <div className="max-w-7xl mx-auto space-y-8 admin-view">

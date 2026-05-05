@@ -17,10 +17,10 @@
     "@vitejs/plugin-react": "^6.0.1",
     "clsx": "^2.1.1",
     "firebase": "^12.12.1",
-    "lucide-react": "^1.14.0",
+    "lucide-react": "^0.471.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "recharts": "^3.8.1",
+    "recharts": "^2.15.0",
     "tailwind-merge": "^3.5.0",
     "typescript": "^6.0.3"
   },
