@@ -39,47 +39,13 @@
     </div>
     
     <script>
-        // Global error reporter
-        window.onerror = function(message, source, lineno, colno, error) {
+        // Simple error tracker
+        window.onerror = function(message) {
             const status = document.getElementById('mounting-status');
-            if (status) {
-                status.style.color = '#ff4444';
-                status.innerText = 'SCRIPT ERROR: ' + message;
-            }
-            return false;
+            if (status) status.innerText = 'LOAD ERROR: ' + message;
         };
-        window.onunhandledrejection = function(event) {
-            const status = document.getElementById('mounting-status');
-            if (status) {
-                status.style.color = '#ff4444';
-                status.innerText = 'PROMISE ERROR: ' + event.reason;
-            }
-        };
-
-         // Reachability check
-        fetch('/js/admin_dashboard.tsx').then(r => {
-            if (!r.ok) {
-                const status = document.getElementById('mounting-status');
-                if (status) status.innerText = 'DASHBOARD FILE NOT FOUND: ' + r.status;
-            }
-        }).catch(err => {
-             const status = document.getElementById('mounting-status');
-             if (status) status.innerText = 'NETWORK ERROR: ' + err.message;
-        });
-
-        // Timeout fallback
-        setTimeout(() => {
-            const status = document.getElementById('mounting-status');
-            if (status && (status.innerText === 'INITIALIZING DASHBOARD...' || status.innerText.includes('LOADED'))) {
-                const err = document.getElementById('mounting-error');
-                if (err) {
-                    err.style.display = 'block';
-                    err.innerText = 'If this screen stays, please visit Home first. If it persists, there is a mounting error.';
-                }
-            }
-        }, 10000);
     </script>
 
-    <script type="module" src="/js/admin_dashboard.tsx"></script>
+    <script type="module" src="admin_dashboard.tsx"></script>
 </body>
 </html>
