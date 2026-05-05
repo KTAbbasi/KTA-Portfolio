@@ -57,7 +57,7 @@
         };
 
          // Reachability check
-        fetch('/admin_dashboard.tsx').then(r => {
+        fetch('/js/admin_dashboard.tsx').then(r => {
             if (!r.ok) {
                 const status = document.getElementById('mounting-status');
                 if (status) status.innerText = 'DASHBOARD FILE NOT FOUND: ' + r.status;
@@ -80,6 +80,6 @@
         }, 10000);
     </script>
 
-    <script type="module" src="admin_dashboard.tsx"></script>
+    <script type="module" src="/js/admin_dashboard.tsx"></script>
 </body>
 </html>

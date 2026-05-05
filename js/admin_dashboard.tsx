@@ -6,7 +6,7 @@ import {
 } from 'recharts';
 import { Users, Eye, Globe, Clock, LayoutDashboard, Database } from 'lucide-react';
 import { collection, getDocs, query, orderBy, limit } from 'firebase/firestore';
-import { getFirebaseDb } from './js/firebase-init.js';
+import { getFirebaseDb } from './firebase-init.js';
 
 console.log('AdminDashboard script executing...');
 
@@ -35,7 +35,11 @@ const AdminDashboard = () => {
 
     const [events, setEvents] = useState<AnalyticsEvent[]>([]);
     const [loading, setLoading] = useState(true);
-    const [isAuthed, setIsAuthed] = useState(getSafe('kta_admin_authed', 'session') === 'true');
+    const [isAuthed, setIsAuthed] = useState(() => {
+        try {
+            return sessionStorage.getItem('kta_admin_authed') === 'true';
+        } catch (e) { return false; }
+    });
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
     const [stats, setStats] = useState({
@@ -59,45 +63,36 @@ const AdminDashboard = () => {
     };
 
     useEffect(() => {
-        if (!isAuthed) return;
+        if (!isAuthed) {
+            setLoading(false);
+            return;
+        }
         
     const fetchData = async () => {
-        console.log('Fetching analytics data...');
+        console.log('Dashboard: Fetching data...');
         setLoading(true);
         try {
-            // 1. Get Firebase DB
             const db = await getFirebaseDb();
-            
             if (db) {
                 const q = query(
                     collection(db, 'analytics_events'), 
                     orderBy('timestamp', 'desc'), 
-                    limit(1000)
+                    limit(500)
                 );
                 const snapshot = await getDocs(q);
                 const cloudEvents = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as AnalyticsEvent[];
-                
                 setEvents(cloudEvents);
                 processStats(cloudEvents);
-            } else {
-                // Fallback to local
-                const localData = getSafe('kta_analytics_local');
-                if (localData) {
-                    const parsed = JSON.parse(localData);
-                    setEvents(parsed);
-                    processStats(parsed);
-                }
             }
         } catch (e: any) {
-            console.warn('Dashboard fetch error:', e);
+            console.error('Dashboard: Fetch failed:', e);
         } finally {
             setLoading(false);
         }
     };
     fetchData();
 
-        // Safety timeout
-        const timer = setTimeout(() => setLoading(false), 10000);
+        const timer = setTimeout(() => setLoading(false), 5000);
         return () => clearTimeout(timer);
     }, [isAuthed]);
 
