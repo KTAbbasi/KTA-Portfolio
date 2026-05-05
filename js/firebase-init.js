@@ -1,24 +1,23 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
-let app, db;
+let dbInstance = null;
 let initialized = false;
 
-async function initFirebase() {
-    if (initialized) return { db };
+export async function getFirebaseDb() {
+    if (initialized) return dbInstance;
+    
     try {
         const response = await fetch('/firebase-applet-config.json');
-        if (!response.ok) throw new Error('No config');
+        if (!response.ok) throw new Error('Config missing');
         const config = await response.json();
-        const { initializeApp } = await import('firebase/app');
-        const { getFirestore } = await import('firebase/firestore');
-        app = initializeApp(config);
-        db = getFirestore(app);
+        
+        const app = initializeApp(config);
+        dbInstance = getFirestore(app);
         initialized = true;
+        return dbInstance;
     } catch (e) {
-        // Silent fail
+        console.error('Firebase Init Error:', e);
+        return null;
     }
-    return { db };
 }
-
-export { initFirebase as db }; // Changed export name to clarify it returns a promise/function

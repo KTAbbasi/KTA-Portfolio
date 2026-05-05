@@ -7,9 +7,16 @@ import {
 import { Users, Eye, Globe, Clock, LayoutDashboard, Database } from 'lucide-react';
 
 const AdminDashboard = () => {
+    // Safe storage helper
+    const getSafe = (key, type = 'local') => {
+        try {
+            return (type === 'local' ? localStorage : sessionStorage).getItem(key);
+        } catch (e) { return null; }
+    };
+
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [isAuthed, setIsAuthed] = useState(sessionStorage.getItem('kta_admin_authed') === 'true');
+    const [isAuthed, setIsAuthed] = useState(getSafe('kta_admin_authed', 'session') === 'true');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
     const [stats, setStats] = useState({
@@ -19,11 +26,13 @@ const AdminDashboard = () => {
         topCountry: 'None'
     });
 
-    const myId = localStorage.getItem('kta_visitor_id');
+    const myId = getSafe('kta_visitor_id');
 
     const handleLogin = () => {
         if (password === '1a2s3d_komal') {
-            sessionStorage.setItem('kta_admin_authed', 'true');
+            try {
+                sessionStorage.setItem('kta_admin_authed', 'true');
+            } catch (e) {}
             setIsAuthed(true);
         } else {
             setError(true);
@@ -37,8 +46,8 @@ const AdminDashboard = () => {
             setLoading(true);
             try {
                 // 1. Initialize Firebase
-                const { db: getFirebaseDb } = await import('./firebase-init.js');
-                const { db } = await getFirebaseDb();
+                const { getFirebaseDb } = await import('./firebase-init.js');
+                const db = await getFirebaseDb();
                 
                 if (db) {
                     const { collection, getDocs, query, orderBy, limit } = await import('firebase/firestore');
@@ -50,7 +59,7 @@ const AdminDashboard = () => {
                     processStats(cloudEvents);
                 } else {
                     // Fallback to local if no Firebase
-                    const localData = localStorage.getItem('kta_analytics_local');
+                    const localData = getSafe('kta_analytics_local');
                     if (localData) {
                         const parsed = JSON.parse(localData);
                         setEvents(parsed);
@@ -64,6 +73,10 @@ const AdminDashboard = () => {
             }
         };
         fetchData();
+
+        // Safety timeout
+        const timer = setTimeout(() => setLoading(false), 10000);
+        return () => clearTimeout(timer);
     }, [isAuthed]);
 
     if (!isAuthed) {
@@ -125,7 +138,12 @@ const AdminDashboard = () => {
         { name: 'Sun', views: 34 },
     ];
 
-    if (loading) return <div className="flex items-center justify-center min-h-screen text-gold font-bold animate-pulse">LOADING ANALYTICS...</div>;
+    if (loading) return (
+        <div className="flex flex-col items-center justify-center min-h-screen bg-[#0E0505] text-gold">
+            <div className="w-10 h-10 border-4 border-gold border-t-transparent rounded-full animate-spin mb-4"></div>
+            <p className="font-black tracking-widest animate-pulse">SYNCHRONIZING ANALYTICS...</p>
+        </div>
+    );
     if (!myId) return <div className="flex items-center justify-center min-h-screen text-red-500">Visitor ID Missing. Please visit home page first.</div>;
 
     return (
@@ -272,7 +290,24 @@ const AdminDashboard = () => {
     );
 };
 
-// Mount the app
-const container = document.getElementById('admin-root');
-const root = createRoot(container);
-root.render(<AdminDashboard />);
+// Mount function with error handling
+const mount = () => {
+    try {
+        const container = document.getElementById('admin-root');
+        if (!container) return;
+        const root = createRoot(container);
+        root.render(<AdminDashboard />);
+    } catch (e) {
+        console.error('Mounting error:', e);
+        const container = document.getElementById('admin-root');
+        if (container) {
+            container.innerHTML = `<div style="color:red; padding:40px; text-align:center;">
+                <h2 style="color:var(--gold)">DASHBOARD ERROR</h2>
+                <p>${e.message}</p>
+                <button onclick="window.location.reload()" style="background:#6B1A1A; color:white; border:none; padding:10px 20px; border-radius:8px; margin-top:20px; cursor:pointer;">RETRY</button>
+            </div>`;
+        }
+    }
+};
+
+mount();

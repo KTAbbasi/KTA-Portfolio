@@ -36,9 +36,8 @@
     async function getDb() {
         if (firestoreInstance) return firestoreInstance;
         try {
-            const { db: getFirebaseDb } = await import('./firebase-init.js');
-            const result = await getFirebaseDb();
-            firestoreInstance = result.db;
+            const { getFirebaseDb } = await import('./firebase-init.js');
+            firestoreInstance = await getFirebaseDb();
             return firestoreInstance;
         } catch (e) {
             return null;
