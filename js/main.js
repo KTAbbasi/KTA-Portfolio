@@ -141,20 +141,44 @@ document.addEventListener('DOMContentLoaded', () => {
     adminDot.id = 'admin-trigger';
     adminDot.style.cssText = `
         position: fixed;
-        bottom: 10px;
-        right: 10px;
-        width: 6px;
-        height: 6px;
-        background: #C9A84C;
-        opacity: 0.1;
+        bottom: 5px;
+        right: 5px;
+        width: 15px;
+        height: 15px;
+        background: transparent;
+        border: 1px solid rgba(201, 168, 76, 0.05);
         border-radius: 50%;
         cursor: pointer;
-        z-index: 9999;
-        transition: opacity 0.3s;
+        z-index: 99999;
+        transition: all 0.3s;
     `;
-    adminDot.addEventListener('mouseenter', () => adminDot.style.opacity = '0.5');
-    adminDot.addEventListener('mouseleave', () => adminDot.style.opacity = '0.1');
-    adminDot.addEventListener('click', () => window.location.href = '/admin.html');
+    // Add inner dot
+    const innerDot = document.createElement('div');
+    innerDot.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 4px;
+        height: 4px;
+        background: #C9A84C;
+        border-radius: 50%;
+        opacity: 0.1;
+    `;
+    adminDot.appendChild(innerDot);
+
+    adminDot.addEventListener('mouseenter', () => {
+        innerDot.style.opacity = '0.8';
+        adminDot.style.background = 'rgba(201, 168, 76, 0.1)';
+    });
+    adminDot.addEventListener('mouseleave', () => {
+        innerDot.style.opacity = '0.1';
+        adminDot.style.background = 'transparent';
+    });
+    adminDot.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.href = '/admin.html';
+    });
     document.body.appendChild(adminDot);
 });
 

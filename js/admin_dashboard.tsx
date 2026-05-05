@@ -6,7 +6,7 @@ import {
 } from 'recharts';
 import { Users, Eye, Globe, Clock, LayoutDashboard, Database } from 'lucide-react';
 import { collection, getDocs, query, orderBy, limit } from 'firebase/firestore';
-import { getFirebaseDb } from './js/firebase-init.js';
+import { getFirebaseDb } from './firebase-init.js';
 
 console.log('AdminDashboard script executing...');
 
@@ -92,9 +92,19 @@ const AdminDashboard = () => {
     };
     fetchData();
 
-        const timer = setTimeout(() => setLoading(false), 5000);
+        const timer = setTimeout(() => {
+            console.warn('Dashboard: Safety timeout reached');
+            setLoading(false);
+        }, 8000);
         return () => clearTimeout(timer);
     }, [isAuthed]);
+
+    const handleLogout = () => {
+        try {
+            sessionStorage.removeItem('kta_admin_authed');
+            setIsAuthed(false);
+        } catch (e) {}
+    };
 
     if (!isAuthed) {
         return (
@@ -193,7 +203,7 @@ const AdminDashboard = () => {
                       REFRESH
                     </button>
                     <button 
-                      onClick={() => { sessionStorage.clear(); window.location.reload(); }}
+                      onClick={handleLogout}
                       className="px-4 py-2 border border-maroon rounded-full text-xs font-bold hover:border-gold transition-all"
                     >
                       LOGOUT

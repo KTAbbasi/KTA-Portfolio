@@ -8,7 +8,12 @@ export async function getFirebaseDb() {
     if (initialized) return dbInstance;
     
     try {
-        const response = await fetch('/firebase-applet-config.json');
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+        
+        const response = await fetch('/firebase-applet-config.json', { signal: controller.signal });
+        clearTimeout(timeoutId);
+        
         if (!response.ok) throw new Error('Config missing');
         const config = await response.json();
         
