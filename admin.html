@@ -39,13 +39,39 @@
     </div>
     
     <script>
-        // Simple error tracker
-        window.onerror = function(message) {
+        // Diagnostic logger
+        function updateStatus(msg, isError = false) {
             const status = document.getElementById('mounting-status');
-            if (status) status.innerText = 'LOAD ERROR: ' + message;
+            if (status) {
+                status.innerText = msg;
+                if (isError) status.style.color = '#ff4444';
+            }
+            console.log('Admin Status:', msg);
+        }
+
+        window.onerror = function(message) {
+            updateStatus('LOAD ERROR: ' + message, true);
         };
+        window.onunhandledrejection = function(event) {
+            updateStatus('PROMISE ERROR: ' + (event.reason?.message || event.reason), true);
+        };
+
+        // Check if script file is even reachable
+        updateStatus('CHECKING DASHBOARD BUNDLE...');
+        fetch('/js/admin_dashboard.tsx').then(r => {
+            if (!r.ok) updateStatus('BUNDLE NOT FOUND (404)', true);
+            else updateStatus('BUNDLE FOUND, MOUNTING...');
+        }).catch(err => updateStatus('NETWORK ERROR: ' + err.message, true));
+
+        // Fallback for extreme cases
+        setTimeout(() => {
+            const status = document.getElementById('mounting-status');
+            if (status && status.innerText.includes('INITIALIZING')) {
+                updateStatus('STUCK DETECTED. PLEASE HARD REFRESH.', true);
+            }
+        }, 15000);
     </script>
 
-    <script type="module" src="js/admin_dashboard.tsx"></script>
+    <script type="module" src="/js/admin_dashboard.tsx"></script>
 </body>
 </html>

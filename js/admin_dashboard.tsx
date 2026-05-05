@@ -8,11 +8,13 @@ import { Users, Eye, Globe, Clock, LayoutDashboard, Database } from 'lucide-reac
 import { collection, getDocs, query, orderBy, limit } from 'firebase/firestore';
 import { getFirebaseDb } from './firebase-init.js';
 
-console.log('AdminDashboard script executing...');
+console.log('AdminDashboard: Script execution started');
 
-// Debug: Signal that script is running
-const statusEl = document.getElementById('mounting-status');
-if (statusEl) statusEl.innerText = 'DASHBOARD SCRIPT LOADED...';
+// Update status directly from JS
+try {
+    const s = document.getElementById('mounting-status');
+    if (s) s.innerText = 'REACT ENGINE STARTING...';
+} catch(e) {}
 
 interface AnalyticsEvent {
     id?: string;
