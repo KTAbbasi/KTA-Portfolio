@@ -353,20 +353,36 @@ const AdminDashboard = () => {
 
 // Mount function with error handling
 const mount = () => {
-    console.log('Attempting to mount dashboard...');
+    console.log('AdminDashboard: Initiating mount process...');
     try {
         const container = document.getElementById('admin-root');
-        if (!container) return;
+        if (!container) {
+            console.error('AdminDashboard: Target #admin-root not found in DOM!');
+            return;
+        }
+        
+        console.log('AdminDashboard: Creating React root...');
         const root = createRoot(container);
+        
+        console.log('AdminDashboard: Rendering component...');
         root.render(<AdminDashboard />);
+        
+        console.log('AdminDashboard: Render call complete.');
+        
+        // Update status one last time outside React to confirm script finished
+        const s = document.getElementById('mounting-status');
+        if (s && s.innerText.includes('ACTIVATED')) {
+            s.innerText = 'REACT RENDERED. LOADING ANALYTICS...';
+        }
     } catch (e: any) {
-        console.error('Mounting error:', e);
+        console.error('AdminDashboard: MOUNT FATAL ERROR:', e);
         const container = document.getElementById('admin-root');
         if (container) {
-            container.innerHTML = `<div style="color:red; padding:40px; text-align:center;">
-                <h2 style="color:var(--gold)">DASHBOARD ERROR</h2>
-                <p>${e.message}</p>
-                <button onclick="window.location.reload()" style="background:#6B1A1A; color:white; border:none; padding:10px 20px; border-radius:8px; margin-top:20px; cursor:pointer;">RETRY</button>
+            container.innerHTML = `<div style="color:#ff4444; padding:40px; text-align:center; background:#130303; border: 1px solid #6B1A1A; border-radius: 12px; margin: 20px;">
+                <h2 style="color:#C9A84C; margin-bottom: 20px;">ENGINE CRASHED</h2>
+                <p style="font-size: 14px; margin-bottom: 20px;">${e.message || 'Unknown initialization error'}</p>
+                <div style="font-family: monospace; font-size: 10px; color: #999; margin-bottom: 20px;">${e.stack?.substring(0, 200) || ''}</div>
+                <button onclick="window.location.reload()" style="background:#6B1A1A; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight: bold;">RETRY ENGINE</button>
             </div>`;
         }
     }

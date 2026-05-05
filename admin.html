@@ -63,10 +63,10 @@
         };
 
         // Pre-flight check
-        writeLog('LOCATING DASHBOARD ENGINE...');
-        fetch('js/admin_dashboard.tsx').then(function(r) {
-            if (!r.ok) writeLog('ENGINE NOT FOUND (404) at js/admin_dashboard.tsx', '#ff4444');
-            else writeLog('ENGINE LOCATED. INITIALIZING REACT...');
+        writeLog('FETCHING DASHBOARD ENGINE...');
+        fetch('/js/admin_dashboard.tsx').then(function(r) {
+            if (!r.ok) writeLog('ENGINE NOT FOUND (404) at /js/admin_dashboard.tsx', '#ff4444');
+            else writeLog('ENGINE READY. WAITING FOR REACT MOUNT...');
         }).catch(function(err) {
             writeLog('NETWORK ERROR: ' + err.message, '#ff4444');
         });
@@ -74,14 +74,18 @@
         // Timeout fallback
         setTimeout(function() {
             var status = document.getElementById('mounting-status');
-            if (status && status.innerText.indexOf('INITIALIZING') !== -1) {
-                writeLog('STILL INITIALIZING... TRY RELOADING.', '#ff4444');
-                document.getElementById('mounting-error').style.display = 'block';
-                document.getElementById('mounting-error').innerText = 'The engine is taking longer than expected. Please hard refresh (Ctrl+F5).';
+            // Only fire if we are still at the "waiting" or "fetching" phase
+            if (status && (status.innerText.indexOf('DASHBOARD') !== -1 || status.innerText.indexOf('WAITING') !== -1)) {
+                writeLog('STILL LOADING... TRY HARD REFRESH.', '#ff4444');
+                var errBox = document.getElementById('mounting-error');
+                if (errBox) {
+                    errBox.style.display = 'block';
+                    errBox.innerText = 'The dashboard engine is not responding. Please hard refresh (Ctrl+F5) or check your connection.';
+                }
             }
-        }, 12000);
+        }, 15000);
     </script>
 
-    <script type="module" src="js/admin_dashboard.tsx"></script>
+    <script type="module" src="/js/admin_dashboard.tsx"></script>
 </body>
 </html>
