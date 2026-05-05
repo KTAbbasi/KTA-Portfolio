@@ -139,41 +139,51 @@ document.addEventListener('DOMContentLoaded', () => {
     // Hidden Admin Trigger
     const adminDot = document.createElement('div');
     adminDot.id = 'admin-trigger';
+    adminDot.className = 'clickable';
     adminDot.style.cssText = `
         position: fixed;
-        bottom: 5px;
-        right: 5px;
-        width: 15px;
-        height: 15px;
+        bottom: 0;
+        right: 0;
+        width: 30px;
+        height: 30px;
         background: transparent;
-        border: 1px solid rgba(201, 168, 76, 0.05);
-        border-radius: 50%;
         cursor: pointer;
-        z-index: 99999;
-        transition: all 0.3s;
+        z-index: 999999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     `;
     // Add inner dot
     const innerDot = document.createElement('div');
     innerDot.style.cssText = `
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 4px;
-        height: 4px;
+        width: 6px;
+        height: 6px;
         background: #C9A84C;
         border-radius: 50%;
         opacity: 0.1;
+        transition: all 0.3s;
     `;
     adminDot.appendChild(innerDot);
 
     adminDot.addEventListener('mouseenter', () => {
         innerDot.style.opacity = '0.8';
         adminDot.style.background = 'rgba(201, 168, 76, 0.1)';
+        // Cursor ring interaction
+        if (ring) {
+            ring.style.width = '40px';
+            ring.style.height = '40px';
+            ring.style.borderWidth = '2px';
+        }
     });
     adminDot.addEventListener('mouseleave', () => {
         innerDot.style.opacity = '0.1';
         adminDot.style.background = 'transparent';
+        // Cursor ring reset
+        if (ring) {
+            ring.style.width = '24px';
+            ring.style.height = '24px';
+            ring.style.borderWidth = '1px';
+        }
     });
     adminDot.addEventListener('click', (e) => {
         e.preventDefault();

@@ -6,7 +6,7 @@ import {
 } from 'recharts';
 import { Users, Eye, Globe, Clock, LayoutDashboard, Database } from 'lucide-react';
 import { collection, getDocs, query, orderBy, limit } from 'firebase/firestore';
-import { getFirebaseDb } from './firebase-init.js';
+import { getFirebaseDb } from './js/firebase-init.js';
 
 console.log('AdminDashboard: Script execution started');
 
