@@ -28,13 +28,28 @@
     }
   },
   "firestore": {
-    "visitors": {
-      "schema": "visitor",
-      "description": "Collection of unique visitors"
-    },
-    "views": {
-      "schema": "view",
-      "description": "Collection of page view events"
+    "analytics_events": {
+      "schema": "analytics_event",
+      "description": "Collection of all tracking events (page views, clicks, etc.)"
+    }
+  },
+  "entities": {
+    "analytics_event": {
+      "title": "Analytics Event",
+      "description": "A single tracking event",
+      "type": "object",
+      "properties": {
+        "visitorId": { "type": "string" },
+        "type": { "type": "string", "enum": ["page_view", "project_click", "session_end"] },
+        "page": { "type": "string" },
+        "project": { "type": "string" },
+        "country": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "duration": { "type": "number" },
+        "target": { "type": "string" },
+        "ua": { "type": "string" }
+      },
+      "required": ["visitorId", "type", "timestamp"]
     }
   }
 }

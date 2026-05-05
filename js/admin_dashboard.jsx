@@ -27,43 +27,30 @@ const AdminDashboard = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // 1. Start with local data
-                let allEvents = [];
-                const localData = localStorage.getItem('kta_analytics_local');
-                if (localData) {
-                    allEvents = JSON.parse(localData);
-                }
-
-                // 2. Attempt to fetch from Firebase
+                // 1. Initialize Firebase
                 const { db: getFirebaseDb } = await import('./firebase-init.js');
                 const { db } = await getFirebaseDb();
+                
                 if (db) {
                     const { collection, getDocs, query, orderBy, limit } = await import('firebase/firestore');
-                    const q = query(collection(db, 'analytics_events'), orderBy('timestamp', 'desc'), limit(500));
+                    const q = query(collection(db, 'analytics_events'), orderBy('timestamp', 'desc'), limit(1000));
                     const snapshot = await getDocs(q);
                     const cloudEvents = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                     
-                    // Merge and deduplicate (by timestamp + visitorId)
-                    const existing = new Set(allEvents.map(e => `${e.timestamp}_${e.visitorId}`));
-                    cloudEvents.forEach(ce => {
-                        if (!existing.has(`${ce.timestamp}_${ce.visitorId}`)) {
-                            allEvents.push(ce);
-                        }
-                    });
+                    setEvents(cloudEvents);
+                    processStats(cloudEvents);
+                } else {
+                    // Fallback to local if no Firebase
+                    const localData = localStorage.getItem('kta_analytics_local');
+                    if (localData) {
+                        const parsed = JSON.parse(localData);
+                        setEvents(parsed);
+                        processStats(parsed);
+                    }
                 }
-
-                allEvents.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-                setEvents(allEvents);
-                processStats(allEvents);
                 setLoading(false);
             } catch (e) {
-                console.warn('Fetch failed, using local only:', e);
-                const localData = localStorage.getItem('kta_analytics_local');
-                if (localData) {
-                    const parsed = JSON.parse(localData);
-                    setEvents(parsed);
-                    processStats(parsed);
-                }
+                console.warn('Dashboard fetch error:', e);
                 setLoading(false);
             }
         };

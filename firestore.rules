@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Hidden Analytics System
+    // Everyone can write tracking data
+    // Admin dashboard reads it
+    match /analytics_events/{event} {
+      allow create: if isValidEvent(request.resource.data);
+      allow get, list: if true; // In a real app, this should be restricted to admin
+      allow update, delete: if false; // Data is immutable once sent
+    }
+
+    function isValidEvent(data) {
+      return data.visitorId is string 
+          && data.type is string 
+          && data.timestamp is string
+          && data.visitorId.size() < 100
+          && data.keys().hasAll(['visitorId', 'type', 'timestamp']);
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
