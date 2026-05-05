@@ -6,15 +6,18 @@ import {
 } from 'recharts';
 import { Users, Eye, Globe, Clock, LayoutDashboard, Database } from 'lucide-react';
 import { collection, getDocs, query, orderBy, limit } from 'firebase/firestore';
-import { getFirebaseDb } from './js/firebase-init.js';
+import { getFirebaseDb } from './firebase-init.js';
 
 console.log('AdminDashboard: Script execution started');
 
 // Update status directly from JS
 try {
     const s = document.getElementById('mounting-status');
-    if (s) s.innerText = 'REACT ENGINE STARTING...';
-} catch(e) {}
+    if (s) s.innerText = 'REACT ENGINE ACTIVATED...';
+    console.log('AdminDashboard: Pre-mount status updated to ACTIVATED');
+} catch(e) {
+    console.error('AdminDashboard: Status update error', e);
+}
 
 interface AnalyticsEvent {
     id?: string;
@@ -27,7 +30,7 @@ interface AnalyticsEvent {
 }
 
 const AdminDashboard = () => {
-    console.log('AdminDashboard component rendering...');
+    console.log('AdminDashboard: Component Render Loop Started');
     // Safe storage helper
     const getSafe = (key: string, type: 'local' | 'session' = 'local') => {
         try {

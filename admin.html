@@ -39,16 +39,45 @@
     </div>
     
     <script>
-        // Simple status tracker
-        window.onerror = function(message) {
+        // Diagnostic logger
+        function writeLog(msg, color = '#C9A84C') {
             const status = document.getElementById('mounting-status');
             if (status) {
-                status.innerText = 'LOAD ERROR: ' + message;
-                status.style.color = '#ff4444';
+                status.innerText = msg;
+                status.style.color = color;
             }
+            console.log('%c[Admin Log]: ' + msg, 'color: ' + color);
+        }
+
+        window.onerror = function(message, source, lineno, colno, error) {
+            writeLog('LOAD ERROR: ' + message + (lineno ? ' (Line: ' + lineno + ')' : ''), '#ff4444');
+            return false;
         };
+
+        window.onunhandledrejection = function(event) {
+            writeLog('PROMISE ERROR: ' + (event.reason?.message || event.reason), '#ff4444');
+        };
+
+        // Pre-flight check
+        writeLog('LOCATING DASHBOARD ENGINE...');
+        fetch('/js/admin_dashboard.tsx').then(r => {
+            if (!r.ok) writeLog('ENGINE NOT FOUND (404) at /js/admin_dashboard.tsx', '#ff4444');
+            else writeLog('ENGINE LOCATED. INITIALIZING REACT...');
+        }).catch(err => {
+            writeLog('NETWORK ERROR: ' + err.message, '#ff4444');
+        });
+
+        // Timeout fallback
+        setTimeout(() => {
+            const status = document.getElementById('mounting-status');
+            if (status && status.innerText.includes('INITIALIZING')) {
+                writeLog('STILL INITIALIZING... TRY RELOADING.', '#ff4444');
+                document.getElementById('mounting-error').style.display = 'block';
+                document.getElementById('mounting-error').innerText = 'The engine is taking longer than expected. Please hard refresh (Ctrl+F5).';
+            }
+        }, 12000);
     </script>
 
-    <script type="module" src="admin_dashboard.tsx"></script>
+    <script type="module" src="/js/admin_dashboard.tsx"></script>
 </body>
 </html>

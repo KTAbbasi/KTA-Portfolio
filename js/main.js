@@ -142,26 +142,28 @@ document.addEventListener('DOMContentLoaded', () => {
     adminDot.className = 'clickable';
     adminDot.style.cssText = `
         position: fixed;
-        bottom: 0;
-        right: 0;
-        width: 30px;
-        height: 30px;
+        bottom: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
         background: transparent;
         cursor: pointer;
-        z-index: 999999;
+        z-index: 9999999;
         display: flex;
         align-items: center;
         justify-content: center;
+        pointer-events: auto;
     `;
     // Add inner dot
     const innerDot = document.createElement('div');
     innerDot.style.cssText = `
-        width: 6px;
-        height: 6px;
+        width: 8px;
+        height: 8px;
         background: #C9A84C;
         border-radius: 50%;
         opacity: 0.1;
         transition: all 0.3s;
+        pointer-events: none;
     `;
     adminDot.appendChild(innerDot);
 
