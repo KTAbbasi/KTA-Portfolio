@@ -13,6 +13,7 @@ export default defineConfig(() => {
           services: path.resolve(__dirname, 'services.html'),
           about: path.resolve(__dirname, 'about.html'),
           contact: path.resolve(__dirname, 'contact.html'),
+          admin: path.resolve(__dirname, 'admin.html'),
         },
       },
     },

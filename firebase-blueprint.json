@@ -1,0 +1,40 @@
+{
+  "entities": {
+    "visitor": {
+      "title": "Visitor",
+      "description": "Unique visitor tracking information",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "country": { "type": "string" },
+        "firstSeen": { "type": "string", "format": "date-time" },
+        "lastSeen": { "type": "string", "format": "date-time" },
+        "userAgent": { "type": "string" }
+      },
+      "required": ["userId", "firstSeen"]
+    },
+    "view": {
+      "title": "Page View",
+      "description": "Tracking of individual page views and project interactions",
+      "type": "object",
+      "properties": {
+        "visitorId": { "type": "string" },
+        "page": { "type": "string" },
+        "project": { "type": "string", "description": "Name of the project if applicable" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "duration": { "type": "number", "description": "Time spent in seconds" }
+      },
+      "required": ["visitorId", "page", "timestamp"]
+    }
+  },
+  "firestore": {
+    "visitors": {
+      "schema": "visitor",
+      "description": "Collection of unique visitors"
+    },
+    "views": {
+      "schema": "view",
+      "description": "Collection of page view events"
+    }
+  }
+}
