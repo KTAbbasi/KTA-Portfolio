@@ -125,14 +125,15 @@ const AdminDashboard = () => {
         { name: 'Sun', views: 34 },
     ];
 
-    if (loading) return <div className="flex items-center justify-center min-h-screen text-gold font-bold">LOADING ANALYTICS...</div>;
+    if (loading) return <div className="flex items-center justify-center min-h-screen text-gold font-bold animate-pulse">LOADING ANALYTICS...</div>;
+    if (!myId) return <div className="flex items-center justify-center min-h-screen text-red-500">Visitor ID Missing. Please visit home page first.</div>;
 
     return (
-        <div className="max-w-7xl mx-auto space-y-8">
-            <header className="flex justify-between items-center border-b border-maroon-light pb-6">
+        <div className="max-w-7xl mx-auto space-y-8 admin-view">
+            <header className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-maroon-light pb-6 gap-4">
                 <div>
                     <h1 className="text-3xl font-black text-white">AUDIENCE <span className="text-gold">INSIGHTS</span></h1>
-                    <p className="text-text-muted mt-2">Private tracking for KTA. Studio | <span className="text-gold/60 text-[10px]">YOUR ID: {myId}</span></p>
+                    <p className="text-text-muted mt-2">Private tracking for KTA. Studio | <span className="text-gold/60 text-[10px] bg-black/40 px-2 py-1 rounded">YOUR ID: {myId}</span></p>
                 </div>
                 <div className="flex gap-4">
                     <button 

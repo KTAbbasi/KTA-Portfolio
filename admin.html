@@ -5,13 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KTA | Admin Insights</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-        body { cursor: auto !important; overflow: auto !important; }
-        #admin-root { min-height: 100vh; background: #0E0505; color: white; padding: 40px; font-family: 'Montserrat', sans-serif; }
+        body { 
+            cursor: auto !important; 
+            overflow: auto !important; 
+            background: #0E0505;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+        }
+        #admin-root { 
+            min-height: 100vh; 
+            padding: 40px; 
+        }
+        /* Fix for scrollings and hidden dashboard */
+        .admin-view {
+            animation: fadeIn 0.8s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
-    <div id="admin-root"></div>
+    <div id="admin-root">
+        <div style="display: flex; justify-content: center; align-items: center; min-height: 80vh;">
+            <p style="color: #C9A84C; font-weight: 700; letter-spacing: 2px;">INITIALIZING DASHBOARD...</p>
+        </div>
+    </div>
     <script type="module" src="/js/admin_dashboard.jsx"></script>
 </body>
 </html>
