@@ -135,6 +135,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(type, 1000);
     }
+
+    // Hidden Admin Trigger
+    const adminDot = document.createElement('div');
+    adminDot.id = 'admin-trigger';
+    adminDot.style.cssText = `
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        width: 6px;
+        height: 6px;
+        background: #C9A84C;
+        opacity: 0.1;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 9999;
+        transition: opacity 0.3s;
+    `;
+    adminDot.addEventListener('mouseenter', () => adminDot.style.opacity = '0.5');
+    adminDot.addEventListener('mouseleave', () => adminDot.style.opacity = '0.1');
+    adminDot.addEventListener('click', () => window.location.href = '/admin.html');
+    document.body.appendChild(adminDot);
 });
 
 // Portfolio Filter Function

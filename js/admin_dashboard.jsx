@@ -9,6 +9,9 @@ import { Users, Eye, Globe, Clock, LayoutDashboard, Database } from 'lucide-reac
 const AdminDashboard = () => {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [isAuthed, setIsAuthed] = useState(sessionStorage.getItem('kta_admin_authed') === 'true');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState(false);
     const [stats, setStats] = useState({
         totalViews: 0,
         uniqueVisitors: 0,
@@ -18,16 +21,20 @@ const AdminDashboard = () => {
 
     const myId = localStorage.getItem('kta_visitor_id');
 
-    // Mock data for initial preview / fallback
-    const mockEvents = [
-        { type: 'page_view', country: 'Pakistan', timestamp: new Date().toISOString() },
-        { type: 'page_view', country: 'United States', timestamp: new Date(Date.now() - 3600000).toISOString() },
-        { type: 'project_click', project: 'ABYSSAL', country: 'Pakistan', timestamp: new Date().toISOString() },
-        { type: 'page_view', country: 'United Kingdom', timestamp: new Date(Date.now() - 86400000).toISOString() },
-    ];
+    const handleLogin = () => {
+        if (password === '1a2s3d_komal') {
+            sessionStorage.setItem('kta_admin_authed', 'true');
+            setIsAuthed(true);
+        } else {
+            setError(true);
+        }
+    };
 
     useEffect(() => {
+        if (!isAuthed) return;
+        
         const fetchData = async () => {
+            setLoading(true);
             try {
                 // 1. Initialize Firebase
                 const { db: getFirebaseDb } = await import('./firebase-init.js');
@@ -57,7 +64,32 @@ const AdminDashboard = () => {
             }
         };
         fetchData();
-    }, []);
+    }, [isAuthed]);
+
+    if (!isAuthed) {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-[#0E0505]">
+                <div className="bg-[#130303] p-10 rounded-2xl border border-maroon-light w-full max-w-sm text-center">
+                    <h2 className="text-gold text-2xl font-black mb-6 uppercase tracking-widest">Admin Access</h2>
+                    <input 
+                        type="password" 
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
+                        placeholder="Enter Password" 
+                        className="w-full p-3 bg-[#0E0505] border border-maroon-light rounded-lg text-white mb-4 outline-none focus:border-gold transition-colors"
+                    />
+                    <button 
+                        onClick={handleLogin}
+                        className="w-full py-3 bg-maroon hover:bg-gold text-white hover:text-black font-bold rounded-lg transition-all"
+                    >
+                        LOGIN
+                    </button>
+                    {error && <p className="text-red-500 mt-4 text-sm">Invalid Password</p>}
+                </div>
+            </div>
+        );
+    }
 
     const processStats = (data) => {
         const uniqueIps = new Set(data.map(e => e.visitorId || 'anon'));
@@ -93,7 +125,7 @@ const AdminDashboard = () => {
         { name: 'Sun', views: 34 },
     ];
 
-    if (loading) return <div className="flex items-center justify-center min-h-screen">Loading Analytics Data...</div>;
+    if (loading) return <div className="flex items-center justify-center min-h-screen text-gold font-bold">LOADING ANALYTICS...</div>;
 
     return (
         <div className="max-w-7xl mx-auto space-y-8">

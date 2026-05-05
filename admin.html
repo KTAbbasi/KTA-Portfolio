@@ -11,60 +11,7 @@
     </style>
 </head>
 <body>
-    <div id="admin-root">
-        <div style="display: flex; align-items: center; justify-content: center; height: 80vh;">
-            <div style="background: #130303; padding: 40px; border-radius: 20px; border: 1px solid #6B1A1A; width: 100%; max-width: 400px; text-align: center;">
-                <h2 style="margin-bottom: 20px; color: var(--gold);">ADMIN ACCESS</h2>
-                <input type="password" id="admin-pass" placeholder="Enter Password" style="width: 100%; padding: 12px; background: #0E0505; border: 1px solid #6B1A1A; border-radius: 8px; color: white; margin-bottom: 20px; outline: none;">
-                <button id="login-btn" class="btn-primary" style="width: 100%;">LOGIN</button>
-                <p id="error-msg" style="color: #ff4444; margin-top: 15px; font-size: 13px; display: none;">Invalid Password</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- This script will be replaced by the React app once logged in -->
-    <script type="module">
-        const AUTH_PASSWORD = '1a2s3d_komal';
-        
-        const loginBtn = document.getElementById('login-btn');
-        const passInput = document.getElementById('admin-pass');
-        const errorMsg = document.getElementById('error-msg');
-        const root = document.getElementById('admin-root');
-
-        function checkLogin() {
-            if (passInput.value === AUTH_PASSWORD) {
-                sessionStorage.setItem('kta_admin_authed', 'true');
-                loadDashboard();
-            } else {
-                errorMsg.style.display = 'block';
-            }
-        }
-
-        loginBtn.addEventListener('click', checkLogin);
-        passInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') checkLogin();
-        });
-
-        function loadDashboard() {
-            // Check if authed
-            if (sessionStorage.getItem('kta_admin_authed') === 'true') {
-                // Clear root and load the React dashboard
-                root.innerHTML = '<div style="display: flex; justify-content: center; align-items: center; height: 80vh;"><p>Loading Dashboard...</p></div>';
-                
-                // Dynamically import the dashboard module
-                import('./js/admin_dashboard.jsx').then(module => {
-                  // The dashboard module will handle rendering to #admin-root
-                }).catch(err => {
-                  console.error('Failed to load dashboard:', err);
-                  root.innerHTML = '<div style="color: red; padding: 20px;">Error loading dashboard. Please check console.</div>';
-                });
-            }
-        }
-
-        // Auto-load if session active
-        if (sessionStorage.getItem('kta_admin_authed') === 'true') {
-            loadDashboard();
-        }
-    </script>
+    <div id="admin-root"></div>
+    <script type="module" src="/js/admin_dashboard.jsx"></script>
 </body>
 </html>
