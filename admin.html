@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KTA | Admin Insights</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -39,38 +40,41 @@
     </div>
     
     <script>
-        // Diagnostic logger
-        function writeLog(msg, color = '#C9A84C') {
-            const status = document.getElementById('mounting-status');
+        // Diagnostic logger - extremely safe version
+        function writeLog(msg, color) {
+            var c = color || '#C9A84C';
+            var status = document.getElementById('mounting-status');
             if (status) {
                 status.innerText = msg;
-                status.style.color = color;
+                status.style.color = c;
             }
-            console.log('%c[Admin Log]: ' + msg, 'color: ' + color);
+            console.log('[Admin Log]: ' + msg);
         }
 
-        window.onerror = function(message, source, lineno, colno, error) {
+        window.onerror = function(message, source, lineno) {
             writeLog('LOAD ERROR: ' + message + (lineno ? ' (Line: ' + lineno + ')' : ''), '#ff4444');
             return false;
         };
 
         window.onunhandledrejection = function(event) {
-            writeLog('PROMISE ERROR: ' + (event.reason?.message || event.reason), '#ff4444');
+            var reason = event.reason;
+            var msg = (reason && reason.message) ? reason.message : String(reason);
+            writeLog('PROMISE ERROR: ' + msg, '#ff4444');
         };
 
         // Pre-flight check
         writeLog('LOCATING DASHBOARD ENGINE...');
-        fetch('/js/admin_dashboard.tsx').then(r => {
-            if (!r.ok) writeLog('ENGINE NOT FOUND (404) at /js/admin_dashboard.tsx', '#ff4444');
+        fetch('js/admin_dashboard.tsx').then(function(r) {
+            if (!r.ok) writeLog('ENGINE NOT FOUND (404) at js/admin_dashboard.tsx', '#ff4444');
             else writeLog('ENGINE LOCATED. INITIALIZING REACT...');
-        }).catch(err => {
+        }).catch(function(err) {
             writeLog('NETWORK ERROR: ' + err.message, '#ff4444');
         });
 
         // Timeout fallback
-        setTimeout(() => {
-            const status = document.getElementById('mounting-status');
-            if (status && status.innerText.includes('INITIALIZING')) {
+        setTimeout(function() {
+            var status = document.getElementById('mounting-status');
+            if (status && status.innerText.indexOf('INITIALIZING') !== -1) {
                 writeLog('STILL INITIALIZING... TRY RELOADING.', '#ff4444');
                 document.getElementById('mounting-error').style.display = 'block';
                 document.getElementById('mounting-error').innerText = 'The engine is taking longer than expected. Please hard refresh (Ctrl+F5).';
@@ -78,6 +82,6 @@
         }, 12000);
     </script>
 
-    <script type="module" src="/js/admin_dashboard.tsx"></script>
+    <script type="module" src="js/admin_dashboard.tsx"></script>
 </body>
 </html>

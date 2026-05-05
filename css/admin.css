@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+@theme {
+  --color-maroon: #6B1A1A;
+  --color-maroon-light: #8B1A1A;
+  --color-gold: #C9A84C;
+  --color-bg-card: #130303;
+  --color-text-muted: #999999;
+}

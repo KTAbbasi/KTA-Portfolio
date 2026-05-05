@@ -57,48 +57,62 @@ const AdminDashboard = () => {
     const myId = getSafe('kta_visitor_id');
 
     const handleLogin = () => {
+        console.log('Login: Attempting with provided password');
         if (password === '1a2s3d_komal') {
+            console.log('Login: Success!');
             try {
                 sessionStorage.setItem('kta_admin_authed', 'true');
-            } catch (e) {}
+            } catch (e) {
+                console.error('Login: SessionStorage error', e);
+            }
             setIsAuthed(true);
         } else {
+            console.warn('Login: Invalid password');
             setError(true);
         }
     };
 
     useEffect(() => {
+        console.log('Dashboard: useEffect triggered. Auth Status:', isAuthed);
         if (!isAuthed) {
+            console.log('Dashboard: Not authed, showing login form');
             setLoading(false);
             return;
         }
         
     const fetchData = async () => {
-        console.log('Dashboard: Fetching data...');
+        console.log('Dashboard: fetchData started');
         setLoading(true);
         try {
+            console.log('Dashboard: Waiting for Firebase DB...');
             const db = await getFirebaseDb();
+            console.log('Dashboard: Firebase DB instance received:', !!db);
             if (db) {
+                console.log('Dashboard: Querying analytics_events...');
                 const q = query(
                     collection(db, 'analytics_events'), 
                     orderBy('timestamp', 'desc'), 
                     limit(500)
                 );
                 const snapshot = await getDocs(q);
+                console.log('Dashboard: Received snapshot. Docs:', snapshot.size);
                 const cloudEvents = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as AnalyticsEvent[];
                 setEvents(cloudEvents);
                 processStats(cloudEvents);
+            } else {
+                console.warn('Dashboard: DB was null, stats will be empty');
             }
         } catch (e: any) {
-            console.error('Dashboard: Fetch failed:', e);
+            console.error('Dashboard: Fetch error trapped:', e);
         } finally {
+            console.log('Dashboard: fetchData finalized');
             setLoading(false);
         }
     };
     fetchData();
 
         const timer = setTimeout(() => {
-            console.warn('Dashboard: Safety timeout reached');
+            console.warn('Dashboard: 8s safety timeout reached. Forcing loading state to false.');
             setLoading(false);
         }, 8000);
         return () => clearTimeout(timer);
