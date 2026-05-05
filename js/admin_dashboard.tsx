@@ -6,15 +6,28 @@ import {
 } from 'recharts';
 import { Users, Eye, Globe, Clock, LayoutDashboard, Database } from 'lucide-react';
 
+console.log('AdminDashboard script started...');
+
+interface AnalyticsEvent {
+    id?: string;
+    type: string;
+    visitorId?: string;
+    country?: string;
+    project?: string;
+    url?: string;
+    timestamp: string;
+}
+
 const AdminDashboard = () => {
+    console.log('AdminDashboard component rendering...');
     // Safe storage helper
-    const getSafe = (key, type = 'local') => {
+    const getSafe = (key: string, type: 'local' | 'session' = 'local') => {
         try {
             return (type === 'local' ? localStorage : sessionStorage).getItem(key);
         } catch (e) { return null; }
     };
 
-    const [events, setEvents] = useState([]);
+    const [events, setEvents] = useState<AnalyticsEvent[]>([]);
     const [loading, setLoading] = useState(true);
     const [isAuthed, setIsAuthed] = useState(getSafe('kta_admin_authed', 'session') === 'true');
     const [password, setPassword] = useState('');
@@ -43,6 +56,7 @@ const AdminDashboard = () => {
         if (!isAuthed) return;
         
         const fetchData = async () => {
+            console.log('Fetching analytics data...');
             setLoading(true);
             try {
                 // 1. Initialize Firebase
@@ -67,7 +81,7 @@ const AdminDashboard = () => {
                     }
                 }
                 setLoading(false);
-            } catch (e) {
+            } catch (e: any) {
                 console.warn('Dashboard fetch error:', e);
                 setLoading(false);
             }
@@ -104,14 +118,15 @@ const AdminDashboard = () => {
         );
     }
 
-    const processStats = (data) => {
+    const processStats = (data: AnalyticsEvent[]) => {
         const uniqueIps = new Set(data.map(e => e.visitorId || 'anon'));
-        const countries = {};
+        const countries: Record<string, number> = {};
         data.forEach(e => {
             if (e.country) countries[e.country] = (countries[e.country] || 0) + 1;
         });
         
-        const top = Object.entries(countries).sort((a,b) => b[1] - a[1])[0];
+        const sorted = Object.entries(countries).sort((a: any, b: any) => b[1] - a[1]);
+        const top = sorted[0];
 
         setStats({
             totalViews: data.filter(e => e.type === 'page_view').length,
@@ -121,12 +136,14 @@ const AdminDashboard = () => {
         });
     };
 
-    const countryData = Object.entries(
-        events.reduce((acc, e) => {
-            if (e.country) acc[e.country] = (acc[e.country] || 0) + 1;
-            return acc;
-        }, {})
-    ).map(([name, value]) => ({ name, value })).sort((a,b) => b.value - a.value);
+    const countryMap = events.reduce((acc: Record<string, number>, e) => {
+        if (e.country) acc[e.country] = (acc[e.country] || 0) + 1;
+        return acc;
+    }, {});
+
+    const countryData = Object.entries(countryMap)
+        .map(([name, value]) => ({ name, value }))
+        .sort((a, b) => (b.value as number) - (a.value as number));
 
     const timeData = [
         { name: 'Mon', views: 40 },
@@ -292,12 +309,13 @@ const AdminDashboard = () => {
 
 // Mount function with error handling
 const mount = () => {
+    console.log('Attempting to mount dashboard...');
     try {
         const container = document.getElementById('admin-root');
         if (!container) return;
         const root = createRoot(container);
         root.render(<AdminDashboard />);
-    } catch (e) {
+    } catch (e: any) {
         console.error('Mounting error:', e);
         const container = document.getElementById('admin-root');
         if (container) {
