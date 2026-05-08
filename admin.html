@@ -51,8 +51,12 @@
             console.log('[Admin Log]: ' + msg);
         }
 
-        window.onerror = function(message, source, lineno) {
-            writeLog('LOAD ERROR: ' + message + (lineno ? ' (Line: ' + lineno + ')' : ''), '#ff4444');
+        window.onerror = function(message, source, lineno, colno, error) {
+            var errStr = message + (lineno ? ' (Line: ' + lineno + ')' : '');
+            if (error && error.stack) {
+                console.error('Stack Trace:', error.stack);
+            }
+            writeLog('LOAD ERROR: ' + errStr, '#ff4444');
             return false;
         };
 
@@ -63,22 +67,34 @@
         };
 
         // Pre-flight check
-        writeLog('DASHBOARD ENGINE FOUND. INITIALIZING...');
+        writeLog('CONNECTING TO DASHBOARD ENGINE...', '#C9A84C');
         
         // Timeout fallback
         setTimeout(function() {
             var status = document.getElementById('mounting-status');
             // Only fire if we are still at the "waiting" or "fetching" phase
-            if (status && (status.innerText.indexOf('INITIALIZING') !== -1 || status.innerText.indexOf('FOUND') !== -1)) {
+            if (status && (status.innerText.indexOf('CONNECTING') !== -1 || status.innerText.indexOf('FOUND') !== -1)) {
                 writeLog('STILL LOADING... TRY HARD REFRESH.', '#ff4444');
                 var errBox = document.getElementById('mounting-error');
                 if (errBox) {
                     errBox.style.display = 'block';
-                    errBox.innerText = 'The dashboard engine is not responding. Please hard refresh (Ctrl+F5) or check your connection.';
+                    errBox.innerText = 'The dashboard engine is not responding. This might be due to a slow connection or a caching issue. Please hard refresh (Ctrl+F5).';
                 }
             }
-        }, 15000);
+        }, 8000);
     </script>
-    <script type="module" src="js/admin_dashboard.tsx"></script>
+    <script type="module" src="/js/admin_dashboard.tsx"></script>
+    <script>
+        // Check if React mounted successfully after 5 seconds
+        setTimeout(function() {
+            if (!document.getElementById('admin-root').children.length) {
+                console.warn('Dashboard mount check failed. Retrying script injection...');
+                var s = document.createElement('script');
+                s.type = 'module';
+                s.src = '/js/admin_dashboard.tsx?v=' + Date.now();
+                document.body.appendChild(s);
+            }
+        }, 5000);
+    </script>
 </body>
 </html>
