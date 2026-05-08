@@ -83,7 +83,7 @@
             }
         }, 8000);
     </script>
-    <script type="module" src="/js/admin_dashboard.tsx"></script>
+    <script type="module" src="js/admin_dashboard.tsx"></script>
     <script>
         // Check if React mounted successfully after 5 seconds
         setTimeout(function() {
@@ -91,7 +91,7 @@
                 console.warn('Dashboard mount check failed. Retrying script injection...');
                 var s = document.createElement('script');
                 s.type = 'module';
-                s.src = '/js/admin_dashboard.tsx?v=' + Date.now();
+                s.src = 'js/admin_dashboard.tsx?v=' + Date.now();
                 document.body.appendChild(s);
             }
         }, 5000);
