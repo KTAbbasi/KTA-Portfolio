@@ -1,26 +1,48 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Hidden Analytics System
-    // Everyone can write tracking data
-    // Admin dashboard reads it
-    match /analytics_events/{event} {
-      allow create: if isValidEvent(request.resource.data);
-      allow get, list: if true; // In a real app, this should be restricted to admin
-      allow update, delete: if false; // Data is immutable once sent
-    }
-
-    function isValidEvent(data) {
-      return data.visitorId is string 
-          && data.type is string 
-          && data.timestamp is string
-          && data.visitorId.size() < 100
-          && data.keys().hasAll(['visitorId', 'type', 'timestamp']);
-    }
-
-    // Default deny
+    
+    // 0. Global Safety Net
     match /{document=**} {
       allow read, write: if false;
+    }
+
+    // Helper: Basic checks
+    function isSignedIn() { return request.auth != null; }
+    function isAdmin() { return isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)); }
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+    function incoming() { return request.resource.data; }
+
+    // 1. Analytics Events Collection
+    match /analytics_events/{event} {
+      // Public visitors can record their sessions
+      allow create: if isValidId(event) && isValidAnalyticsEvent(incoming());
+      
+      // Only admins can see the data
+      allow list, get: if isAdmin();
+      
+      // Data is immutable
+      allow update, delete: if false;
+    }
+
+    function isValidAnalyticsEvent(data) {
+      return data.keys().hasAll(['visitorId', 'type', 'timestamp'])
+          && data.visitorId is string && data.visitorId.size() <= 128
+          && data.type is string && data.type in ['page_view', 'project_click', 'session_end']
+          && data.timestamp is string && data.timestamp.size() <= 32
+          // Optional fields
+          && (!data.keys().contains('project') || (data.project is string && data.project.size() <= 200))
+          && (!data.keys().contains('url') || (data.url is string && data.url.size() <= 500))
+          && (!data.keys().contains('country') || (data.country is string && data.country.size() <= 100))
+          && (!data.keys().contains('ua') || (data.ua is string && data.ua.size() <= 500))
+          && (!data.keys().contains('duration') || (data.duration is int || data.duration is float))
+          && (!data.keys().contains('target') || (data.target is string && data.target.size() <= 500));
+    }
+
+    // 2. Admins Collection (Self-seeding or managed via Console)
+    match /admins/{userId} {
+      allow read: if isSignedIn() && request.auth.uid == userId;
+      allow write: if false; // Only manageable via Firebase Console for security
     }
   }
 }

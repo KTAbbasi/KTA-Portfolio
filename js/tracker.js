@@ -61,7 +61,12 @@
         if (firestore) {
             try {
                 const { collection, addDoc } = await import('firebase/firestore');
-                await addDoc(collection(firestore, 'analytics_events'), event);
+                const { handleFirestoreError, OperationType } = await import('./firebase-init.js');
+                try {
+                    await addDoc(collection(firestore, 'analytics_events'), event);
+                } catch (writeError) {
+                    handleFirestoreError(writeError, OperationType.WRITE, 'analytics_events');
+                }
             } catch (e) {
                 console.error('Failed to send tracking event:', e);
             }
