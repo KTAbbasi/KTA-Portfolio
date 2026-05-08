@@ -63,19 +63,13 @@
         };
 
         // Pre-flight check
-        writeLog('FETCHING DASHBOARD ENGINE...');
-        fetch('/js/admin_dashboard.tsx').then(function(r) {
-            if (!r.ok) writeLog('ENGINE NOT FOUND (404) at /js/admin_dashboard.tsx', '#ff4444');
-            else writeLog('ENGINE READY. WAITING FOR REACT MOUNT...');
-        }).catch(function(err) {
-            writeLog('NETWORK ERROR: ' + err.message, '#ff4444');
-        });
-
+        writeLog('DASHBOARD ENGINE FOUND. INITIALIZING...');
+        
         // Timeout fallback
         setTimeout(function() {
             var status = document.getElementById('mounting-status');
             // Only fire if we are still at the "waiting" or "fetching" phase
-            if (status && (status.innerText.indexOf('DASHBOARD') !== -1 || status.innerText.indexOf('WAITING') !== -1)) {
+            if (status && (status.innerText.indexOf('INITIALIZING') !== -1 || status.innerText.indexOf('FOUND') !== -1)) {
                 writeLog('STILL LOADING... TRY HARD REFRESH.', '#ff4444');
                 var errBox = document.getElementById('mounting-error');
                 if (errBox) {
@@ -85,7 +79,6 @@
             }
         }, 15000);
     </script>
-
-    <script type="module" src="/js/admin_dashboard.tsx"></script>
+    <script type="module" src="js/admin_dashboard.tsx"></script>
 </body>
 </html>
