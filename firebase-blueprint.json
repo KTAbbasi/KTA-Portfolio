@@ -13,35 +13,14 @@
       },
       "required": ["userId", "firstSeen"]
     },
-    "view": {
-      "title": "Page View",
-      "description": "Tracking of individual page views and project interactions",
-      "type": "object",
-      "properties": {
-        "visitorId": { "type": "string" },
-        "page": { "type": "string" },
-        "project": { "type": "string", "description": "Name of the project if applicable" },
-        "timestamp": { "type": "string", "format": "date-time" },
-        "duration": { "type": "number", "description": "Time spent in seconds" }
-      },
-      "required": ["visitorId", "page", "timestamp"]
-    }
-  },
-  "firestore": {
-    "analytics_events": {
-      "schema": "analytics_event",
-      "description": "Collection of all tracking events (page views, clicks, etc.)"
-    }
-  },
-  "entities": {
     "analytics_event": {
       "title": "Analytics Event",
-      "description": "A single tracking event",
+      "description": "A single tracking event (page view, project click, or session end)",
       "type": "object",
       "properties": {
         "visitorId": { "type": "string" },
         "type": { "type": "string", "enum": ["page_view", "project_click", "session_end"] },
-        "page": { "type": "string" },
+        "url": { "type": "string" },
         "project": { "type": "string" },
         "country": { "type": "string" },
         "timestamp": { "type": "string", "format": "date-time" },
@@ -50,6 +29,12 @@
         "ua": { "type": "string" }
       },
       "required": ["visitorId", "type", "timestamp"]
+    }
+  },
+  "firestore": {
+    "analytics_events": {
+      "schema": "analytics_event",
+      "description": "Collection of all tracking events from site visitors"
     }
   }
 }

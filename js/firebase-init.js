@@ -1,7 +1,9 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
+import { getAnalytics } from 'firebase/analytics';
 
 let dbInstance = null;
+let analyticsInstance = null;
 let initialized = false;
 
 export async function getFirebaseDb() {
@@ -27,6 +29,15 @@ export async function getFirebaseDb() {
         
         const app = initializeApp(config);
         dbInstance = getFirestore(app);
+        
+        // Initialize Analytics only if supported
+        try {
+            analyticsInstance = getAnalytics(app);
+            console.log('FirebaseInit: Analytics initialized');
+        } catch (analyticsError) {
+            console.warn('FirebaseInit: Analytics not supported in this environment');
+        }
+
         initialized = true;
         console.log('FirebaseInit: Firestore initialized successfully');
         return dbInstance;
