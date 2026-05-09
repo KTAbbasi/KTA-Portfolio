@@ -186,102 +186,96 @@ const AdminDashboard = () => {
 
     if (!isAuthed) {
         return (
-            <div className="flex min-h-screen bg-[#050505] selection:bg-[#C9A84C]/30 font-sans">
-                {/* Left Side: Visual Panel */}
-                <div className="hidden lg:block w-7/12 relative overflow-hidden">
-                    <div 
-                        className="absolute inset-0 bg-cover bg-center transition-transform duration-[10s] hover:scale-110"
-                        style={{ 
-                            backgroundImage: `url('https://images.unsplash.com/photo-1549413204-74229b47e8db?q=80&w=2070&auto=format&fit=crop')`, // Minimalist desert/dunes to match prompt aesthetic
-                            filter: 'brightness(0.7) contrast(1.2)'
-                        }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#130303]/80 to-transparent" />
-                    
-                    {/* Floating Branding */}
-                    <div className="absolute bottom-20 left-20 z-10">
-                        <motion.div 
-                            initial={{ x: -20, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            transition={{ delay: 0.2 }}
-                            className="flex items-center gap-4 mb-4"
-                        >
-                            <div className="w-12 h-12 rounded-2xl bg-[#C9A84C] flex items-center justify-center text-black shadow-2xl">
-                                <Shield size={24} />
+            <div className="flex min-h-screen bg-[#FDF6F6] selection:bg-[#8E3E3F]/20 font-sans overflow-hidden items-center justify-center p-4 lg:p-10">
+                <motion.div 
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="w-full max-w-6xl h-[800px] flex bg-white/50 rounded-[3rem] shadow-[0_40px_100px_rgba(0,0,0,0.08)] backdrop-blur-xl relative overflow-hidden"
+                >
+                    {/* Left Panel: Image with Complex Wave Curve */}
+                    <div className="hidden lg:block w-[45%] relative">
+                        <div className="absolute inset-4 right-0">
+                            <div className="w-full h-full relative rounded-l-[2.5rem] overflow-hidden">
+                                <img 
+                                    src="https://images.unsplash.com/photo-1549413204-74229b47e8db?q=80&w=2070&auto=format&fit=crop" 
+                                    className="w-full h-full object-cover"
+                                    alt="Artistic dunes"
+                                />
+                                {/* The "Wave" Interface - Custom SVG Masking or overlay */}
+                                <div 
+                                    className="absolute inset-y-0 -right-1 w-32 bg-[#FDF6F6]" 
+                                    style={{ 
+                                        clipPath: 'path("M100,0 C60,200 60,600 100,800 L32,800 L32,0 Z")',
+                                        transform: 'scaleX(-1) translateX(-100%)',
+                                        right: '-32px'
+                                    }}
+                                />
                             </div>
-                            <span className="text-4xl font-black tracking-tighter text-white">
-                                KTA<span className="text-[#C9A84C]">.</span>
-                            </span>
-                        </motion.div>
-                        <p className="text-white/40 font-black uppercase tracking-[0.4em] text-[10px]">
-                            Secure Management Interface
-                        </p>
+                        </div>
                     </div>
-                </div>
 
-                {/* Right Side: Login Form */}
-                <div className="w-full lg:w-5/12 bg-[#130303] flex items-center justify-center p-8 md:p-24 xl:p-32">
-                    <motion.div 
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="w-full max-w-md"
-                    >
-                        <div className="text-center lg:text-left mb-20 -mt-20">
-                            <h2 className="text-6xl font-black tracking-tighter text-white mb-6">Login</h2>
-                            <p className="text-white/20 font-bold uppercase tracking-[0.4em] text-[10px] leading-relaxed">Administrative Authentication Required</p>
-                        </div>
+                    {/* Right Panel: Login Form */}
+                    <div className="flex-1 flex flex-col items-center justify-center p-12 lg:p-24 relative">
+                        
+                        <motion.div 
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ delay: 0.2 }}
+                            className="w-full max-w-sm text-center"
+                        >
+                            <h2 className="text-5xl font-black text-[#8E3E3F] mb-20">Login</h2>
 
-                        <div className="space-y-16">
-                            {/* Password Field */}
-                            <div className="group relative">
-                                <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-[#C9A84C] mb-6">Access Password</label>
-                                <div className="relative">
-                                    <input 
-                                        type="password" 
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
-                                        placeholder="••••••••••••" 
-                                        className="w-full bg-transparent border-b-2 border-white/10 py-6 text-white text-3xl outline-none focus:border-[#C9A84C] transition-all tracking-widest placeholder:text-white/5 font-mono"
-                                        autoFocus
-                                    />
-                                    <div className="absolute right-0 bottom-6 text-white/20 group-focus-within:text-[#C9A84C] transition-colors">
-                                        <ShieldCheck size={24} />
+                            <div className="space-y-16">
+                                {/* Password Field */}
+                                <div className="text-left group relative">
+                                    <label className="block text-[11px] font-bold text-[#8E3E3F] mb-4 opacity-70">Password</label>
+                                    <div className="relative border-b border-[#8E3E3F]/30 pb-4 group-focus-within:border-[#8E3E3F] transition-all">
+                                        <input 
+                                            type="password" 
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
+                                            placeholder="••••••••" 
+                                            className="w-full bg-transparent text-[#8E3E3F] text-xl outline-none placeholder:text-[#8E3E3F]/10 tracking-[0.3em]"
+                                            autoFocus
+                                        />
+                                        <div className="absolute right-0 bottom-4 text-[#8E3E3F]">
+                                            <ShieldCheck size={20} className="opacity-40 group-focus-within:opacity-100 transition-opacity" />
+                                        </div>
                                     </div>
+                                    {error && (
+                                        <p className="absolute -bottom-8 left-0 text-red-500 text-[10px] font-bold uppercase tracking-widest">
+                                            Invalid Access Credentials
+                                        </p>
+                                    )}
                                 </div>
-                                {error && (
-                                    <motion.p 
-                                        initial={{ opacity: 0, x: -10 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        className="absolute -bottom-10 left-0 text-red-500 text-[10px] font-bold uppercase tracking-widest"
+
+                                {/* Login Button */}
+                                <div className="pt-4">
+                                    <button 
+                                        onClick={handleLogin}
+                                        className="w-full max-w-xs mx-auto py-5 bg-gradient-to-r from-[#B16B74] to-[#8E3E3F] text-white font-black rounded-full shadow-[0_20px_40px_rgba(142,62,63,0.3)] hover:shadow-[0_25px_50px_rgba(142,62,63,0.4)] transition-all uppercase tracking-[0.3em] text-[11px] active:scale-95"
                                     >
-                                        Failed Handshake: Invalid Credentials
-                                    </motion.p>
-                                )}
-                            </div>
+                                        Login
+                                    </button>
+                                </div>
 
-                            <div className="pt-10">
-                                <button 
-                                    onClick={handleLogin}
-                                    className="w-full py-7 bg-[#C9A84C] text-black font-black rounded-full transition-all uppercase tracking-[0.4em] text-[11px] hover:bg-[#E0C172] active:scale-[0.98] shadow-[0_25px_50px_rgba(201,168,76,0.2)] hover:shadow-[0_30px_60px_rgba(201,168,76,0.3)]"
-                                >
-                                    Authorize Access
-                                </button>
+                                {/* Footer Links */}
+                                <div className="flex justify-between items-center text-[10px] font-black text-[#8E3E3F]/40 pt-16">
+                                    <button className="hover:text-[#8E3E3F] transition-colors">Create an account</button>
+                                    <button className="hover:text-[#8E3E3F] transition-colors">Forgot password</button>
+                                </div>
                             </div>
+                        </motion.div>
 
-                            <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest pt-12 border-t border-white/5">
-                                <button className="text-white/20 hover:text-[#C9A84C] transition-colors">Request Access</button>
-                                <button className="text-white/20 hover:text-white transition-colors">Emergency Protocol</button>
-                            </div>
-                        </div>
-
-                        <div className="mt-20 flex justify-center lg:justify-start gap-4">
-                            <div className="w-1 h-1 rounded-full bg-[#C9A84C]" />
-                            <div className="w-1 h-1 rounded-full bg-white/10" />
-                            <div className="w-1 h-1 rounded-full bg-white/10" />
-                        </div>
-                    </motion.div>
-                </div>
+                    </div>
+                </motion.div>
+                
+                <style>{`
+                    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap');
+                    .font-rounded { font-family: 'Quicksand', sans-serif; }
+                    input::placeholder { letter-spacing: normal; }
+                `}</style>
             </div>
         );
     }
