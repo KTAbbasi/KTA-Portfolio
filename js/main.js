@@ -192,6 +192,64 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = '/admin.html';
     });
     document.body.appendChild(adminDot);
+
+    // Background Music Logic
+    const musicToggle = document.getElementById('music-toggle');
+    const bgMusic = document.getElementById('bg-music');
+    const musicController = document.querySelector('.music-controller');
+    const musicIcon = musicToggle?.querySelector('i');
+    const musicText = musicToggle?.querySelector('.music-text');
+
+    if (musicToggle && bgMusic && musicController) {
+        let isPlaying = false;
+
+        const updateUI = (playing) => {
+            if (playing) {
+                musicIcon.className = 'fas fa-volume-up';
+                musicText.textContent = 'AUDIO ON';
+                musicController.classList.add('playing');
+            } else {
+                musicIcon.className = 'fas fa-volume-mute';
+                musicText.textContent = 'AUDIO OFF';
+                musicController.classList.remove('playing');
+            }
+        };
+
+        const togglePlayback = () => {
+            if (isPlaying) {
+                bgMusic.pause();
+                isPlaying = false;
+                sessionStorage.setItem('musicPlaying', 'false');
+                updateUI(false);
+            } else {
+                bgMusic.play().then(() => {
+                    isPlaying = true;
+                    sessionStorage.setItem('musicPlaying', 'true');
+                    updateUI(true);
+                }).catch(err => {
+                    console.warn('Playback blocked by browser. User interaction required.');
+                });
+            }
+        };
+
+        musicToggle.addEventListener('click', togglePlayback);
+
+        // Check preference on load
+        if (sessionStorage.getItem('musicPlaying') === 'true') {
+            // Auto-attempt to play if they previously had it on
+            // Many browsers will still block this until the first click
+            const attemptAutoplay = () => {
+                bgMusic.play().then(() => {
+                    isPlaying = true;
+                    updateUI(true);
+                }).catch(() => {
+                    // Fail silently, they'll have to click toggle
+                });
+                document.removeEventListener('click', attemptAutoplay);
+            };
+            document.addEventListener('click', attemptAutoplay);
+        }
+    }
 });
 
 // Portfolio Filter Function
