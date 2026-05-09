@@ -326,18 +326,7 @@ const AdminDashboard = () => {
                     </div>
                 </div>
 
-                {/* Upgrade Card */}
-                <div className="mt-10 p-8 bg-[#C9A84C]/5 rounded-[2.5rem] border border-[#C9A84C]/10 text-center relative overflow-hidden group">
-                    <div className="absolute -top-4 -left-4 w-16 h-16 bg-[#C9A84C] blur-[40px] opacity-20" />
-                    <div className="relative z-10">
-                        <div className="inline-flex p-3 bg-[#C9A84C]/10 rounded-2xl mb-4">
-                            <Zap size={24} className="text-[#C9A84C]" />
-                        </div>
-                        <h4 className="text-lg font-black mb-1">Go Pro!</h4>
-                        <p className="text-[10px] text-white/30 font-bold uppercase tracking-widest leading-relaxed mb-6">Unlock Advanced Matrix Insights</p>
-                        <button className="w-full py-3 bg-[#C9A84C] text-black text-[10px] font-black rounded-xl uppercase tracking-widest hover:bg-[#E0C172] transition-colors shadow-lg active:scale-95">Get Started</button>
-                    </div>
-                </div>
+
 
                 <div className="mt-8 pt-8 border-t border-white/5">
                     <button 
