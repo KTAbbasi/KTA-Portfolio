@@ -220,21 +220,21 @@ const AdminDashboard = () => {
                 </div>
 
                 {/* Right Side: Login Form */}
-                <div className="w-full lg:w-5/12 bg-[#130303] flex items-center justify-center p-8 md:p-20">
+                <div className="w-full lg:w-5/12 bg-[#130303] flex items-center justify-center p-8 md:p-24 xl:p-32">
                     <motion.div 
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="w-full max-w-md"
                     >
-                        <div className="text-center lg:text-left mb-16">
-                            <h2 className="text-5xl font-black tracking-tighter text-white mb-4">Login</h2>
-                            <p className="text-white/20 font-bold uppercase tracking-[0.3em] text-[10px]">Administrative Authentication Required</p>
+                        <div className="text-center lg:text-left mb-24">
+                            <h2 className="text-6xl font-black tracking-tighter text-white mb-6">Login</h2>
+                            <p className="text-white/20 font-bold uppercase tracking-[0.4em] text-[10px] leading-relaxed">Administrative Authentication Required</p>
                         </div>
 
-                        <div className="space-y-12">
+                        <div className="space-y-16">
                             {/* Password Field */}
                             <div className="group relative">
-                                <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#C9A84C] mb-4">Access Password</label>
+                                <label className="block text-[10px] font-black uppercase tracking-[0.3em] text-[#C9A84C] mb-6">Access Password</label>
                                 <div className="relative">
                                     <input 
                                         type="password" 
@@ -242,34 +242,34 @@ const AdminDashboard = () => {
                                         onChange={(e) => setPassword(e.target.value)}
                                         onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
                                         placeholder="••••••••••••" 
-                                        className="w-full bg-transparent border-b-2 border-white/10 py-4 text-white text-2xl outline-none focus:border-[#C9A84C] transition-all tracking-widest placeholder:text-white/5 font-mono"
+                                        className="w-full bg-transparent border-b-2 border-white/10 py-6 text-white text-3xl outline-none focus:border-[#C9A84C] transition-all tracking-widest placeholder:text-white/5 font-mono"
                                         autoFocus
                                     />
-                                    <div className="absolute right-0 bottom-4 text-white/20 group-focus-within:text-[#C9A84C] transition-colors">
-                                        <ShieldCheck size={20} />
+                                    <div className="absolute right-0 bottom-6 text-white/20 group-focus-within:text-[#C9A84C] transition-colors">
+                                        <ShieldCheck size={24} />
                                     </div>
                                 </div>
                                 {error && (
                                     <motion.p 
                                         initial={{ opacity: 0, x: -10 }}
                                         animate={{ opacity: 1, x: 0 }}
-                                        className="absolute -bottom-8 left-0 text-red-500 text-[10px] font-bold uppercase tracking-widest"
+                                        className="absolute -bottom-10 left-0 text-red-500 text-[10px] font-bold uppercase tracking-widest"
                                     >
                                         Failed Handshake: Invalid Credentials
                                     </motion.p>
                                 )}
                             </div>
 
-                            <div className="pt-6">
+                            <div className="pt-10">
                                 <button 
                                     onClick={handleLogin}
-                                    className="w-full py-6 bg-[#C9A84C] text-black font-black rounded-full transition-all uppercase tracking-[0.3em] text-[11px] hover:bg-[#E0C172] active:scale-[0.98] shadow-[0_20px_40px_rgba(201,168,76,0.2)] hover:shadow-[0_25px_50px_rgba(201,168,76,0.3)]"
+                                    className="w-full py-7 bg-[#C9A84C] text-black font-black rounded-full transition-all uppercase tracking-[0.4em] text-[11px] hover:bg-[#E0C172] active:scale-[0.98] shadow-[0_25px_50px_rgba(201,168,76,0.2)] hover:shadow-[0_30px_60px_rgba(201,168,76,0.3)]"
                                 >
                                     Authorize Access
                                 </button>
                             </div>
 
-                            <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest pt-8 border-t border-white/5">
+                            <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest pt-12 border-t border-white/5">
                                 <button className="text-white/20 hover:text-[#C9A84C] transition-colors">Request Access</button>
                                 <button className="text-white/20 hover:text-white transition-colors">Emergency Protocol</button>
                             </div>
