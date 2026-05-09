@@ -186,99 +186,99 @@ const AdminDashboard = () => {
 
     if (!isAuthed) {
         return (
-            <div className="flex items-center justify-center min-h-screen p-4 md:p-10" style={{ background: 'linear-gradient(135deg, #A8656A 0%, #762D30 100%)' }}>
+            <div className="flex items-center justify-center min-h-screen p-4 md:p-12 overflow-hidden selection:bg-[#8E3E3F]/20" style={{ background: 'linear-gradient(135deg, #A8656A 0%, #762D30 100%)' }}>
                 <motion.div 
                     initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="w-full max-w-5xl h-[700px] bg-white/70 backdrop-blur-xl rounded-[3rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.3)] flex overflow-hidden ring-1 ring-white/20"
+                    className="w-full max-w-6xl h-full max-h-[850px] bg-[#E5D1D1] rounded-[3.5rem] shadow-[0_60px_120px_-30px_rgba(0,0,0,0.4)] flex overflow-hidden ring-1 ring-white/20 relative"
                 >
                     {/* Left Section: Image with Wave Curve */}
-                    <div className="hidden lg:block w-1/2 relative bg-white">
-                        <div className="absolute inset-0 z-10 transition-transform duration-[20s] hover:scale-110">
+                    <div className="hidden lg:block w-[45%] relative h-full">
+                        <div className="absolute inset-0 z-10 transition-transform duration-[20s] hover:scale-105">
                             <img 
-                                src="https://images.unsplash.com/photo-1509114397022-ed747cca3f65?q=80&w=2070&auto=format&fit=crop" 
+                                src="https://images.unsplash.com/photo-1549413204-74229b47e8db?q=80&w=2070&auto=format&fit=crop" 
                                 className="w-full h-full object-cover"
                                 alt="Artistic dunes"
                             />
-                            {/* Color correction to match the reference */}
-                            <div className="absolute inset-0 bg-[#8E3E3F]/15 mix-blend-multiply" />
-                            <div className="absolute inset-0 bg-gradient-to-tr from-[#8E3E3F]/40 to-transparent opacity-60" />
+                            <div className="absolute inset-0 bg-[#8E3E3F]/10 mix-blend-multiply" />
                         </div>
                         
-                        {/* Wave Mask CSS */}
+                        {/* Wave Mask - Smooth Cubic Curve as seen in the image */}
                         <div 
-                            className="absolute inset-y-0 -right-[4px] w-48 bg-white z-20"
+                            className="absolute inset-y-0 -right-1 w-64 bg-[#E5D1D1] z-20"
                             style={{ 
-                                clipPath: 'path("M0,0 Q180,350 0,700 L200,700 L200,0 Z")',
-                                transform: 'translateX(2px)' // Slight overlap to prevent gaps
+                                clipPath: 'path("M0,0 C200,180 200,570 0,750 L300,750 L300,0 Z")',
+                                height: '100% border-left: 2px solid white/10'
                             }}
-                        />
-                        
-                        {/* Internal Wave Shadow for depth */}
-                        <div 
-                            className="absolute inset-y-0 -right-[10px] w-48 bg-black/5 z-10"
-                            style={{ clipPath: 'path("M0,0 Q190,350 0,700 L200,700 L200,0 Z")' }}
                         />
                     </div>
 
-                    {/* Right Section: Form */}
-                    <div className="flex-1 flex flex-col items-center justify-center p-12 md:p-20 lg:p-24 bg-white/80 lg:bg-transparent">
+                    {/* Right Section: Form area with specific styles from the image */}
+                    <div className="flex-1 flex flex-col items-center justify-center p-12 lg:p-24 bg-[#E5D1D1] relative">
                         <motion.div 
-                            initial={{ x: 20, opacity: 0 }}
+                            initial={{ x: 30, opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
-                            className="w-full max-w-sm"
+                            className="w-full max-w-sm text-center"
                         >
-                            <h2 className="text-5xl font-black text-[#8E3E3F] text-center mb-16 tracking-tight">Login</h2>
+                            {/* HUGE WHITE HEADING: Exactly like image */}
+                            <h2 className="text-8xl font-black text-white mb-24 tracking-tighter drop-shadow-[0_10px_20px_rgba(0,0,0,0.05)]">Login</h2>
 
-                            <div className="space-y-12">
-                                {/* Only Password Field as requested */}
-                                <div className="group relative">
-                                    <label className="block text-[11px] font-black uppercase tracking-[0.2em] text-[#8E3E3F] mb-3 ml-1 opacity-70">Password</label>
-                                    <div className="relative border-b-2 border-[#8E3E3F]/20 group-focus-within:border-[#8E3E3F] transition-all duration-500">
+                            <div className="space-y-16">
+                                <div className="text-left group relative">
+                                    <label className="block text-[11px] font-black uppercase tracking-[0.4em] text-[#8E3E3F] mb-6 ml-1 opacity-70">Password</label>
+                                    <div className="relative border-b-2 border-[#8E3E3F]/10 group-focus-within:border-[#8E3E3F] transition-all duration-700">
                                         <input 
                                             type="password" 
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
                                             onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
                                             placeholder="••••••••••••" 
-                                            className="w-full bg-transparent py-4 pr-10 text-[#8E3E3F] text-2xl outline-none tracking-widest placeholder:text-[#8E3E3F]/10 font-mono"
+                                            className="w-full bg-transparent py-4 pr-10 text-[#8E3E3F] text-3xl outline-none tracking-[0.3em] font-mono placeholder:tracking-normal placeholder:text-[#8E3E3F]/5"
                                             autoFocus
                                         />
-                                        <div className="absolute right-0 bottom-4 text-[#8E3E3F]/40 group-focus-within:text-[#8E3E3F] transition-colors">
-                                            <ShieldCheck size={20} />
+                                        <div className="absolute right-0 bottom-4 text-[#8E3E3F]/30 group-focus-within:text-[#8E3E3F] transition-colors">
+                                            <ShieldCheck size={26} />
                                         </div>
                                     </div>
                                     {error && (
                                         <motion.p 
                                             initial={{ opacity: 0, scale: 0.9 }}
                                             animate={{ opacity: 1, scale: 1 }}
-                                            className="absolute -bottom-8 left-0 text-red-500 text-[10px] font-bold uppercase tracking-widest bg-red-50 px-2 py-0.5 rounded"
+                                            className="absolute -bottom-10 left-0 text-red-600 text-[10px] font-bold uppercase tracking-[0.3em]"
                                         >
                                             Invalid Access Credentials
                                         </motion.p>
                                     )}
                                 </div>
 
-                                <div className="pt-8 flex justify-center">
+                                <div className="pt-4">
                                     <button 
                                         onClick={handleLogin}
-                                        className="w-full py-5 bg-gradient-to-r from-[#A8656A] to-[#8E3E3F] text-white font-black rounded-full shadow-[0_20px_40px_rgba(142,62,63,0.3)] hover:shadow-[0_25px_50px_rgba(142,62,63,0.4)] hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-[0.3em] text-[11px]"
+                                        className="w-full py-5 bg-[#8E3E3F] text-white font-black rounded-full shadow-[0_25px_50px_-10px_rgba(142,62,63,0.4)] hover:bg-[#a64f59] active:scale-95 transition-all duration-300 uppercase tracking-[0.4em] text-[12px]"
                                     >
                                         Login
                                     </button>
                                 </div>
 
-                                <div className="flex justify-between items-center text-[10px] font-bold text-[#8E3E3F]/60 pt-10">
+                                <div className="flex justify-between items-center text-[10px] font-black text-[#8E3E3F]/40 pt-16 uppercase tracking-[0.2em]">
                                     <button className="hover:text-[#8E3E3F] transition-colors">Create an account</button>
                                     <button className="hover:text-[#8E3E3F] transition-colors">Forgot password</button>
                                 </div>
+                            </div>
+
+                            {/* Navigation Dots - White as in the image */}
+                            <div className="mt-24 flex justify-center gap-4">
+                                <div className="w-2.5 h-2.5 rounded-full bg-white shadow-xl" />
+                                <div className="w-2.5 h-2.5 rounded-full bg-white/20" />
+                                <div className="w-2.5 h-2.5 rounded-full bg-white/20" />
                             </div>
                         </motion.div>
                     </div>
                 </motion.div>
 
                 <style>{`
-                    input::placeholder { letter-spacing: normal; }
+                    input::placeholder { letter-spacing: normal !important; }
+                    body { overflow: hidden; height: 100vh; }
                 `}</style>
             </div>
         );
