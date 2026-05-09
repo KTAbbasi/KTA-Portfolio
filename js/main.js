@@ -205,12 +205,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const updateUI = (playing) => {
             if (playing) {
-                musicIcon.className = 'fas fa-volume-up';
-                musicText.textContent = 'AUDIO ON';
+                if (musicIcon) musicIcon.className = 'fas fa-volume-up';
+                if (musicText) musicText.textContent = 'AUDIO ON';
                 musicController.classList.add('playing');
             } else {
-                musicIcon.className = 'fas fa-volume-mute';
-                musicText.textContent = 'AUDIO OFF';
+                if (musicIcon) musicIcon.className = 'fas fa-volume-mute';
+                if (musicText) musicText.textContent = 'AUDIO OFF';
                 musicController.classList.remove('playing');
             }
         };
@@ -227,27 +227,26 @@ document.addEventListener('DOMContentLoaded', () => {
                     sessionStorage.setItem('musicPlaying', 'true');
                     updateUI(true);
                 }).catch(err => {
-                    console.warn('Playback blocked by browser. User interaction required.');
+                    console.error('Playback failed:', err);
                 });
             }
         };
 
-        musicToggle.addEventListener('click', togglePlayback);
+        musicToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            togglePlayback();
+        });
 
-        // Check preference on load
+        // Resume if preferred
         if (sessionStorage.getItem('musicPlaying') === 'true') {
-            // Auto-attempt to play if they previously had it on
-            // Many browsers will still block this until the first click
-            const attemptAutoplay = () => {
+            const resumeOnInteraction = () => {
                 bgMusic.play().then(() => {
                     isPlaying = true;
                     updateUI(true);
-                }).catch(() => {
-                    // Fail silently, they'll have to click toggle
-                });
-                document.removeEventListener('click', attemptAutoplay);
+                }).catch(() => {});
+                document.removeEventListener('click', resumeOnInteraction);
             };
-            document.addEventListener('click', attemptAutoplay);
+            document.addEventListener('click', resumeOnInteraction);
         }
     }
 });
