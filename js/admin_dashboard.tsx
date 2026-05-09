@@ -26,13 +26,18 @@ interface AnalyticsEvent {
     timestamp: string;
 }
 
-const GlassCard = ({ children, className = '', hover = true }: { children: React.ReactNode, className?: string, hover?: boolean }) => (
+const GlassCard = ({ children, className = '', hover = true, curl = false }: { children: React.ReactNode, className?: string, hover?: boolean, curl?: boolean }) => (
     <motion.div 
-        whileHover={hover ? { y: -5, transition: { duration: 0.2 } } : {}}
-        className={`bg-gradient-to-br from-white/[0.03] to-white/[0.01] backdrop-blur-xl border border-white/5 rounded-[3rem] shadow-[inset_0_1px_1px_rgba(255,255,255,0.05),0_30px_60px_-15px_rgba(0,0,0,0.7)] p-8 relative overflow-hidden ${className}`}
+        whileHover={hover ? { y: -8, scale: 1.01, transition: { duration: 0.3, ease: "easeOut" } } : {}}
+        className={`bg-[#0D0D0D] border border-white/5 rounded-[2.5rem] shadow-[10px_10px_30px_rgba(0,0,0,0.5),-5px_-5px_20px_rgba(255,255,255,0.02)] p-8 relative overflow-hidden group ${className}`}
     >
-        {/* Subtle Inner Highlight */}
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        {/* Paper Curl Effect Component */}
+        {curl && (
+            <div className="absolute top-0 right-0 w-16 h-16 pointer-events-none z-10">
+                <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-[#C9A84C]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute top-[-2px] right-[-2px] w-8 h-8 bg-[#151515] border-l border-b border-white/10 rounded-bl-[1.5rem] shadow-[2px_2px_10px_rgba(0,0,0,0.5)] transform origin-top-right group-hover:scale-150 group-hover:rotate-12 transition-transform duration-500" />
+            </div>
+        )}
         {children}
     </motion.div>
 );
@@ -47,7 +52,7 @@ const AdminDashboard = () => {
     });
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
-    const [activeTab, setActiveTab] = useState('overview');
+    const [activeTab, setActiveTab] = useState('dashboard');
     const [searchQuery, setSearchQuery] = useState('');
     const [filterType, setFilterType] = useState('all');
     const [stats, setStats] = useState({
@@ -60,11 +65,13 @@ const AdminDashboard = () => {
 
     // Reset body style for admin
     useEffect(() => {
+        document.body.style.background = '#080808';
         document.body.style.cursor = 'auto';
         document.body.style.overflowX = 'hidden';
         document.body.style.overflowY = 'auto';
         return () => {
             document.body.style.cursor = '';
+            document.body.style.background = '';
         };
     }, []);
 
@@ -255,419 +262,352 @@ const AdminDashboard = () => {
     );
 
     return (
-        <div className="flex min-h-screen bg-[#050505] text-white font-sans selection:bg-[#C9A84C]/30">
+        <div className="flex min-h-screen bg-[#080808] text-white font-sans selection:bg-[#C9A84C]/30 p-4 md:p-6 lg:p-8 gap-6">
             
-            {/* Sidebar */}
-            <aside className="hidden lg:flex flex-col w-72 border-r border-white/5 bg-[#080808] p-8">
-                <div className="mb-12">
-                   <div className="flex items-center gap-3 mb-1">
-                        <div className="w-8 h-8 rounded-lg bg-[#C9A84C] flex items-center justify-center text-black">
-                            <Shield size={18} />
+            {/* Sidebar - Neumorphic Style */}
+            <aside className="hidden xl:flex flex-col w-80 bg-[#0D0D0D] rounded-[3rem] border border-white/5 shadow-[20px_20px_60px_rgba(0,0,0,0.5)] p-10">
+                <div className="mb-14">
+                   <div className="flex items-center gap-3 mb-2">
+                        <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#C9A84C] to-[#E0C172] flex items-center justify-center text-black shadow-lg">
+                            <Shield size={20} />
                         </div>
-                        <span className="font-extrabold text-xl tracking-tighter">KTN<span className="text-[#C9A84C]">OS</span></span>
+                        <span className="font-black text-2xl tracking-tighter">Dash<span className="text-[#C9A84C]">Burd</span></span>
                    </div>
-                   <p className="text-[10px] text-white/30 font-bold uppercase tracking-widest">Admin Control Unit</p>
+                   <p className="text-[10px] text-white/20 font-black uppercase tracking-[0.3em] ml-1">Creative OS v4.2</p>
                 </div>
 
-                <nav className="flex-1 space-y-2">
-                    {[
-                        { id: 'overview', icon: LayoutDashboard, label: 'Systems' },
-                        { id: 'events', icon: Activity, label: 'Live Feed' },
-                        { id: 'geo', icon: Globe, label: 'Geography' },
-                        { id: 'audit', icon: Shield, label: 'Audit Log' }
-                    ].map((item) => (
-                        <button 
-                            key={item.id}
-                            onClick={() => setActiveTab(item.id)}
-                            className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all group ${activeTab === item.id ? 'bg-[#C9A84C]/10 text-[#C9A84C]' : 'text-white/50 hover:bg-white/5 hover:text-white'}`}
-                        >
-                            <div className="flex items-center gap-3">
-                                <item.icon size={18} />
-                                <span className="text-sm font-bold">{item.label}</span>
-                            </div>
-                            {activeTab === item.id && <ChevronRight size={14} />}
-                        </button>
-                    ))}
-                </nav>
+                <div className="space-y-10 flex-1">
+                    <div>
+                        <p className="text-[9px] text-white/20 font-black uppercase tracking-[0.4em] mb-6 ml-4">Main Menu</p>
+                        <nav className="space-y-3">
+                            {[
+                                { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+                                { id: 'events', icon: Database, label: 'Inbox', count: '12' },
+                                { id: 'feed', icon: Activity, label: 'Feed' },
+                                { id: 'staff', icon: Users, label: 'Staff' },
+                                { id: 'geo', icon: PieChart, label: 'Statistics' },
+                            ].map((item) => (
+                                <button 
+                                    key={item.id}
+                                    onClick={() => setActiveTab(item.id)}
+                                    className={`w-full flex items-center justify-between px-6 py-4 rounded-2xl transition-all group ${activeTab === item.id ? 'bg-white font-black text-black shadow-xl scale-[1.02]' : 'text-white/40 hover:bg-white/5 hover:text-white'}`}
+                                >
+                                    <div className="flex items-center gap-4">
+                                        <item.icon size={20} className={activeTab === item.id ? 'text-[#C9A84C]' : ''} />
+                                        <span className="text-sm tracking-tight">{item.label}</span>
+                                    </div>
+                                    {item.count && (
+                                        <span className={`text-[9px] font-black px-2 py-0.5 rounded-full ${activeTab === item.id ? 'bg-[#C9A84C] text-black' : 'bg-white/5 text-white/30'}`}>
+                                            {item.count}
+                                        </span>
+                                    )}
+                                </button>
+                            ))}
+                        </nav>
+                    </div>
 
-                <div className="mt-auto pt-8 border-t border-white/5">
+                    <div>
+                        <p className="text-[9px] text-white/20 font-black uppercase tracking-[0.4em] mb-6 ml-4">Organization</p>
+                        <nav className="space-y-3">
+                            {[
+                                { id: 'mentoring', label: 'Mentoring', color: '#C9A84C' },
+                                { id: 'gaming', label: 'Gaming', color: '#44DDFF' },
+                                { id: 'celebrating', label: 'Celebrating', color: '#FF44DD' },
+                            ].map((item) => (
+                                <button 
+                                    key={item.id}
+                                    className="w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-white/40 hover:bg-white/5 hover:text-white transition-all group"
+                                >
+                                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }} />
+                                    <span className="text-sm tracking-tight">{item.label}</span>
+                                </button>
+                            ))}
+                        </nav>
+                    </div>
+                </div>
+
+                {/* Upgrade Card */}
+                <div className="mt-10 p-8 bg-[#C9A84C]/5 rounded-[2.5rem] border border-[#C9A84C]/10 text-center relative overflow-hidden group">
+                    <div className="absolute -top-4 -left-4 w-16 h-16 bg-[#C9A84C] blur-[40px] opacity-20" />
+                    <div className="relative z-10">
+                        <div className="inline-flex p-3 bg-[#C9A84C]/10 rounded-2xl mb-4">
+                            <Zap size={24} className="text-[#C9A84C]" />
+                        </div>
+                        <h4 className="text-lg font-black mb-1">Go Pro!</h4>
+                        <p className="text-[10px] text-white/30 font-bold uppercase tracking-widest leading-relaxed mb-6">Unlock Advanced Matrix Insights</p>
+                        <button className="w-full py-3 bg-[#C9A84C] text-black text-[10px] font-black rounded-xl uppercase tracking-widest hover:bg-[#E0C172] transition-colors shadow-lg active:scale-95">Get Started</button>
+                    </div>
+                </div>
+
+                <div className="mt-8 pt-8 border-t border-white/5">
                     <button 
                         onClick={handleLogout}
-                        className="w-full flex items-center gap-3 px-4 py-3 text-white/30 hover:text-white transition-colors text-sm font-bold uppercase tracking-widest"
+                        className="w-full flex items-center gap-4 px-6 py-3 text-white/20 hover:text-white transition-colors text-[10px] font-black uppercase tracking-[0.3em]"
                     >
-                        <LogOut size={18} />
-                        Exit Session
+                        <LogOut size={16} />
+                        Terminate Session
                     </button>
                 </div>
             </aside>
 
             {/* Main Content */}
-            <main className="flex-1 overflow-y-auto custom-scrollbar p-6 lg:p-12">
-                <div className="max-w-6xl mx-auto space-y-12">
+            <main className="flex-1 min-w-0">
+                <div className="max-w-[1600px] mx-auto space-y-10">
                     
-                    {/* Header */}
-                    <header className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
-                        <div className="space-y-4">
-                            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full">
-                                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                                <span className="text-[9px] font-black uppercase tracking-widest text-white/60">Server Matrix Online</span>
+                    {/* Header: Hello Creative! */}
+                    <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
+                        <div>
+                            <div className="flex items-center gap-4 mb-2">
+                                <h1 className="text-4xl font-black tracking-tighter">Hello Creative! 👋</h1>
                             </div>
-                            <h1 className="text-5xl font-black tracking-tight leading-none uppercase">
-                                QUANTUM <span className="text-white/20">INSIGHTS</span>
-                            </h1>
-                            <p className="text-[10px] text-white/40 uppercase tracking-[0.4em] font-bold">Real-time Intelligence Engine | v4.2.0</p>
+                            <nav className="flex items-center gap-8 text-[11px] font-black uppercase tracking-[0.2em] text-white/30">
+                                <button className="text-[#C9A84C] border-b-2 border-[#C9A84C] pb-2">Overview</button>
+                                <button className="hover:text-white transition-colors">Team Details</button>
+                                <button className="hover:text-white transition-colors">Tasks Statistic</button>
+                                <button className="hover:text-white transition-colors">My Plans</button>
+                                <button className="hover:text-white transition-colors">Notifications</button>
+                                <button className="hover:text-white transition-colors">Integrations</button>
+                            </nav>
                         </div>
 
-                        <div className="flex items-center gap-4">
-                             <div className="flex -space-x-2">
-                                {[1,2,3].map(i => (
-                                    <div key={i} className="w-8 h-8 rounded-full border-2 border-black bg-[#151515] flex items-center justify-center text-[10px] font-bold text-white/40">
-                                        V0{i}
-                                    </div>
-                                ))}
-                             </div>
-                             <div className="h-8 w-px bg-white/10 hidden md:block" />
-                             <button 
-                                onClick={fetchData}
-                                className="p-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-all group"
-                             >
-                                <RefreshCw size={18} className={`text-white/60 group-hover:text-white ${loading ? 'animate-spin' : ''}`} />
-                             </button>
-                        </div>
-                    </header>
+                        <div className="flex items-center gap-6">
+                            <div className="hidden lg:flex items-center gap-3 bg-[#0D0D0D] border border-white/5 rounded-full px-6 py-2.5 shadow-inner group focus-within:border-[#C9A84C]/30 transition-all">
+                                <Search size={18} className="text-white/20 group-focus-within:text-[#C9A84C] transition-colors" />
+                                <input 
+                                    type="text" 
+                                    placeholder="Search..." 
+                                    className="bg-transparent border-none outline-none text-xs font-bold text-white placeholder:text-white/10 w-32 focus:w-48 transition-all"
+                                />
+                            </div>
 
-                    {/* Bento Grid Stats */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {[
-                            { label: 'Total Ingress', val: stats.totalViews.toLocaleString(), icon: Eye, sub: 'Page Actions', color: 'text-blue-400' },
-                            { label: 'Active Users', val: stats.uniqueVisitors.toLocaleString(), icon: Users, sub: 'Visitors', color: 'text-[#C9A84C]' },
-                            { label: 'Top Region', val: stats.topCountry, icon: Globe, sub: 'Origin', color: 'text-emerald-400' },
-                            { label: 'Latency', val: '14ms', icon: Clock, sub: 'Avg Response', color: 'text-orange-400' }
-                        ].map((stat, i) => (
-                            <GlassCard key={i} className="group">
-                                <div className="flex justify-between items-start mb-6">
-                                    <div className={`p-4 bg-white/5 rounded-3xl group-hover:bg-white/10 transition-colors shadow-lg border border-white/5`}>
-                                        <stat.icon size={24} className={stat.color} />
-                                    </div>
-                                    <div className="flex items-center gap-1 text-[10px] font-black text-green-500 uppercase tracking-tighter bg-green-500/10 px-2 py-1 rounded-full">
-                                        <TrendingUp size={10} /> +4.2%
-                                    </div>
+                            <div className="bg-[#0D0D0D] p-1.5 rounded-full border border-white/5 shadow-inner flex items-center">
+                                <button className="px-6 py-2.5 bg-white text-black text-[10px] font-black rounded-full uppercase tracking-widest shadow-xl">General</button>
+                                <button className="px-6 py-2.5 text-white/30 text-[10px] font-black rounded-full uppercase tracking-widest hover:text-white/60 transition-colors">Workspace</button>
+                            </div>
+                            
+                            <div className="h-10 w-px bg-white/10" />
+
+                            <div className="flex items-center gap-3 bg-[#0D0D0D] border border-white/5 rounded-full pl-2 pr-6 py-2 hover:bg-white/5 transition-colors cursor-pointer group">
+                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#C9A84C] to-[#E0C172] p-1">
+                                    <div className="w-full h-full rounded-full bg-black flex items-center justify-center font-black text-[10px]">KTA</div>
                                 </div>
-                                <div className="space-y-1">
-                                    <h3 className="text-4xl font-black tracking-tight group-hover:text-[#C9A84C] transition-colors">{stat.val}</h3>
-                                    <div className="flex flex-col">
-                                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">{stat.label}</span>
-                                        <span className="text-[9px] text-white/10 uppercase font-black tracking-widest">{stat.sub}</span>
-                                    </div>
+                                <div>
+                                    <p className="text-[11px] font-black">Nathan KTA</p>
+                                    <p className="text-[9px] text-white/30 font-bold uppercase tracking-widest group-hover:text-[#C9A84C] transition-colors">Lead Designer</p>
                                 </div>
-                                
-                                {/* Decorator Dot */}
-                                <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-white/5 blur-2xl rounded-full" />
-                            </GlassCard>
-                        ))}
+                            </div>
+                        </div>
                     </div>
 
-                    {/* Render Views Based on Tab */}
-                    {activeTab === 'overview' && (
-                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                    {/* Bento Grid: Dashboard Layout */}
+                    {activeTab === 'dashboard' && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                             
-                            {/* Traffic Area Chart (Recipe 1 Style) */}
-                            <GlassCard className="lg:col-span-2 min-h-[550px] flex flex-col" hover={false}>
-                                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+                            {/* Projects Stats Bar Chart */}
+                            <GlassCard className="md:col-span-2 lg:col-span-2 h-[450px] flex flex-col" curl={true}>
+                                <div className="flex justify-between items-start mb-10">
                                     <div>
-                                        <div className="flex items-center gap-3 mb-1">
-                                            <div className="w-1.5 h-6 bg-[#C9A84C] rounded-full" />
-                                            <h3 className="text-2xl font-black uppercase tracking-tighter">Traffic <span className="text-white/20">Volume</span></h3>
-                                        </div>
-                                        <p className="text-[10px] text-white/30 uppercase tracking-[0.3em] font-black ml-4">Temporal Handshake Analysis</p>
+                                        <h3 className="text-xl font-black mb-1">Projects Stats</h3>
+                                        <p className="text-[10px] text-white/20 font-bold uppercase tracking-widest">Temporal Handshake Metrics</p>
                                     </div>
-                                    <div className="flex bg-white/5 p-1 rounded-2xl border border-white/5">
-                                         <button className="px-4 py-2 bg-[#C9A84C] text-black text-[10px] font-black rounded-xl uppercase tracking-widest">Live</button>
-                                         <button className="px-4 py-2 text-white/20 text-[10px] font-black rounded-xl uppercase tracking-widest hover:text-white/40">History</button>
-                                    </div>
-                                 </div>
-
-                                 <div className="flex-1 w-full min-h-[350px]">
+                                    <MoreVertical className="text-white/20" size={18} />
+                                </div>
+                                <div className="flex-1 w-full">
                                     <ResponsiveContainer width="100%" height="100%">
                                         <AreaChart data={chartData}>
                                             <defs>
-                                                <linearGradient id="primaryGradient" x1="0" y1="0" x2="0" y2="1">
-                                                    <stop offset="5%" stopColor="#C9A84C" stopOpacity={0.4}/>
-                                                    <stop offset="95%" stopColor="#C9A84C" stopOpacity={0}/>
+                                                <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
+                                                    <stop offset="5%" stopColor="#C9A84C" stopOpacity={0.8}/>
+                                                    <stop offset="95%" stopColor="#C9A84C" stopOpacity={0.1}/>
                                                 </linearGradient>
                                             </defs>
-                                            <CartesianGrid strokeDasharray="10 10" stroke="rgba(255,255,255,0.03)" vertical={false} />
+                                            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" vertical={false} />
                                             <XAxis 
                                                 dataKey="name" 
                                                 stroke="rgba(255,255,255,0.1)" 
                                                 fontSize={10} 
                                                 tickLine={false} 
                                                 axisLine={false}
-                                                dy={15}
-                                                fontFamily="monospace"
-                                                fontWeight="bold"
-                                            />
-                                            <YAxis 
-                                                stroke="rgba(255,255,255,0.1)" 
-                                                fontSize={10} 
-                                                tickLine={false} 
-                                                axisLine={false} 
-                                                fontFamily="monospace"
-                                                fontWeight="bold"
+                                                dy={10}
+                                                fontFamily="Arial"
                                             />
                                             <Tooltip 
-                                                contentStyle={{ 
-                                                    background: '#0D0D0D', 
-                                                    border: '1px solid rgba(255,255,255,0.1)', 
-                                                    borderRadius: '24px',
-                                                    fontSize: '10px',
-                                                    boxShadow: '0 30px 60px rgba(0,0,0,0.8)',
-                                                    padding: '16px'
-                                                }}
-                                                itemStyle={{ color: '#C9A84C', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.1em' }}
-                                                cursor={{ stroke: 'rgba(201,168,76,0.2)', strokeWidth: 2 }}
+                                                contentStyle={{ background: '#151515', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '20px', fontSize: '10px' }}
+                                                itemStyle={{ color: '#C9A84C', fontWeight: 'bold' }}
                                             />
-                                            <Area 
-                                                type="monotone" 
-                                                dataKey="views" 
-                                                stroke="#C9A84C" 
-                                                strokeWidth={4} 
-                                                fillOpacity={1} 
-                                                fill="url(#primaryGradient)" 
-                                                animationDuration={2500}
-                                                activeDot={{ r: 8, fill: '#C9A84C', stroke: '#000', strokeWidth: 4 }}
-                                            />
+                                            <Area type="monotone" dataKey="views" stroke="#C9A84C" strokeWidth={3} fill="url(#barGradient)" />
                                         </AreaChart>
                                     </ResponsiveContainer>
-                                 </div>
-                                 
-                                 {/* Paper Curl Aesthetic (CSS simulation) */}
-                                 <div className="absolute top-0 right-0 w-32 h-32 pointer-events-none overflow-hidden">
-                                    <div className="absolute top-[-50%] right-[-50%] w-full h-full bg-white/5 rotate-45 blur-3xl" />
-                                 </div>
-                            </GlassCard>
-
-                            {/* Recent Terminal Logs */}
-                            <GlassCard className="flex flex-col h-full min-h-[550px]" hover={false}>
-                                <div className="mb-8 flex justify-between items-center">
-                                    <div>
-                                        <h3 className="text-sm font-black uppercase tracking-[0.2em] text-white">Global Feed</h3>
-                                        <span className="text-[9px] text-[#C9A84C] font-black uppercase tracking-[0.3em]">Live Ingress</span>
-                                    </div>
-                                    <div className="flex gap-2">
-                                        <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]" />
-                                        <div className="w-2 h-2 rounded-full bg-[#C9A84C] shadow-[0_0_10px_rgba(201,168,76,0.5)]" />
-                                    </div>
                                 </div>
-                                <div className="flex-1 overflow-y-auto custom-scrollbar pr-2 -mr-2">
-                                    <div className="space-y-3">
-                                        {filteredEvents.slice(0, 30).map((e, i) => (
-                                            <motion.div 
-                                                key={i}
-                                                initial={{ opacity: 0, x: 20 }}
-                                                animate={{ opacity: 1, x: 0 }}
-                                                transition={{ delay: i * 0.05 }}
-                                                className="p-5 rounded-[2rem] bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] transition-all cursor-crosshair group"
-                                            >
-                                                <div className="flex justify-between items-start mb-2">
-                                                    <span className="text-[10px] font-mono font-black text-white/20 group-hover:text-[#C9A84C] transition-colors">
-                                                        ID::{e.visitorId?.substring(0, 8).toUpperCase()}
-                                                    </span>
-                                                    <span className="text-[9px] font-mono text-white/10 font-bold">
-                                                        {new Date(e.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                                    </span>
-                                                </div>
-                                                <div className="flex items-center justify-between">
-                                                    <span className="text-[10px] font-black uppercase tracking-widest">
-                                                        {e.type.replace('_', ' ')}
-                                                    </span>
-                                                    <span className="text-[9px] font-black text-white/30 uppercase italic">{e.country || 'Global'}</span>
-                                                </div>
-                                            </motion.div>
-                                        ))}
-                                    </div>
+                                
+                                <div className="mt-6 flex justify-around p-4 bg-white/5 rounded-3xl border border-white/5">
+                                    {[
+                                        { l: 'Completed', v: '84%', c: 'bg-[#C9A84C]' },
+                                        { l: 'In Progress', v: '12%', c: 'bg-white/20' }
+                                    ].map((s, i) => (
+                                        <div key={i} className="flex items-center gap-3">
+                                            <div className={`w-2.5 h-2.5 rounded-full ${s.c}`} />
+                                            <div>
+                                                <p className="text-[9px] text-white/30 font-black uppercase tracking-widest">{s.l}</p>
+                                                <p className="text-xs font-black">{s.v}</p>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </GlassCard>
-                        </div>
-                    )}
 
-                    {activeTab === 'events' && (
-                        <GlassCard className="!p-0 overflow-hidden" hover={false}>
-                            <div className="p-12 border-b border-white/5 flex flex-col md:flex-row justify-between items-start md:items-end gap-8 bg-white/[0.01]">
-                                <div>
-                                    <div className="flex items-center gap-4 mb-4">
-                                        <div className="p-4 bg-[#C9A84C]/10 rounded-2xl">
-                                            <Database size={24} className="text-[#C9A84C]" />
+                            {/* Tasks Donut Chart */}
+                            <GlassCard className="h-[450px] flex flex-col items-center justify-center relative shadow-[inset_0_2px_10px_rgba(255,255,255,0.02)]" curl={true}>
+                                <div className="absolute top-8 left-8">
+                                    <h3 className="text-xl font-black mb-1">Tasks Chart</h3>
+                                    <p className="text-[10px] text-white/20 font-bold uppercase tracking-widest">Core Distribution</p>
+                                </div>
+                                
+                                <div className="relative w-56 h-56 flex items-center justify-center">
+                                    <svg className="w-full h-full -rotate-90 transform">
+                                        <circle 
+                                            cx="112" cy="112" r="100" 
+                                            stroke="rgba(255,255,255,0.05)" strokeWidth="24" fill="transparent"
+                                        />
+                                        <motion.circle 
+                                            initial={{ strokeDasharray: "0, 628" }}
+                                            animate={{ strokeDasharray: "460, 628" }}
+                                            transition={{ duration: 2, ease: "easeOut" }}
+                                            cx="112" cy="112" r="100" 
+                                            stroke="#C9A84C" strokeWidth="24" fill="transparent"
+                                            strokeLinecap="round"
+                                        />
+                                    </svg>
+                                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                                        <span className="text-5xl font-black tracking-tighter">73%</span>
+                                        <span className="text-[10px] text-white/20 font-black uppercase tracking-tighter">Total Tasks</span>
+                                    </div>
+                                </div>
+
+                                <div className="mt-10 flex gap-6">
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-2 h-2 rounded-full bg-[#C9A84C]" />
+                                        <span className="text-[10px] font-black uppercase tracking-widest">Done</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-2 h-2 rounded-full bg-white/10" />
+                                        <span className="text-[10px] font-black uppercase tracking-widest text-white/30">Process</span>
+                                    </div>
+                                </div>
+                            </GlassCard>
+
+                            {/* Right Column Stack */}
+                            <div className="space-y-8 h-[450px]">
+                                <GlassCard className="h-[210px] bg-gradient-to-br from-[#C9A84C] to-[#E0C172] text-black" hover={true}>
+                                    <div className="flex flex-col h-full justify-between">
+                                        <div className="flex justify-between items-start">
+                                            <div className="p-3 bg-black/10 rounded-2xl">
+                                                <Zap size={24} />
+                                            </div>
+                                            <ArrowUpRight size={24} />
                                         </div>
                                         <div>
-                                            <h2 className="text-3xl font-black uppercase tracking-tighter">Database <span className="text-white/20">Index</span></h2>
-                                            <p className="text-[10px] text-white/30 uppercase tracking-[0.4em] font-bold">Comprehensive Ingress Records</p>
+                                            <h3 className="text-2xl font-black tracking-tighter">Projects Report</h3>
+                                            <p className="text-[10px] font-black uppercase tracking-[0.2em] opacity-60">We done 17 project this month</p>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="flex flex-wrap items-center gap-4 w-full md:w-auto">
-                                    <div className="relative group flex-1 md:w-80">
-                                        <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-[#C9A84C] transition-colors" size={16} />
-                                        <input 
-                                            type="text" 
-                                            placeholder="FILTER NODES..." 
-                                            value={searchQuery}
-                                            onChange={(e) => setSearchQuery(e.target.value)}
-                                            className="w-full bg-black/40 border border-white/5 rounded-2xl py-4 pl-16 pr-6 text-[10px] font-black uppercase tracking-widest outline-none focus:border-[#C9A84C]/30 focus:bg-black/60 transition-all placeholder:text-white/10"
-                                        />
-                                    </div>
-                                    <select 
-                                        value={filterType}
-                                        onChange={(e) => setFilterType(e.target.value)}
-                                        className="p-4 bg-black/40 border border-white/5 rounded-2xl hover:border-[#C9A84C]/30 transition-all text-[10px] font-black uppercase outline-none cursor-pointer"
-                                    >
-                                        <option value="all">ALL PROTOCOLS</option>
-                                        <option value="page_view">VIEWS</option>
-                                        <option value="click">INTERACTIONS</option>
-                                    </select>
-                                </div>
-                            </div>
+                                </GlassCard>
 
-                            <div className="overflow-x-auto">
-                                 <table className="w-full text-left font-mono">
-                                    <thead className="bg-white/[0.02] border-b border-white/5">
-                                        <tr>
-                                            <th className="px-10 py-8 text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">Signature</th>
-                                            <th className="px-10 py-8 text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">Coordinate</th>
-                                            <th className="px-10 py-8 text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">Status</th>
-                                            <th className="px-10 py-8 text-[10px] font-black text-white/20 uppercase tracking-[0.3em] text-right">Timestamp</th>
-                                        </tr>
-                                    </thead>
-                                <tbody className="divide-y divide-white/[0.03]">
-                                    {filteredEvents.slice(0, 100).map((e, i) => (
-                                        <tr 
-                                            key={i} 
-                                            className={`transition-all hover:bg-white/[0.03] cursor-help group ${e.visitorId === 'KTA_ADMIN' ? 'bg-[#C9A84C]/5' : ''}`}
-                                        >
-                                            <td className="px-10 py-8">
-                                                <div className="flex items-center gap-4">
-                                                    <div className="w-12 h-12 rounded-2xl bg-black border border-white/5 flex items-center justify-center text-[12px] font-black tracking-tighter text-white/30 group-hover:text-[#C9A84C] group-hover:border-[#C9A84C]/40 transition-all shadow-inner">
-                                                        {e.visitorId?.substring(0, 2).toUpperCase() || 'AN'}
-                                                    </div>
-                                                    <div>
-                                                        <p className="text-sm font-black tracking-tighter group-hover:text-[#C9A84C] transition-colors uppercase">
-                                                            {e.visitorId?.substring(0, 16) || 'ANONYMOUS_NODE'}
-                                                        </p>
-                                                        <p className="text-[10px] text-white/20 uppercase font-black tracking-widest">{e.country || 'TERRA_NULLIS'}</p>
-                                                    </div>
+                                <GlassCard className="h-[210px] bg-[#151515] border-[#C9A84C]/10" hover={true}>
+                                    <div className="flex flex-col h-full justify-between text-center items-center">
+                                         <div className="flex -space-x-4 mb-4">
+                                            {[1,2,3,4].map(i => (
+                                                <div key={i} className="w-10 h-10 rounded-full bg-[#0D0D0D] border-2 border-[#151515] flex items-center justify-center font-black text-[#C9A84C] text-[10px]">
+                                                    {i === 4 ? '+5' : `P${i}`}
                                                 </div>
-                                            </td>
-                                            <td className="px-10 py-8">
-                                                <span className="text-[11px] font-black text-white/40 group-hover:text-white/60 transition-colors bg-white/5 px-4 py-2 rounded-xl">
-                                                    {e.project || e.url || '/ROOT/SECURE'}
-                                                </span>
-                                            </td>
-                                            <td className="px-10 py-8">
-                                                <span className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest border ${e.type === 'page_view' ? 'bg-blue-500/5 text-blue-400 border-blue-500/10' : 'bg-[#C9A84C]/5 text-[#C9A84C] border-[#C9A84C]/10'}`}>
-                                                    {e.type.replace('_', ' ')}
-                                                </span>
-                                            </td>
-                                            <td className="px-10 py-8 text-right">
-                                                <p className="text-sm font-black text-white tracking-widest">{new Date(e.timestamp).toLocaleTimeString()}</p>
-                                                <p className="text-[10px] text-white/20 font-black uppercase tracking-[0.2em]">{new Date(e.timestamp).toLocaleDateString()}</p>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                                 </table>
-                            </div>
-                        </GlassCard>
-                    )}
-
-                    {activeTab === 'geo' && (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                            <GlassCard hover={false}>
-                                <div className="flex items-center gap-4 mb-10">
-                                    <div className="p-4 bg-[#C9A84C]/10 rounded-2xl">
-                                        <Globe size={24} className="text-[#C9A84C]" />
+                                            ))}
+                                         </div>
+                                         <div>
+                                            <h4 className="text-sm font-black mb-1">Matrix Talk</h4>
+                                            <p className="text-[10px] text-white/30 font-bold uppercase tracking-widest">Join live intelligence feed</p>
+                                         </div>
+                                         <button className="w-full py-2.5 bg-[#C9A84C] text-black text-[10px] font-black rounded-xl uppercase tracking-widest shadow-lg mt-4">Join Meeting</button>
                                     </div>
-                                    <h3 className="text-2xl font-black uppercase tracking-tighter">Regional <span className="text-white/20">Ingress</span></h3>
+                                </GlassCard>
+                            </div>
+
+                            {/* Bottom Row: Recent Activities & Tasks Comparison */}
+                            <GlassCard className="md:col-span-2 lg:col-span-1 min-h-[400px] flex flex-col" curl={true}>
+                                <div className="mb-8">
+                                    <h3 className="text-xl font-black tracking-tight">Recent Activities</h3>
+                                    <p className="text-[10px] text-white/20 font-black uppercase tracking-[0.3em]">Latest Signal Pulse</p>
                                 </div>
-                                <div className="space-y-8">
-                                    {countryData.map((item, i) => (
-                                        <div key={i} className="space-y-3">
-                                            <div className="flex justify-between text-[10px] font-black uppercase tracking-[0.2em] mb-1">
-                                                <span>{item.name}</span>
-                                                <span className="text-[#C9A84C]">{item.value} UNITS</span>
+                                <div className="space-y-4 overflow-y-auto custom-scrollbar pr-2 -mr-2">
+                                    {filteredEvents.slice(0, 5).map((e, i) => (
+                                        <div key={i} className="flex items-center gap-4 p-4 rounded-3xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] transition-all group">
+                                            <div className="w-10 h-10 rounded-2xl bg-black border border-white/5 flex items-center justify-center font-black text-[#C9A84C] text-[10px]">
+                                                {e.visitorId?.substring(0, 1).toUpperCase() || 'A'}
                                             </div>
-                                            <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden p-0.5 border border-white/5 shadow-inner">
-                                                <motion.div 
-                                                    initial={{ width: 0 }}
-                                                    animate={{ width: `${(item.value as number / (events.length || 1)) * 100}%` }}
-                                                    className="h-full bg-gradient-to-r from-[#C9A84C] to-[#E0C172] rounded-full shadow-[0_0_10px_rgba(201,168,76,0.3)]"
-                                                />
+                                            <div className="flex-1 min-w-0">
+                                                <p className="text-xs font-black truncate">{e.visitorId || 'Anonymous User'}</p>
+                                                <p className="text-[9px] text-[#C9A84C] font-black uppercase tracking-widest">{e.type.replace('_', ' ')}</p>
                                             </div>
+                                            <button className="px-3 py-1 bg-white/5 rounded-lg text-[9px] font-black text-white/20 group-hover:text-white/60 transition-colors">Details</button>
                                         </div>
                                     ))}
                                 </div>
                             </GlassCard>
-                            <GlassCard className="flex flex-col items-center justify-center text-center py-20" hover={false}>
-                                <div className="relative">
-                                    <motion.div 
-                                        animate={{ rotateY: 360 }}
-                                        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                                        className="mb-8"
-                                    >
-                                        <Globe size={120} className="text-[#C9A84C]/20" strokeWidth={0.5} />
-                                    </motion.div>
-                                    <div className="absolute inset-0 flex items-center justify-center">
-                                        <Zap size={32} className="text-[#C9A84C] animate-pulse" />
+
+                            <GlassCard className="md:col-span-2 lg:col-span-3 min-h-[400px] flex flex-col" curl={true}>
+                                <div className="flex justify-between items-start mb-10">
+                                    <div>
+                                        <h3 className="text-xl font-black tracking-tight">Tasks Comparison</h3>
+                                        <p className="text-[10px] text-white/20 font-black uppercase tracking-[0.3em]">Temporal Delta Analytics</p>
+                                    </div>
+                                    <div className="flex gap-4">
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-3 h-0.5 bg-[#C9A84C]" />
+                                            <span className="text-[10px] text-white/40 font-black uppercase">Now</span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-3 h-0.5 bg-white/10" />
+                                            <span className="text-[10px] text-white/20 font-black uppercase font-medium">Prev</span>
+                                        </div>
                                     </div>
                                 </div>
-                                <h3 className="text-sm font-black uppercase tracking-[0.4em] text-white">Satellite Uplink</h3>
-                                <p className="text-[10px] text-white/20 mt-4 font-black uppercase tracking-widest max-w-[200px] leading-relaxed">Tracking Global Node Coordinates in Real-time</p>
+                                <div className="flex-1 w-full">
+                                    <ResponsiveContainer width="100%" height="100%">
+                                        <AreaChart data={chartData}>
+                                            <XAxis dataKey="name" hide />
+                                            <Tooltip 
+                                                contentStyle={{ background: '#151515', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '20px', fontSize: '10px' }}
+                                                itemStyle={{ color: '#C9A84C', fontWeight: 'bold' }}
+                                            />
+                                            <Area type="monotone" dataKey="views" stroke="#C9A84C" strokeWidth={4} fill="url(#barGradient)" />
+                                        </AreaChart>
+                                    </ResponsiveContainer>
+                                </div>
+                                <div className="mt-8 flex justify-between items-center text-[11px] font-black uppercase tracking-[0.4em] text-white/20 px-4">
+                                    <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+                                </div>
                             </GlassCard>
+
                         </div>
                     )}
-
-                    {activeTab === 'audit' && (
-                        <GlassCard hover={false}>
-                            <div className="flex items-center gap-6 mb-12">
-                                <div className="p-5 bg-[#C9A84C]/10 rounded-3xl">
-                                    <ShieldCheck size={32} className="text-[#C9A84C]" />
-                                </div>
-                                <div>
-                                    <h2 className="text-3xl font-black uppercase tracking-tighter">Security <span className="text-white/20">Protocol</span></h2>
-                                    <p className="text-[10px] text-white/30 uppercase tracking-[0.4em] font-black">Temporal Integrity Records</p>
-                                </div>
-                            </div>
-                            <div className="space-y-4">
-                                {[
-                                    { msg: 'System integrity handshake verified', time: '1m ago', type: 'security', status: 'verified' },
-                                    { msg: 'Admin session token revalidated', time: '4m ago', type: 'system', status: 'secure' },
-                                    { msg: 'Heuristic anomaly scan clear', time: '15m ago', type: 'network', status: 'active' },
-                                    { msg: 'Database bridge auto-synced', time: '2h ago', type: 'sync', status: 'success' }
-                                ].map((log, i) => (
-                                    <div key={i} className="flex items-center justify-between p-6 bg-white/[0.01] border border-white/5 rounded-3xl hover:bg-white/[0.03] transition-all">
-                                        <div className="flex items-center gap-6">
-                                            <div className="w-3 h-3 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.4)]" />
-                                            <div>
-                                                <span className="text-sm font-black text-white/60 tracking-tight uppercase">{log.msg}</span>
-                                                <div className="flex gap-4 mt-1">
-                                                    <span className="text-[9px] font-black uppercase tracking-widest text-white/20">Type::{log.type}</span>
-                                                    <span className="text-[9px] font-black uppercase tracking-widest text-[#C9A84C]/40">Status::{log.status}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <span className="text-[10px] font-mono text-white/10 font-black uppercase tracking-widest">{log.time}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        </GlassCard>
+                    
+                    {/* Render Other Tabs if needed */}
+                    {activeTab !== 'dashboard' && (
+                        <div className="animate-in fade-in duration-500">
+                             {/* Re-use existing components for table results if needed */}
+                             <GlassCard className="p-10">
+                                <h2 className="text-2xl font-black uppercase tracking-tighter mb-10">{activeTab} VIEW</h2>
+                                <p className="text-white/40">This section is currently under development to match the new UI architecture.</p>
+                             </GlassCard>
+                        </div>
                     )}
 
                     {/* Footer */}
-                    <footer className="pt-20 pb-12 flex flex-col md:flex-row justify-between items-center gap-8 border-t border-white/5 opacity-30">
+                    <footer className="pt-20 pb-12 flex flex-col md:flex-row justify-between items-center gap-8 border-t border-white/5 opacity-20">
                         <div className="flex items-center gap-2">
                             <Shield size={14} />
-                            <span className="text-[10px] font-bold uppercase tracking-[0.3em]">KTA PORTFOLIO OS v4.2.0</span>
+                            <span className="text-[10px] font-black uppercase tracking-[0.3em]">KTA PORTFOLIO OS v4.2.0</span>
                         </div>
-                        <p className="text-[10px] font-medium uppercase tracking-[0.2em]">&copy; {new Date().getFullYear()} ALL SYSTEMS OPERATIONAL</p>
+                        <p className="text-[10px] font-black uppercase tracking-[0.2em]">&copy; {new Date().getFullYear()} ALL SYSTEMS ACTIVE</p>
                     </footer>
                 </div>
             </main>
