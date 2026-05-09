@@ -220,13 +220,13 @@ const AdminDashboard = () => {
                 </div>
 
                 {/* Right Side: Login Form */}
-                <div className="w-full lg:w-5/12 bg-[#130303] flex items-center justify-center p-8 md:p-24 xl:p-32">
+                <div className="w-full lg:w-5/12 bg-[#130303] flex items-start justify-center p-8 md:p-24 xl:p-32 pt-20 md:pt-32 lg:pt-40">
                     <motion.div 
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="w-full max-w-md"
                     >
-                        <div className="text-center lg:text-left mb-24">
+                        <div className="text-center lg:text-left mb-20">
                             <h2 className="text-6xl font-black tracking-tighter text-white mb-6">Login</h2>
                             <p className="text-white/20 font-bold uppercase tracking-[0.4em] text-[10px] leading-relaxed">Administrative Authentication Required</p>
                         </div>
