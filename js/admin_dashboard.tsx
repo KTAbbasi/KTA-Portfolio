@@ -186,94 +186,98 @@ const AdminDashboard = () => {
 
     if (!isAuthed) {
         return (
-            <div className="flex min-h-screen bg-[#FDF6F6] selection:bg-[#8E3E3F]/20 font-sans overflow-hidden items-center justify-center p-4 lg:p-10">
+            <div className="flex items-center justify-center min-h-screen p-4 md:p-10" style={{ background: 'linear-gradient(135deg, #A8656A 0%, #762D30 100%)' }}>
                 <motion.div 
                     initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="w-full max-w-6xl h-[800px] flex bg-white/50 rounded-[3rem] shadow-[0_40px_100px_rgba(0,0,0,0.08)] backdrop-blur-xl relative overflow-hidden"
+                    className="w-full max-w-5xl h-[700px] bg-white/70 backdrop-blur-xl rounded-[3rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.3)] flex overflow-hidden ring-1 ring-white/20"
                 >
-                    {/* Left Panel: Image with Complex Wave Curve */}
-                    <div className="hidden lg:block w-[45%] relative">
-                        <div className="absolute inset-4 right-0">
-                            <div className="w-full h-full relative rounded-l-[2.5rem] overflow-hidden">
-                                <img 
-                                    src="https://images.unsplash.com/photo-1549413204-74229b47e8db?q=80&w=2070&auto=format&fit=crop" 
-                                    className="w-full h-full object-cover"
-                                    alt="Artistic dunes"
-                                />
-                                {/* The "Wave" Interface - Custom SVG Masking or overlay */}
-                                <div 
-                                    className="absolute inset-y-0 -right-1 w-32 bg-[#FDF6F6]" 
-                                    style={{ 
-                                        clipPath: 'path("M100,0 C60,200 60,600 100,800 L32,800 L32,0 Z")',
-                                        transform: 'scaleX(-1) translateX(-100%)',
-                                        right: '-32px'
-                                    }}
-                                />
-                            </div>
+                    {/* Left Section: Image with Wave Curve */}
+                    <div className="hidden lg:block w-1/2 relative bg-white">
+                        <div className="absolute inset-0 z-10 transition-transform duration-[20s] hover:scale-110">
+                            <img 
+                                src="https://images.unsplash.com/photo-1509114397022-ed747cca3f65?q=80&w=2070&auto=format&fit=crop" 
+                                className="w-full h-full object-cover"
+                                alt="Artistic dunes"
+                            />
+                            {/* Color correction to match the reference */}
+                            <div className="absolute inset-0 bg-[#8E3E3F]/15 mix-blend-multiply" />
+                            <div className="absolute inset-0 bg-gradient-to-tr from-[#8E3E3F]/40 to-transparent opacity-60" />
                         </div>
+                        
+                        {/* Wave Mask CSS */}
+                        <div 
+                            className="absolute inset-y-0 -right-[4px] w-48 bg-white z-20"
+                            style={{ 
+                                clipPath: 'path("M0,0 Q180,350 0,700 L200,700 L200,0 Z")',
+                                transform: 'translateX(2px)' // Slight overlap to prevent gaps
+                            }}
+                        />
+                        
+                        {/* Internal Wave Shadow for depth */}
+                        <div 
+                            className="absolute inset-y-0 -right-[10px] w-48 bg-black/5 z-10"
+                            style={{ clipPath: 'path("M0,0 Q190,350 0,700 L200,700 L200,0 Z")' }}
+                        />
                     </div>
 
-                    {/* Right Panel: Login Form */}
-                    <div className="flex-1 flex flex-col items-center justify-center p-12 lg:p-24 relative">
-                        
+                    {/* Right Section: Form */}
+                    <div className="flex-1 flex flex-col items-center justify-center p-12 md:p-20 lg:p-24 bg-white/80 lg:bg-transparent">
                         <motion.div 
-                            initial={{ y: 20, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 0.2 }}
-                            className="w-full max-w-sm text-center"
+                            initial={{ x: 20, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            className="w-full max-w-sm"
                         >
-                            <h2 className="text-5xl font-black text-[#8E3E3F] mb-20">Login</h2>
+                            <h2 className="text-5xl font-black text-[#8E3E3F] text-center mb-16 tracking-tight">Login</h2>
 
-                            <div className="space-y-16">
-                                {/* Password Field */}
-                                <div className="text-left group relative">
-                                    <label className="block text-[11px] font-bold text-[#8E3E3F] mb-4 opacity-70">Password</label>
-                                    <div className="relative border-b border-[#8E3E3F]/30 pb-4 group-focus-within:border-[#8E3E3F] transition-all">
+                            <div className="space-y-12">
+                                {/* Only Password Field as requested */}
+                                <div className="group relative">
+                                    <label className="block text-[11px] font-black uppercase tracking-[0.2em] text-[#8E3E3F] mb-3 ml-1 opacity-70">Password</label>
+                                    <div className="relative border-b-2 border-[#8E3E3F]/20 group-focus-within:border-[#8E3E3F] transition-all duration-500">
                                         <input 
                                             type="password" 
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
                                             onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
-                                            placeholder="••••••••" 
-                                            className="w-full bg-transparent text-[#8E3E3F] text-xl outline-none placeholder:text-[#8E3E3F]/10 tracking-[0.3em]"
+                                            placeholder="••••••••••••" 
+                                            className="w-full bg-transparent py-4 pr-10 text-[#8E3E3F] text-2xl outline-none tracking-widest placeholder:text-[#8E3E3F]/10 font-mono"
                                             autoFocus
                                         />
-                                        <div className="absolute right-0 bottom-4 text-[#8E3E3F]">
-                                            <ShieldCheck size={20} className="opacity-40 group-focus-within:opacity-100 transition-opacity" />
+                                        <div className="absolute right-0 bottom-4 text-[#8E3E3F]/40 group-focus-within:text-[#8E3E3F] transition-colors">
+                                            <ShieldCheck size={20} />
                                         </div>
                                     </div>
                                     {error && (
-                                        <p className="absolute -bottom-8 left-0 text-red-500 text-[10px] font-bold uppercase tracking-widest">
+                                        <motion.p 
+                                            initial={{ opacity: 0, scale: 0.9 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            className="absolute -bottom-8 left-0 text-red-500 text-[10px] font-bold uppercase tracking-widest bg-red-50 px-2 py-0.5 rounded"
+                                        >
                                             Invalid Access Credentials
-                                        </p>
+                                        </motion.p>
                                     )}
                                 </div>
 
-                                {/* Login Button */}
-                                <div className="pt-4">
+                                <div className="pt-8 flex justify-center">
                                     <button 
                                         onClick={handleLogin}
-                                        className="w-full max-w-xs mx-auto py-5 bg-gradient-to-r from-[#B16B74] to-[#8E3E3F] text-white font-black rounded-full shadow-[0_20px_40px_rgba(142,62,63,0.3)] hover:shadow-[0_25px_50px_rgba(142,62,63,0.4)] transition-all uppercase tracking-[0.3em] text-[11px] active:scale-95"
+                                        className="w-full py-5 bg-gradient-to-r from-[#A8656A] to-[#8E3E3F] text-white font-black rounded-full shadow-[0_20px_40px_rgba(142,62,63,0.3)] hover:shadow-[0_25px_50px_rgba(142,62,63,0.4)] hover:scale-[1.02] active:scale-95 transition-all uppercase tracking-[0.3em] text-[11px]"
                                     >
                                         Login
                                     </button>
                                 </div>
 
-                                {/* Footer Links */}
-                                <div className="flex justify-between items-center text-[10px] font-black text-[#8E3E3F]/40 pt-16">
+                                <div className="flex justify-between items-center text-[10px] font-bold text-[#8E3E3F]/60 pt-10">
                                     <button className="hover:text-[#8E3E3F] transition-colors">Create an account</button>
                                     <button className="hover:text-[#8E3E3F] transition-colors">Forgot password</button>
                                 </div>
                             </div>
                         </motion.div>
-
                     </div>
                 </motion.div>
-                
+
                 <style>{`
-                    @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap');
-                    .font-rounded { font-family: 'Quicksand', sans-serif; }
                     input::placeholder { letter-spacing: normal; }
                 `}</style>
             </div>
