@@ -341,7 +341,7 @@ const AdminDashboard = () => {
 
             {/* Main Content */}
             <main className="flex-1 min-w-0">
-                <div className="max-w-[1600px] mx-auto space-y-10">
+                <div className="max-w-[1600px] mx-auto space-y-16">
                     
                     {/* Header: Hello Creative! */}
                     <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
