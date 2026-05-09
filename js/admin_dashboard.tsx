@@ -37,12 +37,15 @@ const AdminDashboard = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
     const [activeTab, setActiveTab] = useState('overview');
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filterType, setFilterType] = useState('all');
     const [stats, setStats] = useState({
         totalViews: 0,
         uniqueVisitors: 0,
         avgDuration: 0,
         topCountry: 'None'
     });
+    const [chartData, setChartData] = useState<{name: string, views: number}[]>([]);
 
     // Reset body style for admin
     useEffect(() => {
@@ -111,6 +114,29 @@ const AdminDashboard = () => {
         const sorted = Object.entries(countries).sort((a: any, b: any) => b[1] - a[1]);
         const top = sorted[0];
 
+        // Process Chart Data (Last 7 days)
+        const dayCounts: Record<string, number> = {};
+        const now = new Date();
+        for (let i = 6; i >= 0; i--) {
+            const d = new Date();
+            d.setDate(now.getDate() - i);
+            const dateStr = d.toLocaleDateString('en-US', { day: '2-digit', month: 'short' });
+            dayCounts[dateStr] = 0;
+        }
+
+        data.forEach(e => {
+            if (e.type === 'page_view') {
+                const date = new Date(e.timestamp);
+                const dateStr = date.toLocaleDateString('en-US', { day: '2-digit', month: 'short' });
+                if (dayCounts[dateStr] !== undefined) {
+                    dayCounts[dateStr]++;
+                }
+            }
+        });
+
+        const newChartData = Object.entries(dayCounts).map(([name, views]) => ({ name, views }));
+        setChartData(newChartData);
+
         setStats({
             totalViews: data.filter(e => e.type === 'page_view').length,
             uniqueVisitors: uniqueIps.size,
@@ -128,15 +154,17 @@ const AdminDashboard = () => {
     .sort((a, b) => (b.value as number) - (a.value as number))
     .slice(0, 5);
 
-    const timeData = [
-        { name: '01', views: 420 },
-        { name: '02', views: 380 },
-        { name: '03', views: 512 },
-        { name: '04', views: 445 },
-        { name: '05', views: 610 },
-        { name: '06', views: 720 },
-        { name: '07', views: 590 },
-    ];
+    const filteredEvents = events.filter(e => {
+        const matchesSearch = !searchQuery || 
+            (e.visitorId?.toLowerCase().includes(searchQuery.toLowerCase())) ||
+            (e.country?.toLowerCase().includes(searchQuery.toLowerCase())) ||
+            (e.url?.toLowerCase().includes(searchQuery.toLowerCase())) ||
+            (e.project?.toLowerCase().includes(searchQuery.toLowerCase()));
+        
+        const matchesType = filterType === 'all' || e.type === filterType;
+        
+        return matchesSearch && matchesType;
+    });
 
     if (!isAuthed) {
         return (
@@ -273,9 +301,10 @@ const AdminDashboard = () => {
                                 <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
                                 <span className="text-[9px] font-black uppercase tracking-widest text-white/60">Server Matrix Online</span>
                             </div>
-                            <h1 className="text-5xl font-black tracking-tight leading-none italic italic-serif">
-                                Command <span className="text-white/20 not-italic">Center</span>
+                            <h1 className="text-5xl font-black tracking-tight leading-none uppercase">
+                                QUANTUM <span className="text-white/20">INSIGHTS</span>
                             </h1>
+                            <p className="text-[10px] text-white/40 uppercase tracking-[0.4em] font-bold">Real-time Intelligence Engine | v4.2.0</p>
                         </div>
 
                         <div className="flex items-center gap-4">
@@ -300,7 +329,7 @@ const AdminDashboard = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {[
                             { label: 'Total Ingress', val: stats.totalViews.toLocaleString(), icon: Eye, sub: 'Page Actions' },
-                            { label: 'Unique Node', val: stats.uniqueVisitors.toLocaleString(), icon: Users, sub: 'Visitors' },
+                            { label: 'Active Users', val: stats.uniqueVisitors.toLocaleString(), icon: Users, sub: 'Visitors' },
                             { label: 'Top Region', val: stats.topCountry, icon: Globe, sub: 'Origin' },
                             { label: 'Latency', val: '14ms', icon: Clock, sub: 'Avg Response' }
                         ].map((stat, i) => (
@@ -336,20 +365,20 @@ const AdminDashboard = () => {
                             <div className="lg:col-span-2 bg-[#0D0D0D] border border-white/5 rounded-[2.5rem] p-10 overflow-hidden relative">
                                  <div className="flex justify-between items-center mb-10">
                                     <div>
-                                        <h3 className="text-xl font-bold italic serif tracking-tight">Node Activity</h3>
-                                        <p className="text-[10px] text-white/30 uppercase tracking-[0.2em] mt-1">7 Day Aggregated Cycles</p>
+                                        <h3 className="text-xl font-black uppercase tracking-tight text-white">Traffic Volume</h3>
+                                        <p className="text-[10px] text-white/30 uppercase tracking-[0.2em] mt-1 font-bold">Aggregated Ingress Points Past 7 Intervals</p>
                                     </div>
                                     <div className="flex gap-4">
-                                         <div className="flex items-center gap-2 text-[10px] font-extrabold uppercase tracking-widest">
-                                            <div className="w-2 h-2 rounded-full bg-[#C9A84C]" />
-                                            Primary Data
+                                         <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-[#C9A84C]">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-[#C9A84C] animate-pulse" />
+                                            Current Cycles
                                          </div>
                                     </div>
                                  </div>
 
                                  <div className="h-[350px] w-full">
                                     <ResponsiveContainer width="100%" height="100%">
-                                        <AreaChart data={timeData}>
+                                        <AreaChart data={chartData}>
                                             <defs>
                                                 <linearGradient id="primaryGradient" x1="0" y1="0" x2="0" y2="1">
                                                     <stop offset="5%" stopColor="#C9A84C" stopOpacity={0.2}/>
@@ -401,16 +430,19 @@ const AdminDashboard = () => {
 
                             {/* Recent Terminal Logs (Recipe 1 Hover Invert) */}
                             <div className="bg-[#0D0D0D] border border-white/5 rounded-[2.5rem] flex flex-col h-full max-h-[500px] lg:max-h-none">
-                                <div className="p-8 border-b border-white/5 flex justify-between items-center">
+                                    <div className="p-8 border-b border-white/5 flex justify-between items-center bg-[#0D0D0D]">
                                     <div>
-                                        <h3 className="text-sm font-bold uppercase tracking-widest italic serif">Live Matrix</h3>
-                                        <span className="text-[9px] text-white/30 font-medium uppercase tracking-[0.3em]">Temporal Flow</span>
+                                        <h3 className="text-sm font-black uppercase tracking-widest text-white">Global Feed</h3>
+                                        <span className="text-[9px] text-white/30 font-bold uppercase tracking-[0.3em]">Temporal Ingress Stream</span>
                                     </div>
-                                    <Shield size={14} className="text-white/20" />
+                                    <div className="flex items-center gap-3">
+                                        <Search size={14} className="text-white/20" />
+                                        <Filter size={14} className="text-white/20" />
+                                    </div>
                                 </div>
                                 <div className="flex-1 overflow-y-auto custom-scrollbar p-2">
                                     <div className="space-y-1">
-                                        {events.slice(0, 15).map((e, i) => (
+                                        {filteredEvents.slice(0, 50).map((e, i) => (
                                             <motion.div 
                                                 key={i}
                                                 initial={{ opacity: 0, x: -10 }}
@@ -452,13 +484,21 @@ const AdminDashboard = () => {
                                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" size={14} />
                                         <input 
                                             type="text" 
-                                            placeholder="FILTER BY NODE ID..." 
-                                            className="w-full bg-black border border-white/5 rounded-xl py-3 pl-10 pr-4 text-[10px] font-black uppercase tracking-widest outline-none focus:border-[#6B1A1A]/30 transition-all placeholder:text-white/10"
+                                            placeholder="SEARCH BY NODE OR ID..." 
+                                            value={searchQuery}
+                                            onChange={(e) => setSearchQuery(e.target.value)}
+                                            className="w-full bg-black border border-white/5 rounded-xl py-3 pl-10 pr-4 text-[10px] font-black uppercase tracking-widest outline-none focus:border-[#C9A84C]/30 transition-all placeholder:text-white/10"
                                         />
                                     </div>
-                                    <button className="p-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all">
-                                        <Filter size={18} className="text-white/60" />
-                                    </button>
+                                    <select 
+                                        value={filterType}
+                                        onChange={(e) => setFilterType(e.target.value)}
+                                        className="p-3 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 transition-all text-[10px] font-bold uppercase outline-none"
+                                    >
+                                        <option value="all">ALL TYPES</option>
+                                        <option value="page_view">VIEWS</option>
+                                        <option value="click">CLICKS</option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -472,40 +512,40 @@ const AdminDashboard = () => {
                                             <th className="p-6 text-[10px] font-bold text-white/30 uppercase tracking-[0.2em] italic serif text-right">Timestamp</th>
                                         </tr>
                                     </thead>
-                                    <tbody className="divide-y divide-white/[0.03]">
-                                        {events.slice(0, 50).map((e, i) => (
-                                            <tr 
-                                                key={i} 
-                                                className={`transition-all hover:bg-white/[0.02] cursor-cell group ${e.visitorId === 'KTA_ADMIN' ? 'bg-[#C9A84C]/5' : ''}`}
-                                            >
-                                                <td className="p-6">
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="w-8 h-8 rounded-lg bg-black border border-white/5 flex items-center justify-center text-[10px] font-black tracking-tighter text-white/40 group-hover:text-[#C9A84C] group-hover:border-[#C9A84C]/30 transition-all">
-                                                            {e.visitorId?.substring(0, 2).toUpperCase() || 'AN'}
-                                                        </div>
-                                                        <div>
-                                                            <p className="text-xs font-black tracking-tight group-hover:text-[#C9A84C] transition-colors uppercase">
-                                                                {e.visitorId?.substring(0, 16) || 'ANONYMOUS_NODE'}
-                                                            </p>
-                                                            <p className="text-[9px] text-white/20 uppercase font-black tracking-widest">{e.country || 'TERRA_NULLIS'}</p>
-                                                        </div>
+                                <tbody className="divide-y divide-white/[0.03]">
+                                    {filteredEvents.slice(0, 100).map((e, i) => (
+                                        <tr 
+                                            key={i} 
+                                            className={`transition-all hover:bg-white/[0.02] cursor-cell group ${e.visitorId === 'KTA_ADMIN' ? 'bg-[#C9A84C]/5' : ''}`}
+                                        >
+                                            <td className="p-6">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-8 h-8 rounded-lg bg-black border border-white/5 flex items-center justify-center text-[10px] font-black tracking-tighter text-white/40 group-hover:text-[#C9A84C] group-hover:border-[#C9A84C]/30 transition-all">
+                                                        {e.visitorId?.substring(0, 2).toUpperCase() || 'AN'}
                                                     </div>
-                                                </td>
-                                                <td className="p-6 text-[11px] text-white/40 group-hover:text-white/60 transition-colors uppercase">
-                                                    {e.project || e.url || '/ROOT/VOID'}
-                                                </td>
-                                                <td className="p-6">
-                                                    <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest italic serif ${e.type === 'page_view' ? 'bg-blue-500/10 text-blue-400' : 'bg-[#C9A84C]/10 text-[#C9A84C]'}`}>
-                                                        {e.type.replace('_', ' ')}
-                                                    </span>
-                                                </td>
-                                                <td className="p-6 text-right">
-                                                    <p className="text-xs font-bold font-mono tracking-tighter">{new Date(e.timestamp).toLocaleTimeString()}</p>
-                                                    <p className="text-[9px] text-white/20 font-black uppercase tracking-[0.1em]">{new Date(e.timestamp).toLocaleDateString()}</p>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
+                                                    <div>
+                                                        <p className="text-xs font-black tracking-tight group-hover:text-[#C9A84C] transition-colors uppercase">
+                                                            {e.visitorId?.substring(0, 16) || 'ANONYMOUS_NODE'}
+                                                        </p>
+                                                        <p className="text-[9px] text-white/20 uppercase font-black tracking-widest">{e.country || 'TERRA_NULLIS'}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td className="p-6 text-[11px] text-white/40 group-hover:text-white/60 transition-colors uppercase">
+                                                {e.project || e.url || '/ROOT/VOID'}
+                                            </td>
+                                            <td className="p-6">
+                                                <span className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest italic serif ${e.type === 'page_view' ? 'bg-blue-500/10 text-blue-400' : 'bg-[#C9A84C]/10 text-[#C9A84C]'}`}>
+                                                    {e.type.replace('_', ' ')}
+                                                </span>
+                                            </td>
+                                            <td className="p-6 text-right">
+                                                <p className="text-xs font-bold font-mono tracking-tighter">{new Date(e.timestamp).toLocaleTimeString()}</p>
+                                                <p className="text-[9px] text-white/20 font-black uppercase tracking-[0.1em]">{new Date(e.timestamp).toLocaleDateString()}</p>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
                                  </table>
                             </div>
                         </section>
