@@ -186,55 +186,102 @@ const AdminDashboard = () => {
 
     if (!isAuthed) {
         return (
-            <div className="flex items-center justify-center min-h-screen bg-[#050505] p-6 selection:bg-[#C9A84C]/30 font-sans">
-                <motion.div 
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="w-full max-w-sm"
-                >
-                    <div className="bg-[#0D0D0D] p-10 rounded-[2rem] border border-white/5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden text-center">
-                        <div className="mb-10 inline-flex p-4 bg-white/5 rounded-2xl border border-white/10">
-                            <Shield className="text-[#C9A84C]" size={32} />
-                        </div>
-                        
-                        <h2 className="text-white text-2xl font-bold tracking-tight mb-2">Portfolio Access</h2>
-                        <p className="text-[11px] text-white/40 uppercase tracking-[0.2em] font-medium mb-10">Restricted Admin Environment</p>
+            <div className="flex min-h-screen bg-[#050505] selection:bg-[#C9A84C]/30 font-sans">
+                {/* Left Side: Visual Panel */}
+                <div className="hidden lg:block w-7/12 relative overflow-hidden">
+                    <div 
+                        className="absolute inset-0 bg-cover bg-center transition-transform duration-[10s] hover:scale-110"
+                        style={{ 
+                            backgroundImage: `url('https://images.unsplash.com/photo-1549413204-74229b47e8db?q=80&w=2070&auto=format&fit=crop')`, // Minimalist desert/dunes to match prompt aesthetic
+                            filter: 'brightness(0.7) contrast(1.2)'
+                        }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#130303]/80 to-transparent" />
+                    
+                    {/* Floating Branding */}
+                    <div className="absolute bottom-20 left-20 z-10">
+                        <motion.div 
+                            initial={{ x: -20, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            transition={{ delay: 0.2 }}
+                            className="flex items-center gap-4 mb-4"
+                        >
+                            <div className="w-12 h-12 rounded-2xl bg-[#C9A84C] flex items-center justify-center text-black shadow-2xl">
+                                <Shield size={24} />
+                            </div>
+                            <span className="text-4xl font-black tracking-tighter text-white">
+                                KTA<span className="text-[#C9A84C]">.</span>
+                            </span>
+                        </motion.div>
+                        <p className="text-white/40 font-black uppercase tracking-[0.4em] text-[10px]">
+                            Secure Management Interface
+                        </p>
+                    </div>
+                </div>
 
-                        <div className="space-y-6">
-                            <div className="relative">
-                                <input 
-                                    type="password" 
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
-                                    placeholder="Access Code" 
-                                    className="w-full px-6 py-4 bg-black border border-white/5 rounded-2xl text-white outline-none focus:border-[#C9A84C]/50 transition-all text-center tracking-[1em] placeholder:tracking-normal placeholder:text-white/20 font-mono"
-                                    autoFocus
-                                />
+                {/* Right Side: Login Form */}
+                <div className="w-full lg:w-5/12 bg-[#130303] flex items-center justify-center p-8 md:p-20">
+                    <motion.div 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="w-full max-w-md"
+                    >
+                        <div className="text-center lg:text-left mb-16">
+                            <h2 className="text-5xl font-black tracking-tighter text-white mb-4">Login</h2>
+                            <p className="text-white/20 font-bold uppercase tracking-[0.3em] text-[10px]">Administrative Authentication Required</p>
+                        </div>
+
+                        <div className="space-y-12">
+                            {/* Password Field */}
+                            <div className="group relative">
+                                <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-[#C9A84C] mb-4">Access Password</label>
+                                <div className="relative">
+                                    <input 
+                                        type="password" 
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
+                                        placeholder="••••••••••••" 
+                                        className="w-full bg-transparent border-b-2 border-white/10 py-4 text-white text-2xl outline-none focus:border-[#C9A84C] transition-all tracking-widest placeholder:text-white/5 font-mono"
+                                        autoFocus
+                                    />
+                                    <div className="absolute right-0 bottom-4 text-white/20 group-focus-within:text-[#C9A84C] transition-colors">
+                                        <ShieldCheck size={20} />
+                                    </div>
+                                </div>
                                 {error && (
                                     <motion.p 
-                                        initial={{ opacity: 0, y: 5 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        className="absolute -bottom-8 left-0 w-full text-red-500 text-[10px] font-bold uppercase tracking-widest"
+                                        initial={{ opacity: 0, x: -10 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        className="absolute -bottom-8 left-0 text-red-500 text-[10px] font-bold uppercase tracking-widest"
                                     >
-                                        Access Denied
+                                        Failed Handshake: Invalid Credentials
                                     </motion.p>
                                 )}
                             </div>
 
-                            <button 
-                                onClick={handleLogin}
-                                className="w-full py-4 bg-[#C9A84C] text-black font-bold rounded-2xl transition-all uppercase tracking-widest text-xs hover:bg-[#E0C172] active:scale-[0.98] mt-4"
-                            >
-                                Unlock Terminal
-                            </button>
+                            <div className="pt-6">
+                                <button 
+                                    onClick={handleLogin}
+                                    className="w-full py-6 bg-[#C9A84C] text-black font-black rounded-full transition-all uppercase tracking-[0.3em] text-[11px] hover:bg-[#E0C172] active:scale-[0.98] shadow-[0_20px_40px_rgba(201,168,76,0.2)] hover:shadow-[0_25px_50px_rgba(201,168,76,0.3)]"
+                                >
+                                    Authorize Access
+                                </button>
+                            </div>
+
+                            <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest pt-8 border-t border-white/5">
+                                <button className="text-white/20 hover:text-[#C9A84C] transition-colors">Request Access</button>
+                                <button className="text-white/20 hover:text-white transition-colors">Emergency Protocol</button>
+                            </div>
                         </div>
 
-                        <p className="mt-12 text-[9px] text-white/20 uppercase tracking-widest">
-                            Secure Handshake Required
-                        </p>
-                    </div>
-                </motion.div>
+                        <div className="mt-20 flex justify-center lg:justify-start gap-4">
+                            <div className="w-1 h-1 rounded-full bg-[#C9A84C]" />
+                            <div className="w-1 h-1 rounded-full bg-white/10" />
+                            <div className="w-1 h-1 rounded-full bg-white/10" />
+                        </div>
+                    </motion.div>
+                </div>
             </div>
         );
     }
