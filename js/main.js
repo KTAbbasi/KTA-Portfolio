@@ -1,3 +1,6 @@
+// KTA Portfolio Main Engine v4.2.1
+// Updated: May 2026
+// Changes: Music logic removed, Portfolio rules enforced.
 document.addEventListener('DOMContentLoaded', () => {
     // Custom Cursor
     const dot = document.querySelector('.cursor-dot');

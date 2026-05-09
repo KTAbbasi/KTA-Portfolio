@@ -1,3 +1,5 @@
+// KTA Admin Intelligence System v4.2.1
+// Premium Maroon Aesthetic Login Re-imagined
 import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { motion, AnimatePresence } from 'motion/react';
