@@ -340,16 +340,14 @@ const AdminDashboard = () => {
             </aside>
 
             {/* Main Content */}
-            <main className="flex-1 min-w-0">
-                <div className="max-w-[1600px] mx-auto space-y-16">
+            <main className="flex-1 min-w-0 p-8 lg:p-12 overflow-y-auto h-screen custom-scrollbar">
+                <div className="max-w-[1600px] mx-auto space-y-12">
                     
                     {/* Header: Hello Creative! */}
-                    <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
-                        <div>
-                            <div className="flex items-center gap-4 mb-2">
-                                <h1 className="text-4xl font-black tracking-tighter">Hello Creative! 👋</h1>
-                            </div>
-                            <nav className="flex items-center gap-8 text-[11px] font-black uppercase tracking-[0.2em] text-white/30">
+                    <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-8 mb-4">
+                        <div className="space-y-4">
+                            <h1 className="text-4xl font-black tracking-tighter">Hello Creative! 👋</h1>
+                            <nav className="flex flex-wrap items-center gap-x-8 gap-y-4 text-[11px] font-black uppercase tracking-[0.2em] text-white/30">
                                 <button className="text-[#C9A84C] border-b-2 border-[#C9A84C] pb-2">Overview</button>
                                 <button className="hover:text-white transition-colors">Team Details</button>
                                 <button className="hover:text-white transition-colors">Tasks Statistic</button>

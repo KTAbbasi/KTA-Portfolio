@@ -193,62 +193,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     document.body.appendChild(adminDot);
 
-    // Background Music Logic
-    const musicToggle = document.getElementById('music-toggle');
-    const bgMusic = document.getElementById('bg-music');
-    const musicController = document.querySelector('.music-controller');
-    const musicIcon = musicToggle?.querySelector('i');
-    const musicText = musicToggle?.querySelector('.music-text');
-
-    if (musicToggle && bgMusic && musicController) {
-        let isPlaying = false;
-
-        const updateUI = (playing) => {
-            if (playing) {
-                if (musicIcon) musicIcon.className = 'fas fa-volume-up';
-                if (musicText) musicText.textContent = 'AUDIO ON';
-                musicController.classList.add('playing');
-            } else {
-                if (musicIcon) musicIcon.className = 'fas fa-volume-mute';
-                if (musicText) musicText.textContent = 'AUDIO OFF';
-                musicController.classList.remove('playing');
-            }
-        };
-
-        const togglePlayback = () => {
-            if (isPlaying) {
-                bgMusic.pause();
-                isPlaying = false;
-                sessionStorage.setItem('musicPlaying', 'false');
-                updateUI(false);
-            } else {
-                bgMusic.play().then(() => {
-                    isPlaying = true;
-                    sessionStorage.setItem('musicPlaying', 'true');
-                    updateUI(true);
-                }).catch(err => {
-                    console.error('Playback failed:', err);
-                });
-            }
-        };
-
-        musicToggle.addEventListener('click', (e) => {
-            e.preventDefault();
-            togglePlayback();
-        });
-
-        // Resume if preferred
-        if (sessionStorage.getItem('musicPlaying') === 'true') {
-            const resumeOnInteraction = () => {
-                bgMusic.play().then(() => {
-                    isPlaying = true;
-                    updateUI(true);
-                }).catch(() => {});
-                document.removeEventListener('click', resumeOnInteraction);
-            };
-            document.addEventListener('click', resumeOnInteraction);
-        }
-    }
 });
 
 // Portfolio Filter Function
