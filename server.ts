@@ -24,13 +24,19 @@ async function startServer() {
     const emailUser = process.env.SMTP_USER;
     const emailPass = process.env.SMTP_PASS;
 
+    console.log("Attempting to send email...");
+    console.log("SMTP_USER present:", !!emailUser);
+    console.log("SMTP_PASS present:", !!emailPass);
+
     if (!emailUser || !emailPass) {
-      return res.status(500).json({ error: "Email service is not configured. Please set environment variables." });
+      return res.status(500).json({ error: "Email service is not configured correctly in environment variables." });
     }
 
     // SMTP Configuration
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true, // Use SSL/TLS
       auth: {
         user: emailUser,
         pass: emailPass,
