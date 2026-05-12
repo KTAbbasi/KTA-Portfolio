@@ -15,13 +15,74 @@
   --text-muted:     #999999;
   --text-dim:       #666666;
   --text-handle:    #444444;
+  --fixed-white:    #FFFFFF;
   --glass-bg:       rgba(255, 255, 255, 0.03);
   --glass-border:   rgba(201, 168, 76, 0.1);
   --font-montserrat: 'Montserrat', sans-serif;
   --font-poppins: 'Poppins', sans-serif;
 }
 
-/* Project Cards */
+body.light-mode {
+  --bg-primary:     #FDF8F8;
+  --bg-secondary:   #FFFFFF;
+  --bg-card:        #FFFBFB;
+  --gold:           #A67C00;
+  --gold-dim:       rgba(166, 124, 0, 0.1);
+  --gold-glow:      rgba(166, 124, 0, 0.05);
+  --maroon:         #7A1616;
+  --maroon-light:   #A02626;
+  --maroon-glow:    rgba(122, 22, 22, 0.03);
+  --text-white:     #120404;
+  --text-light:     #2D1111;
+  --text-muted:     #664B4B;
+  --text-dim:       #997373;
+  --text-handle:    #B29191;
+  --fixed-maroon:   #130303;
+  --fixed-white:    #FFFFFF;
+  --glass-bg:       rgba(122, 22, 22, 0.02);
+  --glass-border:   rgba(122, 22, 22, 0.08);
+}
+
+/* Portfolio Filters */
+.portfolio-filters {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 50px;
+    padding: 10px;
+    background: var(--bg-card);
+    border-radius: 100px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid var(--glass-border);
+}
+
+.filter-btn {
+    background: transparent;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 100px;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.filter-btn:hover {
+    color: var(--gold);
+}
+
+.filter-btn.active {
+    background: #130303; /* Fixed maroon */
+    color: #FFFFFF !important;
+    box-shadow: 0 4px 15px rgba(107, 26, 26, 0.2);
+}
+
 .project-card {
     position: relative;
     overflow: hidden;
@@ -53,7 +114,7 @@
 
 .overlay-content-link h3,
 .overlay h3 {
-    color: var(--text-white) !important;
+    color: var(--fixed-white) !important;
     text-decoration: none !important;
     margin-bottom: 8px; /* Restoring margin usually provided inline */
 }
@@ -200,7 +261,7 @@ nav {
   top: 0;
   width: 100%;
   height: 70px;
-  background: rgba(14, 5, 5, 0.85);
+  background: var(--bg-primary); /* Use variable for theme switching */
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(107, 26, 26, 0.15);
@@ -209,6 +270,36 @@ nav {
   justify-content: space-between;
   padding: 0 80px;
   z-index: 1000;
+  transition: background 0.3s, border-color 0.3s;
+}
+
+.theme-toggle {
+  background: transparent;
+  border: none;
+  color: var(--text-white);
+  font-size: 18px;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s;
+  margin-right: 10px;
+}
+
+.theme-toggle:hover {
+  background: var(--gold-dim);
+  color: var(--gold);
+  transform: rotate(30deg);
+}
+
+body.light-mode .theme-toggle i.fa-sun {
+  display: none;
+}
+body:not(.light-mode) .theme-toggle i.fa-moon {
+  display: none;
 }
 
 .nav-left .logo {
@@ -450,16 +541,21 @@ section {
   transform: translateX(-50%);
   font-size: 120px;
   font-weight: 900;
-  color: #fff;
-  opacity: 0.05;
+  color: var(--maroon);
+  opacity: 0.07;
   z-index: -1;
   line-height: 1;
+  transition: opacity 0.3s, color 0.3s;
+}
+
+body.light-mode .process-number {
+  opacity: 0.12;
 }
 
 .process-icon-box {
   width: 60px;
   height: 60px;
-  background: #0E0505;
+  background: var(--bg-card);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   display: flex;
@@ -502,7 +598,7 @@ section {
 /* Stat Cards */
 .stat-card {
   position: absolute;
-  background: rgba(19, 3, 3, 0.85);
+  background: var(--bg-card);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--gold-dim);
@@ -598,7 +694,7 @@ section {
 
 /* Footer Styles - Refined to match image */
 footer {
-    background: #080202;
+    background: var(--bg-primary);
     border-top: 1px solid var(--maroon);
     padding: 80px 80px 40px;
     margin-top: 0;

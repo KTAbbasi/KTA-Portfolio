@@ -112,27 +112,35 @@
         }
 
         /* Services Grid */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-            margin-top: 60px;
-        }
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    margin-top: 60px;
+}
 
-        .service-card {
-            background: var(--bg-card);
-            border: 1px solid rgba(107, 26, 26, 0.3);
-            padding: 40px;
-            border-radius: 16px;
-            position: relative;
-            transition: all 0.4s ease;
-        }
+.service-card {
+    background: #130303 !important; /* Fixed dark maroon background */
+    border: 1px solid rgba(107, 26, 26, 0.3);
+    padding: 40px;
+    border-radius: 16px;
+    position: relative;
+    transition: all 0.4s ease;
+}
 
-        .service-card:hover {
-            border-color: rgba(201, 168, 76, 0.5);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(201, 168, 76, 0.15);
-            transform: translateY(-15px) scale(1.02);
-        }
+.service-card h3, .service-card p, .service-card span {
+    color: #FFFFFF !important; /* Force white text on maroon cards */
+}
+
+.service-card p {
+    opacity: 0.8;
+}
+
+.service-card:hover {
+    border-color: rgba(201, 168, 76, 0.5);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(201, 168, 76, 0.15);
+    transform: translateY(-15px) scale(1.02);
+}
 
         .service-card .num {
             position: absolute;
@@ -244,6 +252,7 @@
         .project-card .overlay h3 {
             margin: 0;
             font-size: 20px;
+            color: #FFFFFF !important;
         }
 
         .project-card .overlay .pill-badge {
@@ -350,6 +359,10 @@
             <a href="contact.html">Contact</a>
         </div>
         <div class="nav-right">
+            <button class="theme-toggle" aria-label="Toggle Theme">
+                <i class="fa-solid fa-sun"></i>
+                <i class="fa-solid fa-moon"></i>
+            </button>
         </div>
         <button class="mobile-nav-toggle">
             <span></span><span></span><span></span>
@@ -418,23 +431,23 @@
     </section>
 
     <!-- Marquee Strip -->
-    <div class="marquee-strip" style="background: #130303; border-top: 1px solid #6B1A1A; border-bottom: 1px solid #6B1A1A; height: 60px; display: flex; align-items: center; overflow: hidden;">
+    <div class="marquee-strip" style="background: var(--bg-card); border-top: 1px solid var(--maroon); border-bottom: 1px solid var(--maroon); height: 60px; display: flex; align-items: center; overflow: hidden;">
         <div class="marquee-inner">
-            <div style="color: #888888; letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">✦ AI Product Photography</div>
-            <div style="color: #C9A84C; letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">· AI Campaign Visuals</div>
-            <div style="color: #888888; letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">· AI Fashion Campaigns</div>
-            <div style="color: #C9A84C; letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">· AI Beauty Campaigns</div>
-            <div style="color: #888888; letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">· AI Food Photography</div>
-            <div style="color: #C9A84C; letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">· Visual Content Creation</div>
-            <div style="color: #888888; letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">· AI Ads & Campaigns</div>
+            <div style="color: var(--text-muted); letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">✦ AI Product Photography</div>
+            <div style="color: var(--gold); letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">· AI Campaign Visuals</div>
+            <div style="color: var(--text-muted); letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">· AI Fashion Campaigns</div>
+            <div style="color: var(--gold); letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">· AI Beauty Campaigns</div>
+            <div style="color: var(--text-muted); letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">· AI Food Photography</div>
+            <div style="color: var(--gold); letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">· Visual Content Creation</div>
+            <div style="color: var(--text-muted); letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">· AI Ads & Campaigns</div>
             <!-- Repeat for loop -->
-            <div style="color: #888888; letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">✦ AI Product Photography</div>
-            <div style="color: #C9A84C; letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">· AI Campaign Visuals</div>
-            <div style="color: #888888; letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">· AI Fashion Campaigns</div>
-            <div style="color: #C9A84C; letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">· AI Beauty Campaigns</div>
-            <div style="color: #888888; letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">· AI Food Photography</div>
-            <div style="color: #C9A84C; letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">· Visual Content Creation</div>
-            <div style="color: #888888; letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">· AI Ads & Campaigns</div>
+            <div style="color: var(--text-muted); letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">✦ AI Product Photography</div>
+            <div style="color: var(--gold); letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">· AI Campaign Visuals</div>
+            <div style="color: var(--text-muted); letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">· AI Fashion Campaigns</div>
+            <div style="color: var(--gold); letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">· AI Beauty Campaigns</div>
+            <div style="color: var(--text-muted); letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">· AI Food Photography</div>
+            <div style="color: var(--gold); letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">· Visual Content Creation</div>
+            <div style="color: var(--text-muted); letter-spacing: 0.1em; font-weight: 500; font-size: 13px;">· AI Ads & Campaigns</div>
         </div>
     </div>
 
@@ -487,7 +500,7 @@
     </section>
 
     <!-- Featured Work -->
-    <section id="portfolio" style="background: #0E0505;">
+    <section id="portfolio" style="background: var(--bg-primary);">
         <div style="max-width: 1200px; margin: 0 auto;">
             <div class="section-header-centered" data-aos="fade-up">
                 <span class="section-eyebrow">FEATURED PROJECTS</span>
@@ -627,7 +640,7 @@
     </section>
 
     <!-- Before & After Slider -->
-    <section style="background: #130303;">
+    <section style="background: var(--bg-card);">
         <div style="max-width: 1200px; margin: 0 auto;">
             <div class="section-header-centered" data-aos="fade-up">
                 <span class="section-eyebrow">THE DIFFERENCE</span>
@@ -649,35 +662,44 @@
     </section>
 
     <!-- Stats Counter -->
-    <section id="stats" style="min-height: auto; padding: 100px 80px;">
+    <section id="stats" style="min-height: auto; padding: 100px 80px; position: relative;">
+        <!-- Decorative Glow -->
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; height: 80%; background: radial-gradient(circle at center, var(--maroon-glow) 0%, transparent 70%); pointer-events: none; opacity: 0.5;"></div>
+        
         <div class="section-header-centered" data-aos="fade-up">
             <span class="section-eyebrow">OUR EXPERTISE</span>
             <h2 class="section-headline">Results In<br><span>Numbers.</span></h2>
             <div class="section-line"></div>
         </div>
-        <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; gap: 20px; text-align: center; flex-wrap: wrap;">
-            <div style="flex: 1; min-width: 180px;">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; gap: 20px; text-align: center; flex-wrap: wrap; position: relative; z-index: 1;">
+            <div style="flex: 1; min-width: 180px; position: relative;">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 120px; height: 120px; background: radial-gradient(circle, var(--maroon) 0%, transparent 70%); opacity: 0.15; z-index: -1;"></div>
                 <div class="stat-number" data-target="47" style="font-size: 72px; font-weight: 900; color: var(--gold);">0</div>
-                <p style="color: #888888; margin-top: 10px;">Projects Completed</p>
+                <p style="color: var(--text-muted); margin-top: 10px;">Projects Completed</p>
             </div>
-            <div style="width: 1px; background: #6B1A1A; opacity: 0.6; height: 80px; align-self: center;" class="desktop-only"></div>
-            <div style="flex: 1; min-width: 180px;">
-                <div class="stat-number" data-target="48" data-unit="hrs" style="font-size: 72px; font-weight: 900; color: #fff;">0<span style="color: var(--gold);">hrs</span></div>
-                <p style="color: #888888; margin-top: 10px;">Delivery Time</p>
-                <span style="color: #555555; font-size: 11px;">(may vary)</span>
+            <div style="width: 1px; background: var(--maroon); opacity: 0.3; height: 80px; align-self: center;" class="desktop-only"></div>
+            <div style="flex: 1; min-width: 180px; position: relative;">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 120px; height: 120px; background: radial-gradient(circle, var(--maroon) 0%, transparent 70%); opacity: 0.15; z-index: -1;"></div>
+                <div class="stat-number" data-target="48" data-unit="hrs" style="font-size: 72px; font-weight: 900; color: var(--gold);">0<span style="color: var(--gold);">hrs</span></div>
+                <p style="color: var(--text-muted); margin-top: 10px;">Delivery Time</p>
+                <span style="color: var(--text-dim); font-size: 11px;">(may vary)</span>
             </div>
-            <div style="width: 1px; background: #6B1A1A; opacity: 0.6; height: 80px; align-self: center;" class="desktop-only"></div>
-            <div style="flex: 1; min-width: 180px;">
+            <div style="width: 1px; background: var(--maroon); opacity: 0.3; height: 80px; align-self: center;" class="desktop-only"></div>
+            <div style="flex: 1; min-width: 180px; position: relative;">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 120px; height: 120px; background: radial-gradient(circle, var(--maroon) 0%, transparent 70%); opacity: 0.15; z-index: -1;"></div>
                 <div class="stat-number" data-target="17" style="font-size: 72px; font-weight: 900; color: var(--gold);">0</div>
-                <p style="color: #888888; margin-top: 10px;">Brands Served</p>
-                <span style="color: #555555; font-size: 12px;">Across industries</span>
+                <p style="color: var(--text-muted); margin-top: 10px;">Brands Served</p>
+                <span style="color: var(--text-dim); font-size: 12px;">Across industries</span>
             </div>
         </div>
     </section>
 
     <!-- Process Section -->
-    <section id="process" style="background: #0E0505; padding: 120px 0;">
-        <div style="max-width: 1200px; margin: 0 auto;">
+    <section id="process" style="background: var(--bg-primary); padding: 120px 0; position: relative; overflow: hidden;">
+        <!-- Decorative Glow -->
+        <div style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 100%; height: 100%; background: radial-gradient(circle at 50% 0%, var(--maroon-glow) 0%, transparent 60%); pointer-events: none; opacity: 0.6;"></div>
+        
+        <div style="max-width: 1200px; margin: 0 auto; position: relative; z-index: 1;">
             <div class="section-header-centered" data-aos="fade-up">
                 <span class="section-eyebrow">THE PROCESS</span>
                 <h2 class="section-headline">Premium Visuals<br>In <span>3 Steps.</span></h2>
@@ -686,28 +708,31 @@
 
             <div class="process-grid">
                 <!-- Step 1 -->
-                <div class="process-item" data-aos="fade-up" data-aos-delay="100">
+                <div class="process-item" data-aos="fade-up" data-aos-delay="100" style="position: relative;">
+                    <div style="position: absolute; top: 40px; left: 50%; transform: translate(-50%, -50%); width: 140px; height: 140px; background: radial-gradient(circle, var(--maroon) 0%, transparent 70%); opacity: 0.15; z-index: -1;"></div>
                     <div class="process-number">01</div>
                     <div class="process-icon-box">
-                        <i class="fa-solid fa-folder-open" style="font-size: 20px; color: #fff;"></i>
+                        <i class="fa-solid fa-folder-open" style="font-size: 20px; color: var(--text-white);"></i>
                     </div>
                     <h3>You Share</h3>
                     <p>Share your product, brand references, and vision. Tell me what you need.</p>
                 </div>
                 <!-- Step 2 -->
-                <div class="process-item" data-aos="fade-up" data-aos-delay="200">
+                <div class="process-item" data-aos="fade-up" data-aos-delay="200" style="position: relative;">
+                    <div style="position: absolute; top: 40px; left: 50%; transform: translate(-50%, -50%); width: 140px; height: 140px; background: radial-gradient(circle, var(--maroon) 0%, transparent 70%); opacity: 0.15; z-index: -1;"></div>
                     <div class="process-number">02</div>
                     <div class="process-icon-box">
-                        <i class="fa-solid fa-wand-magic-sparkles" style="font-size: 20px; color: #fff;"></i>
+                        <i class="fa-solid fa-wand-magic-sparkles" style="font-size: 20px; color: var(--text-white);"></i>
                     </div>
                     <h3>I Create</h3>
                     <p>Using cutting-edge AI tools, I craft luxury visuals tailored to your brand identity.</p>
                 </div>
                 <!-- Step 3 -->
-                <div class="process-item" data-aos="fade-up" data-aos-delay="300">
+                <div class="process-item" data-aos="fade-up" data-aos-delay="300" style="position: relative;">
+                    <div style="position: absolute; top: 40px; left: 50%; transform: translate(-50%, -50%); width: 140px; height: 140px; background: radial-gradient(circle, var(--maroon) 0%, transparent 70%); opacity: 0.15; z-index: -1;"></div>
                     <div class="process-number">03</div>
                     <div class="process-icon-box">
-                        <i class="fa-solid fa-rocket" style="font-size: 20px; color: #fff;"></i>
+                        <i class="fa-solid fa-rocket" style="font-size: 20px; color: var(--text-white);"></i>
                     </div>
                     <h3>You Launch</h3>
                     <p>Receive ready-to-use premium visuals for your eCommerce, ads, and social media in 48 hours.</p>
@@ -717,12 +742,12 @@
     </section>
 
     <!-- AI Tools Section -->
-    <section style="background: #0E0505; text-align: center; padding: 120px 20px;" data-aos="fade-up">
+    <section style="background: var(--bg-primary); text-align: center; padding: 120px 20px;" data-aos="fade-up">
         <div style="max-width: 1200px; margin: 0 auto;">
             <div style="margin-bottom: 60px;">
-                <span style="color: #888888; font-size: 13px; font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase; display: block; margin-bottom: 24px;" data-aos="fade-up" data-aos-delay="100">POWERED BY</span>
+                <span style="color: var(--text-muted); font-size: 13px; font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase; display: block; margin-bottom: 24px;" data-aos="fade-up" data-aos-delay="100">POWERED BY</span>
                 <h2 style="font-size: clamp(42px, 7vw, 90px); font-weight: 900; line-height: 0.95; letter-spacing: -0.01em; margin: 0 auto 30px;" data-aos="fade-up" data-aos-delay="200">
-                    <span style="color: #FFFFFF; display: block; margin-bottom: 8px;">The Tools Behind</span>
+                    <span style="color: var(--text-white); display: block; margin-bottom: 8px;">The Tools Behind</span>
                     <span style="color: var(--gold); display: block;">The Magic.</span>
                 </h2>
                 <div style="width: 60px; height: 1.5px; background: var(--gold); margin: 0 auto; opacity: 0.8;" data-aos="fade-up" data-aos-delay="300"></div>
@@ -731,9 +756,9 @@
             <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 60px;" data-aos="fade-up" data-aos-delay="400">
                 <style>
                     .exact-tool-pill {
-                        background: rgba(28, 8, 8, 0.7);
+                        background: #1C0808 !important; /* Fixed dark background */
                         border: 1px solid var(--maroon-light, #8B1A1A);
-                        color: #FFFFFF;
+                        color: #FFFFFF !important; /* Force white text */
                         padding: 12px 28px;
                         border-radius: 100px;
                         font-size: 14px;
@@ -778,14 +803,14 @@
             
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 60px;">
                 <!-- Review 1: Chloe Harper -->
-                <div class="service-card tilt-card" style="background: rgba(19, 3, 3, 0.6); backdrop-filter: blur(10px); padding: 32px; border: 1px solid rgba(107, 26, 26, 0.2);">
+                <div class="service-card tilt-card" style="background: var(--bg-card); backdrop-filter: blur(10px); padding: 32px; border: 1px solid var(--glass-border);">
                     <div style="color: #FFD700; font-size: 14px; margin-bottom: 15px;">★★★★★</div>
                     <div style="position: absolute; top: 10px; right: 20px; font-size: 60px; font-weight: 900; color: var(--gold); opacity: 0.05;">"</div>
-                    <p style="color: #CCCCCC; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"Absolutely blown away by the quality. You really understood the vibe I was going for and delivered something stunning. Can't wait to work together again!"</p>
+                    <p style="color: var(--text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"Absolutely blown away by the quality. You really understood the vibe I was going for and delivered something stunning. Can't wait to work together again!"</p>
                     <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                         <div>
                             <p style="font-weight: 700; font-size: 15px; margin: 0; color: var(--text-white);">Chloe Harper</p>
-                            <p style="color: #888888; font-size: 12px; margin: 0;">Verified Client</p>
+                            <p style="color: var(--text-dim); font-size: 12px; margin: 0;">Verified Client</p>
                             <span class="pill-maroon" style="font-size: 9px; margin-top: 10px; padding: 4px 10px;">VERIFIED PROOF</span>
                         </div>
                         <div style="position: relative;">
@@ -797,14 +822,14 @@
                 </div>
 
                 <!-- Review 2: Lucas White -->
-                <div class="service-card tilt-card" style="background: rgba(19, 3, 3, 0.6); backdrop-filter: blur(10px); padding: 32px; border: 1px solid rgba(107, 26, 26, 0.2);">
+                <div class="service-card tilt-card" style="background: var(--bg-card); backdrop-filter: blur(10px); padding: 32px; border: 1px solid var(--glass-border);">
                     <div style="color: #FFD700; font-size: 14px; margin-bottom: 15px;">★★★★★</div>
                     <div style="position: absolute; top: 10px; right: 20px; font-size: 60px; font-weight: 900; color: var(--gold); opacity: 0.05;">"</div>
-                    <p style="color: #CCCCCC; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"Excellent experience from start to finish. The attention to detail is next level. You've officially become my go-to for all future projects."</p>
+                    <p style="color: var(--text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"Excellent experience from start to finish. The attention to detail is next level. You've officially become my go-to for all future projects."</p>
                     <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                         <div>
                             <p style="font-weight: 700; font-size: 15px; margin: 0; color: var(--text-white);">Lucas White</p>
-                            <p style="color: #888888; font-size: 12px; margin: 0;">Verified Client</p>
+                            <p style="color: var(--text-dim); font-size: 12px; margin: 0;">Verified Client</p>
                             <span class="pill-maroon" style="font-size: 9px; margin-top: 10px; padding: 4px 10px;">VERIFIED PROOF</span>
                         </div>
                         <div style="position: relative;">
@@ -816,14 +841,14 @@
                 </div>
 
                 <!-- Review 3: Isabella Scott -->
-                <div class="service-card tilt-card" style="background: rgba(19, 3, 3, 0.6); backdrop-filter: blur(10px); padding: 32px; border: 1px solid rgba(107, 26, 26, 0.2);">
+                <div class="service-card tilt-card" style="background: var(--bg-card); backdrop-filter: blur(10px); padding: 32px; border: 1px solid var(--glass-border);">
                     <div style="color: #FFD700; font-size: 14px; margin-bottom: 15px;">★★★★★</div>
                     <div style="position: absolute; top: 10px; right: 20px; font-size: 60px; font-weight: 900; color: var(--gold); opacity: 0.05;">"</div>
-                    <p style="color: #CCCCCC; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"So talented and easy to work with. You took my ideas and turned them into something truly unique. Highly recommend!"</p>
+                    <p style="color: var(--text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"So talented and easy to work with. You took my ideas and turned them into something truly unique. Highly recommend!"</p>
                     <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                         <div>
                             <p style="font-weight: 700; font-size: 15px; margin: 0; color: var(--text-white);">Isabella Scott</p>
-                            <p style="color: #888888; font-size: 12px; margin: 0;">Creative Lead</p>
+                            <p style="color: var(--text-dim); font-size: 12px; margin: 0;">Creative Lead</p>
                             <span class="pill-maroon" style="font-size: 9px; margin-top: 10px; padding: 4px 10px;">VERIFIED PROOF</span>
                         </div>
                         <div style="position: relative;">
@@ -837,14 +862,14 @@
 
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 30px;">
                 <!-- Review 4: Jackson Turner -->
-                <div class="service-card tilt-card" style="background: rgba(19, 3, 3, 0.6); backdrop-filter: blur(10px); padding: 32px; border: 1px solid rgba(107, 26, 26, 0.2);">
+                <div class="service-card tilt-card" style="background: var(--bg-card); backdrop-filter: blur(10px); padding: 32px; border: 1px solid var(--glass-border);">
                     <div style="color: #FFD700; font-size: 14px; margin-bottom: 15px;">★★★★★</div>
                     <div style="position: absolute; top: 10px; right: 20px; font-size: 60px; font-weight: 900; color: var(--gold); opacity: 0.05;">"</div>
-                    <p style="color: #CCCCCC; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"Fast turnaround, amazing quality, and great communication. The final results exceeded expectations. Will definitely be back!"</p>
+                    <p style="color: var(--text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"Fast turnaround, amazing quality, and great communication. The final results exceeded expectations. Will definitely be back!"</p>
                     <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                         <div>
                             <p style="font-weight: 700; font-size: 15px; margin: 0; color: var(--text-white);">Jackson Turner</p>
-                            <p style="color: #888888; font-size: 12px; margin: 0;">E-com Founder</p>
+                            <p style="color: var(--text-dim); font-size: 12px; margin: 0;">E-com Founder</p>
                             <span class="pill-maroon" style="font-size: 9px; margin-top: 10px; padding: 4px 10px;">VERIFIED PROOF</span>
                         </div>
                         <div style="position: relative;">
@@ -856,14 +881,14 @@
                 </div>
 
                 <!-- Review 5: Sophia Bennett -->
-                <div class="service-card tilt-card" style="background: rgba(19, 3, 3, 0.6); backdrop-filter: blur(10px); padding: 32px; border: 1px solid rgba(107, 26, 26, 0.2);">
+                <div class="service-card tilt-card" style="background: var(--bg-card); backdrop-filter: blur(10px); padding: 32px; border: 1px solid var(--glass-border);">
                     <div style="color: #FFD700; font-size: 14px; margin-bottom: 15px;">★★★★★</div>
                     <div style="position: absolute; top: 10px; right: 20px; font-size: 60px; font-weight: 900; color: var(--gold); opacity: 0.05;">"</div>
-                    <p style="color: #CCCCCC; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"Excellent work from start to finish. KT understood the brief perfectly and brought our ideas to life. Very talented and easy to work with."</p>
+                    <p style="color: var(--text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"Excellent work from start to finish. KT understood the brief perfectly and brought our ideas to life. Very talented and easy to work with."</p>
                     <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                         <div>
                             <p style="font-weight: 700; font-size: 15px; margin: 0; color: var(--text-white);">Sophia Bennett</p>
-                            <p style="color: #888888; font-size: 12px; margin: 0;">Verified Client</p>
+                            <p style="color: var(--text-dim); font-size: 12px; margin: 0;">Verified Client</p>
                             <span class="pill-maroon" style="font-size: 9px; margin-top: 10px; padding: 4px 10px;">VERIFIED PROOF</span>
                         </div>
                         <div style="position: relative;">
@@ -875,14 +900,14 @@
                 </div>
 
                 <!-- Review 6: Michael Reeves -->
-                <div class="service-card tilt-card" style="background: rgba(19, 3, 3, 0.6); backdrop-filter: blur(10px); padding: 32px; border: 1px solid rgba(107, 26, 26, 0.2);">
+                <div class="service-card tilt-card" style="background: var(--bg-card); backdrop-filter: blur(10px); padding: 32px; border: 1px solid var(--glass-border);">
                     <div style="color: #FFD700; font-size: 14px; margin-bottom: 15px;">★★★★★</div>
                     <div style="position: absolute; top: 10px; right: 20px; font-size: 60px; font-weight: 900; color: var(--gold); opacity: 0.05;">"</div>
-                    <p style="color: #CCCCCC; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"Super impressed with the final result. The quality, attention to detail, and storytelling were all outstanding. KT is a true professional!"</p>
+                    <p style="color: var(--text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"Super impressed with the final result. The quality, attention to detail, and storytelling were all outstanding. KT is a true professional!"</p>
                     <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                         <div>
                             <p style="font-weight: 700; font-size: 15px; margin: 0; color: var(--text-white);">Michael Reeves</p>
-                            <p style="color: #888888; font-size: 12px; margin: 0;">Verified Client</p>
+                            <p style="color: var(--text-dim); font-size: 12px; margin: 0;">Verified Client</p>
                             <span class="pill-maroon" style="font-size: 9px; margin-top: 10px; padding: 4px 10px;">VERIFIED PROOF</span>
                         </div>
                         <div style="position: relative;">
@@ -898,13 +923,13 @@
             <div id="more-reviews" style="display: none; transition: all 0.5s ease;">
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 30px;">
                     <!-- Review 7: James Walker -->
-                    <div class="service-card tilt-card" style="background: rgba(19, 3, 3, 0.6); backdrop-filter: blur(10px); padding: 32px; border: 1px solid rgba(107, 26, 26, 0.2);">
+                    <div class="service-card tilt-card" style="background: var(--bg-card); backdrop-filter: blur(10px); padding: 32px; border: 1px solid var(--glass-border);">
                         <div style="color: #FFD700; font-size: 14px; margin-bottom: 15px;">★★★★★</div>
-                        <p style="color: #CCCCCC; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"KT did an amazing job! The video was high quality, creative, and delivered way faster than expected. Communication was smooth and professional."</p>
+                        <p style="color: var(--text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"KT did an amazing job! The video was high quality, creative, and delivered way faster than expected. Communication was smooth and professional."</p>
                         <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                             <div>
                                 <p style="font-weight: 700; font-size: 15px; margin: 0; color: var(--text-white);">James Walker</p>
-                                <p style="color: #888888; font-size: 12px; margin: 0;">Verified Client</p>
+                                <p style="color: var(--text-dim); font-size: 12px; margin: 0;">Verified Client</p>
                                 <span class="pill-maroon" style="font-size: 9px; margin-top: 10px; padding: 4px 10px;">VERIFIED PROOF</span>
                             </div>
                             <div style="width: 100px; height: 70px; background: #000; border: 1px solid var(--gold); border-radius: 6px; overflow: hidden; transform: rotate(-2deg); box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
@@ -914,13 +939,13 @@
                     </div>
 
                     <!-- Review 8: Emily Lawson -->
-                    <div class="service-card tilt-card" style="background: rgba(19, 3, 3, 0.6); backdrop-filter: blur(10px); padding: 32px; border: 1px solid rgba(107, 26, 26, 0.2);">
+                    <div class="service-card tilt-card" style="background: var(--bg-card); backdrop-filter: blur(10px); padding: 32px; border: 1px solid var(--glass-border);">
                         <div style="color: #FFD700; font-size: 14px; margin-bottom: 15px;">★★★★★</div>
-                        <p style="color: #CCCCCC; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"Great experience working with KT. The video exceeded our expectations and really helped our brand stand out. Highly recommend!"</p>
+                        <p style="color: var(--text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"Great experience working with KT. The video exceeded our expectations and really helped our brand stand out. Highly recommend!"</p>
                         <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                             <div>
                                 <p style="font-weight: 700; font-size: 15px; margin: 0; color: var(--text-white);">Emily Lawson</p>
-                                <p style="color: #888888; font-size: 12px; margin: 0;">Brand Manager</p>
+                                <p style="color: var(--text-dim); font-size: 12px; margin: 0;">Brand Manager</p>
                                 <span class="pill-maroon" style="font-size: 9px; margin-top: 10px; padding: 4px 10px;">VERIFIED PROOF</span>
                             </div>
                             <div style="width: 100px; height: 70px; background: #000; border: 1px solid var(--gold); border-radius: 6px; overflow: hidden; transform: rotate(1deg); box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
@@ -930,13 +955,13 @@
                     </div>
 
                     <!-- Review 9: Noah Lawson -->
-                    <div class="service-card tilt-card" style="background: rgba(19, 3, 3, 0.6); backdrop-filter: blur(10px); padding: 32px; border: 1px solid rgba(107, 26, 26, 0.2);">
+                    <div class="service-card tilt-card" style="background: var(--bg-card); backdrop-filter: blur(10px); padding: 32px; border: 1px solid var(--glass-border);">
                         <div style="color: #FFD700; font-size: 14px; margin-bottom: 15px;">★★★★★</div>
-                        <p style="color: #CCCCCC; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"Incredible work! The visuals came out even better than I imagined. Super professional and very responsive throughout the whole process."</p>
+                        <p style="color: var(--text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"Incredible work! The visuals came out even better than I imagined. Super professional and very responsive throughout the whole process."</p>
                         <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                             <div>
                                 <p style="font-weight: 700; font-size: 15px; margin: 0; color: var(--text-white);">Noah Lawson</p>
-                                <p style="color: #888888; font-size: 12px; margin: 0;">Verified Client</p>
+                                <p style="color: var(--text-dim); font-size: 12px; margin: 0;">Verified Client</p>
                                 <span class="pill-maroon" style="font-size: 9px; margin-top: 10px; padding: 4px 10px;">VERIFIED PROOF</span>
                             </div>
                             <div style="width: 100px; height: 70px; background: #000; border: 1px solid var(--gold); border-radius: 6px; overflow: hidden; transform: rotate(-1deg); box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
@@ -948,13 +973,13 @@
 
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 30px;">
                     <!-- Review 10: Sarah Mitchell -->
-                    <div class="service-card tilt-card" style="background: rgba(19, 3, 3, 0.6); backdrop-filter: blur(10px); padding: 32px; border: 1px solid rgba(107, 26, 26, 0.2);">
+                    <div class="service-card tilt-card" style="background: var(--bg-card); backdrop-filter: blur(10px); padding: 32px; border: 1px solid var(--glass-border);">
                         <div style="color: #FFD700; font-size: 14px; margin-bottom: 15px;">★★★★★</div>
-                        <p style="color: #CCCCCC; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"The attention to detail in these AI visuals is incredible. It saved us weeks of production time and thousands in costs. Absolutely a game changer for our brand."</p>
+                        <p style="color: var(--text-muted); font-size: 15px; line-height: 1.6; margin-bottom: 24px;">"The attention to detail in these AI visuals is incredible. It saved us weeks of production time and thousands in costs. Absolutely a game changer for our brand."</p>
                         <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                             <div>
                                 <p style="font-weight: 700; font-size: 15px; margin: 0; color: var(--text-white);">Sarah Mitchell</p>
-                                <p style="color: #888888; font-size: 12px; margin: 0;">Brand Strategy</p>
+                                <p style="color: var(--text-dim); font-size: 12px; margin: 0;">Brand Strategy</p>
                                 <span class="pill-maroon" style="font-size: 9px; margin-top: 10px; padding: 4px 10px;">VERIFIED PROOF</span>
                             </div>
                             <div style="width: 100px; height: 70px; background: #000; border: 1px solid var(--gold); border-radius: 6px; overflow: hidden; transform: rotate(2deg); box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
@@ -1009,14 +1034,14 @@
     </section>
 
     <!-- CTA Banner -->
-    <section style="min-height: auto; padding: 150px 80px; position: relative; overflow: hidden; background: linear-gradient(135deg, #1C0808 0%, #0E0505 100%);">
-        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: 900; font-size: 400px; color: #fff; opacity: 0.02; pointer-events: none;">DM</div>
+    <section style="min-height: auto; padding: 150px 80px; position: relative; overflow: hidden; background: var(--bg-secondary);">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: 900; font-size: 400px; color: var(--text-white); opacity: 0.02; pointer-events: none;">DM</div>
         <div style="max-width: 1200px; margin: 0 auto; position: relative; z-index: 10;">
             <div class="section-header-centered" data-aos="fade-up">
                 <span class="section-eyebrow">LET'S CREATE TOGETHER</span>
                 <h2 class="section-headline">Ready to Elevate<br>Your <span>Brand?</span></h2>
                 <div class="section-line"></div>
-                <p style="font-size: 18px; color: #888888; margin-top: -20px; margin-bottom: 40px;">Send a message to <strong>REQUEST A QUOTE</strong> and get started.</p>
+                <p style="font-size: 18px; color: var(--text-muted); margin-top: -20px; margin-bottom: 40px;">Send a message to <strong>REQUEST A QUOTE</strong> and get started.</p>
                 <a href="contact.html" class="btn-primary">GET STARTED →</a>
             </div>
         </div>
@@ -1059,8 +1084,8 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p style="font-weight: bold;">© 2026 All Rights Reserved.</p>
-            <p style="text-align: right; opacity: 0.8; font-weight: bold;">Art Direction & Curation by Komal Tariq Abbasi</p>
+            <p style="font-weight: bold; color: var(--text-muted);">© 2026 All Rights Reserved.</p>
+            <p style="text-align: right; opacity: 0.8; font-weight: bold; color: var(--text-muted);">Art Direction & Curation by Komal Tariq Abbasi</p>
         </div>
     </footer>
 

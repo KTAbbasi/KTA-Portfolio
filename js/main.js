@@ -196,6 +196,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     document.body.appendChild(adminDot);
 
+    // Theme Toggle Logic
+    const initTheme = () => {
+        const savedTheme = localStorage.getItem('kta-theme') || 'dark';
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+        }
+    };
+
+    const toggleTheme = () => {
+        const isLight = document.body.classList.toggle('light-mode');
+        localStorage.setItem('kta-theme', isLight ? 'light' : 'dark');
+        
+        // Staggered animation for theme transition elements if needed
+        gsap.fromTo('body', { opacity: 0.95 }, { opacity: 1, duration: 0.5 });
+    };
+
+    initTheme();
+
+    // Attach to button (once added to DOM)
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('.theme-toggle')) {
+            toggleTheme();
+        }
+    });
+
 });
 
 // Portfolio Filter Function

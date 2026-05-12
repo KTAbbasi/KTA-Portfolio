@@ -71,11 +71,11 @@
             background: var(--bg-card);
             border-radius: 16px;
             padding: 48px;
-            border: 1px solid rgba(107, 26, 26, 0.3);
+            border: 1px solid var(--glass-border);
         }
 
         .contact-right {
-            border-color: rgba(107, 26, 26, 0.5);
+            border-color: var(--glass-border);
         }
 
         .info-item {
@@ -104,11 +104,11 @@
         }
 
         .response-badge {
-            background: rgba(28, 8, 8, 0.7);
+            background: var(--fixed-maroon);
             border: 1px solid var(--maroon-light, #8B1A1A);
             border-radius: 12px;
             padding: 16px;
-            color: var(--gold);
+            color: #FFFFFF;
             font-size: 13px;
             font-weight: 600;
             margin-top: 40px;
@@ -137,11 +137,11 @@
 
         .form-control {
             width: 100%;
-            background: rgba(14, 5, 5, 0.8);
-            border: 1px solid #6B1A1A;
+            background: var(--bg-primary);
+            border: 1px solid var(--glass-border);
             border-radius: 8px;
             padding: 14px 18px;
-            color: white;
+            color: var(--text-white);
             font-family: inherit;
             transition: all 0.3s;
         }
@@ -153,7 +153,7 @@
         }
 
         .form-control::placeholder {
-            color: #444;
+            color: var(--text-dim);
         }
 
         textarea.form-control {
@@ -195,6 +195,10 @@
             <a href="contact.html" class="active">Contact</a>
         </div>
         <div class="nav-right">
+            <button class="theme-toggle" aria-label="Toggle Theme">
+                <i class="fa-solid fa-sun"></i>
+                <i class="fa-solid fa-moon"></i>
+            </button>
         </div>
         <button class="mobile-nav-toggle">
             <span></span><span></span><span></span>
@@ -217,7 +221,7 @@
             <span class="section-eyebrow">GET IN TOUCH</span>
             <h1 class="section-headline">Let's Build Something<br><span>Premium.</span></h1>
             <div class="section-line"></div>
-            <p style="color: #888; position: relative; z-index: 10;">Tell me about your project, product, and vision. I'll get back to you within 24 hours.</p>
+            <p style="color: var(--text-muted); position: relative; z-index: 10;">Tell me about your project, product, and vision. I'll get back to you within 24 hours.</p>
         </div>
     </header>
 
@@ -283,8 +287,8 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p style="font-weight: bold;">© 2026 All Rights Reserved.</p>
-            <p style="text-align: right; opacity: 0.8; font-weight: bold;">Art Direction & Curation by Komal Tariq Abbasi</p>
+            <p style="font-weight: bold; color: var(--text-muted);">© 2026 All Rights Reserved.</p>
+            <p style="text-align: right; opacity: 0.8; font-weight: bold; color: var(--text-muted);">Art Direction & Curation by Komal Tariq Abbasi</p>
         </div>
     </footer>
 

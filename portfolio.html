@@ -75,7 +75,7 @@
         .portfolio-tabs {
             position: sticky;
             top: 70px;
-            background: rgba(14, 5, 5, 0.9);
+            background: var(--bg-card);
             backdrop-filter: blur(10px);
             z-index: 100;
             padding: 20px 0;
@@ -83,25 +83,34 @@
             justify-content: center;
             gap: 15px;
             width: 100%;
-            border-bottom: 1px solid rgba(107, 26, 26, 0.3);
+            border-bottom: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
         }
 
         .tab-btn {
             background: transparent;
             border: 1px solid var(--maroon);
             color: var(--text-muted);
-            padding: 8px 20px;
+            padding: 8px 24px;
             border-radius: 30px;
             font-size: 13px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tab-btn:hover {
+            color: var(--gold);
+            border-color: var(--gold);
         }
 
         .tab-btn.active {
-            background: var(--gold);
-            color: var(--bg-primary);
-            border-color: var(--gold);
+            background: #130303 !important; /* Fixed dark maroon */
+            color: #FFFFFF !important;
+            border-color: #130303 !important;
+            box-shadow: 0 4px 15px rgba(107, 26, 26, 0.2);
         }
 
         .portfolio-grid {
@@ -136,6 +145,7 @@
         .project-card .overlay h3 {
             margin: 0;
             font-size: 20px;
+            color: #FFFFFF !important;
         }
 
         .project-card .overlay .pill-badge {
@@ -210,6 +220,10 @@
             <a href="contact.html">Contact</a>
         </div>
         <div class="nav-right">
+            <button class="theme-toggle" aria-label="Toggle Theme">
+                <i class="fa-solid fa-sun"></i>
+                <i class="fa-solid fa-moon"></i>
+            </button>
         </div>
         <button class="mobile-nav-toggle">
             <span></span><span></span><span></span>
@@ -692,7 +706,7 @@
         </div>
     </div>
 
-    <section style="background: #0E0505; text-align: center; padding: 140px 24px; position: relative; overflow: hidden; border-top: 1px solid rgba(139, 26, 26, 0.1);">
+    <section style="background: var(--bg-primary); text-align: center; padding: 140px 24px; position: relative; overflow: hidden; border-top: 1px solid rgba(139, 26, 26, 0.1);">
         <!-- Background Glow -->
         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; height: 80%; background: radial-gradient(circle at center, rgba(139, 26, 26, 0.08) 0%, transparent 70%); pointer-events: none;"></div>
         
@@ -703,11 +717,11 @@
             <span style="color: var(--gold); font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; display: block; margin-bottom: 30px; opacity: 0.9;">SEE MORE</span>
             
             <h2 style="font-size: clamp(38px, 7vw, 72px); font-weight: 900; line-height: 1.05; margin: 0 auto 24px; max-width: 900px; font-family: var(--font-montserrat);">
-                <span style="color: #FFFFFF; display: block;">See the Full</span>
+                <span style="color: var(--text-white); display: block;">See the Full</span>
                 <span style="color: var(--gold); display: block;">Creative Process.</span>
             </h2>
             
-            <p style="color: #888888; font-size: 16px; margin: 0 auto 48px; max-width: 520px; line-height: 1.7; font-weight: 500;">
+            <p style="color: var(--text-muted); font-size: 16px; margin: 0 auto 48px; max-width: 520px; line-height: 1.7; font-weight: 500;">
                 Explore detailed case studies, process breakdowns, and more projects on Behance.
             </p>
             
@@ -718,14 +732,14 @@
     </section>
 
     <!-- CTA Banner -->
-    <section style="min-height: auto; padding: 150px 80px; position: relative; overflow: hidden; background: linear-gradient(135deg, #1C0808 0%, #0E0505 100%);">
-        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: 900; font-size: 400px; color: #fff; opacity: 0.02; pointer-events: none;">DM</div>
+    <section style="min-height: auto; padding: 150px 80px; position: relative; overflow: hidden; background: var(--bg-secondary);">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: 900; font-size: 400px; color: var(--text-white); opacity: 0.02; pointer-events: none;">DM</div>
         <div style="max-width: 1200px; margin: 0 auto; position: relative; z-index: 10;">
             <div class="section-header-centered" data-aos="fade-up">
                 <span class="section-eyebrow">LET'S CREATE TOGETHER</span>
                 <h2 class="section-headline">Ready to Elevate<br>Your <span>Brand?</span></h2>
                 <div class="section-line"></div>
-                <p style="font-size: 18px; color: #888888; margin-top: -20px; margin-bottom: 40px;">Send a message to <strong>REQUEST A QUOTE</strong> and get started.</p>
+                <p style="font-size: 18px; color: var(--text-muted); margin-top: -20px; margin-bottom: 40px;">Send a message to <strong>REQUEST A QUOTE</strong> and get started.</p>
                 <a href="contact.html" class="btn-primary">GET STARTED →</a>
             </div>
         </div>
@@ -767,8 +781,8 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p style="font-weight: bold;">© 2026 All Rights Reserved.</p>
-            <p style="text-align: right; opacity: 0.8; font-weight: bold;">Art Direction & Curation by Komal Tariq Abbasi</p>
+            <p style="font-weight: bold; color: var(--text-muted);">© 2026 All Rights Reserved.</p>
+            <p style="text-align: right; opacity: 0.8; font-weight: bold; color: var(--text-muted);">Art Direction & Curation by Komal Tariq Abbasi</p>
         </div>
     </footer>
 
