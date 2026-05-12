@@ -21,20 +21,24 @@ async function startServer() {
       return res.status(400).json({ error: "Please fill in all required fields." });
     }
 
+    const emailUser = process.env.SMTP_USER || "ktabbasi364@gmail.com";
+    const emailPass = process.env.SMTP_PASS || "jmzl pcmp zlmt gjou";
+
     // SMTP Configuration
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.SMTP_USER || "ktabbasi364@gmail.com",
-        pass: process.env.SMTP_PASS || "jmzl pcmp zlmt gjou",
+        user: emailUser,
+        pass: emailPass,
       },
     });
 
     const mailOptions = {
-      from: `"${name}" <${email}>`,
-      to: "ktabbasi364@gmail.com", // Your email where you want to receive messages
+      from: `"Portfolio Contact" <${emailUser}>`,
+      replyTo: email,
+      to: emailUser, 
       subject: `New Contact Form: ${subject || "No Subject"}`,
-      text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
+      text: `Name: ${name}\nFrom Email: ${email}\n\nMessage:\n${message}`,
       html: `
         <h3>New Message from Portfolio</h3>
         <p><strong>Name:</strong> ${name}</p>
