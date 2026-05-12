@@ -246,13 +246,12 @@ body::before {
 .cursor-ring {
   width: 24px;
   height: 24px;
-  border: 1px solid var(--gold);
+  border: 2px solid var(--maroon);
   border-radius: 50%;
   position: fixed;
   pointer-events: none;
   z-index: 10001;
   transition: width 0.3s, height 0.3s, border-width 0.3s, transform 0.15s ease-out;
-  mix-blend-mode: difference;
 }
 
 /* Navigation */
