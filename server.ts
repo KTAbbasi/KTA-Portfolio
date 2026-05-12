@@ -21,8 +21,12 @@ async function startServer() {
       return res.status(400).json({ error: "Please fill in all required fields." });
     }
 
-    const emailUser = process.env.SMTP_USER || "ktabbasi364@gmail.com";
-    const emailPass = process.env.SMTP_PASS || "jmzl pcmp zlmt gjou";
+    const emailUser = process.env.SMTP_USER;
+    const emailPass = process.env.SMTP_PASS;
+
+    if (!emailUser || !emailPass) {
+      return res.status(500).json({ error: "Email service is not configured. Please set environment variables." });
+    }
 
     // SMTP Configuration
     const transporter = nodemailer.createTransport({

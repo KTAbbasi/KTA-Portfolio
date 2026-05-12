@@ -78,7 +78,7 @@ const AdminDashboard = () => {
     }, []);
 
     const handleLogin = () => {
-        if (password === '1a2s3d_komal') {
+        if (password === import.meta.env.VITE_ADMIN_PASSWORD) {
             try {
                 sessionStorage.setItem('kta_admin_authed', 'true');
             } catch (e) {}

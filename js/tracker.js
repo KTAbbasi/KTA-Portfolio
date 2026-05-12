@@ -5,7 +5,7 @@
 
 (function() {
     // Configuration
-    const AUTH_PASSWORD = '1a2s3d_komal';
+    const AUTH_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
     const SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes
     
     // State
