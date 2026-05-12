@@ -225,9 +225,9 @@
         </div>
     </header>
 
-    <div class="contact-container" style="justify-content: center; align-items: center; gap: 40px; margin-bottom: 60px;">
+    <div class="contact-container" style="justify-content: center; align-items: flex-start; gap: 40px; margin-bottom: 60px;">
         <!-- Info Column -->
-        <div class="contact-left" data-aos="glass-fade" data-aos-delay="300" style="flex: 1; max-width: 600px;">
+        <div class="contact-left" data-aos="glass-fade" data-aos-delay="300" style="flex: 1; max-width: 500px;">
             <div class="info-item">
                 <span class="info-label">Email</span>
                 <a href="mailto:ktabbasi364@gmail.com" class="info-value">ktabbasi364@gmail.com</a>
@@ -248,6 +248,91 @@
             <div class="response-badge">
                 ⚡ Replies within 24 hours
             </div>
+        </div>
+
+        <!-- Form Column -->
+        <div class="contact-right" data-aos="glass-fade" data-aos-delay="500" style="flex: 1.5; max-width: 600px;">
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="name">NAME</label>
+                    <input type="text" id="name" class="form-control" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">EMAIL ADDRESS</label>
+                    <input type="email" id="email" class="form-control" placeholder="your@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="subject">PROJECT TYPE / SUBJECT</label>
+                    <input type="text" id="subject" class="form-control" placeholder="e.g. AI Product Photography">
+                </div>
+                <div class="form-group">
+                    <label for="message">MESSAGE</label>
+                    <textarea id="message" class="form-control" placeholder="Tell me about your vision..." required></textarea>
+                </div>
+                
+                <button type="submit" id="submitBtn" class="pill-maroon" style="width: 100%; border: none; cursor: pointer; height: 55px; border-radius: 8px;">
+                    <span id="btnText">SEND MESSAGE</span>
+                    <span id="btnLoader" style="display: none;"><i class="fas fa-spinner fa-spin"></i> SENDING...</span>
+                </button>
+                
+                <div id="successMsg" class="success-message" style="background: rgba(76, 175, 80, 0.1); border: 1px solid #4CAF50; padding: 15px; border-radius: 8px; text-align: center; margin-top: 20px;">
+                    <i class="fas fa-check-circle"></i> Message sent successfully! I'll be in touch soon.
+                </div>
+                <div id="errorMsg" style="display: none; background: rgba(244, 67, 54, 0.1); border: 1px solid #F44336; color: #F44336; padding: 15px; border-radius: 8px; text-align: center; margin-top: 20px; font-size: 14px;">
+                    <i class="fas fa-exclamation-circle"></i> Failed to send. Please try again or email directly.
+                </div>
+            </form>
+
+            <script>
+                document.getElementById('contactForm').addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const btn = document.getElementById('submitBtn');
+                    const btnText = document.getElementById('btnText');
+                    const btnLoader = document.getElementById('btnLoader');
+                    const successMsg = document.getElementById('successMsg');
+                    const errorMsg = document.getElementById('errorMsg');
+                    
+                    // Reset messages
+                    successMsg.style.display = 'none';
+                    errorMsg.style.display = 'none';
+                    
+                    // Show loader
+                    btn.disabled = true;
+                    btnText.style.display = 'none';
+                    btnLoader.style.display = 'inline-block';
+                    
+                    const formData = {
+                        name: document.getElementById('name').value,
+                        email: document.getElementById('email').value,
+                        subject: document.getElementById('subject').value,
+                        message: document.getElementById('message').value
+                    };
+                    
+                    try {
+                        const response = await fetch('/api/contact', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(formData)
+                        });
+                        
+                        if (response.ok) {
+                            successMsg.style.display = 'block';
+                            document.getElementById('contactForm').reset();
+                        } else {
+                            throw new Error('Failed to send');
+                        }
+                    } catch (error) {
+                        errorMsg.style.display = 'block';
+                    } finally {
+                        btn.disabled = false;
+                        btnText.style.display = 'inline-block';
+                        btnLoader.style.display = 'none';
+                    }
+                });
+            </script>
         </div>
     </div>
 
