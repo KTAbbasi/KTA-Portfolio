@@ -1,5 +1,5 @@
-// KTA Admin Intelligence System v4.2.1
-// Premium Maroon Aesthetic Login Re-imagined
+// KTA Admin Intelligence System - Professional Analytics Edition
+// Re-imagined with Midnight Navy & Indigo Glassmorphism
 import React, { useState, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { motion, AnimatePresence } from 'motion/react';
@@ -11,12 +11,10 @@ import {
   Users, Eye, Globe, Clock, LayoutDashboard, Database, 
   Activity, ArrowUpRight, TrendingUp, ShieldCheck, LogOut, RefreshCw,
   Search, Calendar, Filter, MoreVertical, Menu, ChevronRight,
-  Shield, Zap, BarChart3, PieChart
+  Shield, Zap, BarChart3, PieChart, Settings, Bell, HelpCircle
 } from 'lucide-react';
 import { collection, getDocs, query, orderBy, limit } from 'firebase/firestore';
 import { getFirebaseDb, handleFirestoreError, OperationType } from './firebase-init.js';
-
-console.log('AdminDashboard: Initiating System Overhaul...');
 
 interface AnalyticsEvent {
     id?: string;
@@ -28,19 +26,41 @@ interface AnalyticsEvent {
     timestamp: string;
 }
 
-const GlassCard = ({ children, className = '', hover = true, curl = false }: { children: React.ReactNode, className?: string, hover?: boolean, curl?: boolean }) => (
+// Design Constants
+const COLORS = {
+    background: '#13121b',
+    surface: '#1f1f28',
+    surfaceLighter: '#2a2933',
+    primary: '#4f46e5',
+    secondary: '#10b981',
+    textPrimary: '#e4e1ee',
+    textSecondary: '#c7c4d8',
+    outline: 'rgba(255, 255, 255, 0.1)',
+};
+
+const StatCard = ({ title, value, growth, icon: Icon }: any) => (
     <motion.div 
-        whileHover={hover ? { y: -8, scale: 1.01, transition: { duration: 0.3, ease: "easeOut" } } : {}}
-        className={`bg-[#0D0D0D] border border-white/5 rounded-[2.5rem] shadow-[10px_10px_30px_rgba(0,0,0,0.5),-5px_-5px_20px_rgba(255,255,255,0.02)] p-8 relative overflow-hidden group ${className}`}
+        whileHover={{ y: -4 }}
+        className="bg-[#1f1f28] border border-white/10 rounded-xl p-6 shadow-lg relative overflow-hidden"
     >
-        {/* Paper Curl Effect Component */}
-        {curl && (
-            <div className="absolute top-0 right-0 w-16 h-16 pointer-events-none z-10">
-                <div className="absolute top-0 right-0 w-full h-full bg-gradient-to-bl from-[#C9A84C]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="absolute top-[-2px] right-[-2px] w-8 h-8 bg-[#151515] border-l border-b border-white/10 rounded-bl-[1.5rem] shadow-[2px_2px_10px_rgba(0,0,0,0.5)] transform origin-top-right group-hover:scale-150 group-hover:rotate-12 transition-transform duration-500" />
+        <div className="flex justify-between items-start mb-4">
+            <div className="p-2.5 bg-[#4f46e5]/10 rounded-lg text-[#4f46e5]">
+                <Icon size={20} />
             </div>
-        )}
-        {children}
+            {growth && (
+                <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold ${growth >= 0 ? 'bg-[#10b981]/10 text-[#10b981]' : 'bg-[#ef4444]/10 text-[#ef4444]'}`}>
+                    {growth >= 0 ? <TrendingUp size={10} /> : <TrendingUp size={10} className="rotate-180" />}
+                    {growth}%
+                </div>
+            )}
+        </div>
+        <div>
+            <p className="text-[#c7c4d8] text-xs font-medium uppercase tracking-wider mb-1">{title}</p>
+            <p className="text-3xl font-bold text-[#e4e1ee] tabular-nums">{value}</p>
+        </div>
+        <div className="absolute top-0 right-0 p-4 opacity-5">
+            <Icon size={64} />
+        </div>
     </motion.div>
 );
 
@@ -55,25 +75,21 @@ const AdminDashboard = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
     const [activeTab, setActiveTab] = useState('dashboard');
-    const [searchQuery, setSearchQuery] = useState('');
-    const [filterType, setFilterType] = useState('all');
     const [stats, setStats] = useState({
         totalViews: 0,
         uniqueVisitors: 0,
         avgDuration: 0,
-        topCountry: 'None'
+        growth: 12.5
     });
     const [chartData, setChartData] = useState<{name: string, views: number}[]>([]);
 
-    // Reset body style for admin
     useEffect(() => {
-        document.body.style.background = '#080808';
-        document.body.style.cursor = 'auto';
-        document.body.style.overflowX = 'hidden';
-        document.body.style.overflowY = 'auto';
+        document.body.style.background = COLORS.background;
+        document.body.style.color = COLORS.textPrimary;
+        document.body.style.fontFamily = "'Inter', sans-serif";
         return () => {
-            document.body.style.cursor = '';
             document.body.style.background = '';
+            document.body.style.color = '';
         };
     }, []);
 
@@ -97,7 +113,7 @@ const AdminDashboard = () => {
                 const q = query(
                     collection(db, 'analytics_events'), 
                     orderBy('timestamp', 'desc'), 
-                    limit(500)
+                    limit(200)
                 );
                 const snapshot = await getDocs(q);
                 const cloudEvents = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as AnalyticsEvent[];
@@ -111,550 +127,265 @@ const AdminDashboard = () => {
         }
     };
 
-    useEffect(() => {
-        if (isAuthed) {
-            fetchData();
-        }
-    }, [isAuthed]);
-
-    const handleLogout = () => {
-        try {
-            sessionStorage.removeItem('kta_admin_authed');
-            setIsAuthed(false);
-        } catch (e) {}
-    };
-
     const processStats = (data: AnalyticsEvent[]) => {
         const uniqueIps = new Set(data.map(e => e.visitorId || 'anon'));
-        const countries: Record<string, number> = {};
-        data.forEach(e => {
-            if (e.country) countries[e.country] = (countries[e.country] || 0) + 1;
-        });
-        
-        const sorted = Object.entries(countries).sort((a: any, b: any) => b[1] - a[1]);
-        const top = sorted[0];
-
-        // Process Chart Data (Last 7 days)
         const dayCounts: Record<string, number> = {};
         const now = new Date();
+        
         for (let i = 6; i >= 0; i--) {
             const d = new Date();
             d.setDate(now.getDate() - i);
-            const dateStr = d.toLocaleDateString('en-US', { day: '2-digit', month: 'short' });
+            const dateStr = d.toLocaleDateString('en-US', { weekday: 'short' });
             dayCounts[dateStr] = 0;
         }
 
         data.forEach(e => {
-            if (e.type === 'page_view') {
-                const date = new Date(e.timestamp);
-                const dateStr = date.toLocaleDateString('en-US', { day: '2-digit', month: 'short' });
-                if (dayCounts[dateStr] !== undefined) {
-                    dayCounts[dateStr]++;
-                }
+            const date = new Date(e.timestamp);
+            const dateStr = date.toLocaleDateString('en-US', { weekday: 'short' });
+            if (dayCounts[dateStr] !== undefined) {
+                dayCounts[dateStr]++;
             }
         });
 
-        const newChartData = Object.entries(dayCounts).map(([name, views]) => ({ name, views }));
-        setChartData(newChartData);
-
+        setChartData(Object.entries(dayCounts).map(([name, views]) => ({ name, views })));
         setStats({
             totalViews: data.filter(e => e.type === 'page_view').length,
             uniqueVisitors: uniqueIps.size,
-            avgDuration: 124, 
-            topCountry: top ? top[0] : 'None'
+            avgDuration: 142,
+            growth: 18.2
         });
     };
 
-    const countryData = Object.entries(
-        events.reduce((acc: Record<string, number>, e) => {
-            if (e.country) acc[e.country] = (acc[e.country] || 0) + 1;
-            return acc;
-        }, {})
-    ).map(([name, value]) => ({ name, value }))
-    .sort((a, b) => (b.value as number) - (a.value as number))
-    .slice(0, 5);
+    useEffect(() => {
+        if (isAuthed) fetchData();
+    }, [isAuthed]);
 
-    const filteredEvents = events.filter(e => {
-        const matchesSearch = !searchQuery || 
-            (e.visitorId?.toLowerCase().includes(searchQuery.toLowerCase())) ||
-            (e.country?.toLowerCase().includes(searchQuery.toLowerCase())) ||
-            (e.url?.toLowerCase().includes(searchQuery.toLowerCase())) ||
-            (e.project?.toLowerCase().includes(searchQuery.toLowerCase()));
-        
-        const matchesType = filterType === 'all' || e.type === filterType;
-        
-        return matchesSearch && matchesType;
-    });
+    const handleLogout = () => {
+        sessionStorage.removeItem('kta_admin_authed');
+        setIsAuthed(false);
+    };
 
     if (!isAuthed) {
         return (
-            <div className="flex items-center justify-center min-h-screen p-4 md:p-12 overflow-hidden selection:bg-[#8E3E3F]/20" style={{ background: 'linear-gradient(135deg, #A8656A 0%, #762D30 100%)' }}>
+            <div className="flex items-center justify-center min-h-screen p-6 bg-[#0e0d16]">
                 <motion.div 
-                    initial={{ opacity: 0, scale: 0.98 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="w-full max-w-6xl h-full max-h-[850px] bg-[#E5D1D1] rounded-[3.5rem] shadow-[0_60px_120px_-30px_rgba(0,0,0,0.4)] flex overflow-hidden ring-1 ring-white/20 relative"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="w-full max-w-md bg-[#1f1f28] border border-white/10 rounded-2xl p-10 shadow-2xl"
                 >
-                    {/* Left Section: Image with Wave Curve */}
-                    <div className="hidden lg:block w-[45%] relative h-full">
-                        <div className="absolute inset-0 z-10 transition-transform duration-[20s] hover:scale-105">
-                            <img 
-                                src="https://images.unsplash.com/photo-1549413204-74229b47e8db?q=80&w=2070&auto=format&fit=crop" 
-                                className="w-full h-full object-cover"
-                                alt="Artistic dunes"
-                            />
-                            <div className="absolute inset-0 bg-[#8E3E3F]/10 mix-blend-multiply" />
+                    <div className="flex flex-col items-center mb-10">
+                        <div className="w-16 h-16 bg-[#4f46e5] rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-[#4f46e5]/20">
+                            <Shield size={32} />
                         </div>
-                        
-                        {/* Wave Mask - Smooth Cubic Curve as seen in the image */}
-                        <div 
-                            className="absolute inset-y-0 -right-1 w-64 bg-[#E5D1D1] z-20"
-                            style={{ 
-                                clipPath: 'path("M0,0 C200,180 200,570 0,750 L300,750 L300,0 Z")',
-                                height: '100% border-left: 2px solid white/10'
-                            }}
-                        />
+                        <h2 className="text-2xl font-bold tracking-tight">KTA Intelligence</h2>
+                        <p className="text-[#c7c4d8] text-sm mt-2">Restricted Access Portal</p>
                     </div>
 
-                    {/* Right Section: Form area with specific styles from the image */}
-                    <div className="flex-1 flex flex-col items-center justify-center p-12 lg:p-24 bg-[#E5D1D1] relative">
-                        <motion.div 
-                            initial={{ x: 30, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            className="w-full max-w-sm text-center"
+                    <div className="space-y-6">
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-bold uppercase tracking-widest text-[#c7c4d8] ml-1">Password</label>
+                            <input 
+                                type="password" 
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
+                                className="w-full bg-[#13121b] border border-white/10 rounded-xl px-4 py-3.5 text-white outline-none focus:border-[#4f46e5] focus:ring-1 focus:ring-[#4f46e5] transition-all"
+                                placeholder="Enter secure key"
+                                autoFocus
+                            />
+                        </div>
+                        {error && <p className="text-[#ef4444] text-[10px] font-bold uppercase tracking-widest text-center mt-2">Access Denied</p>}
+                        <button 
+                            onClick={handleLogin}
+                            className="w-full py-4 bg-[#4f46e5] hover:bg-[#4338ca] text-white font-bold rounded-xl shadow-lg transition-all active:scale-95"
                         >
-                            {/* HUGE WHITE HEADING: Exactly like image */}
-                            <h2 className="text-8xl font-black text-white mb-24 tracking-tighter drop-shadow-[0_10px_20px_rgba(0,0,0,0.05)]">Login</h2>
-
-                            <div className="space-y-16">
-                                <div className="text-left group relative">
-                                    <label className="block text-[11px] font-black uppercase tracking-[0.4em] text-[#8E3E3F] mb-6 ml-1 opacity-70">Password</label>
-                                    <div className="relative border-b-2 border-[#8E3E3F]/10 group-focus-within:border-[#8E3E3F] transition-all duration-700">
-                                        <input 
-                                            type="password" 
-                                            value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
-                                            onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
-                                            placeholder="••••••••••••" 
-                                            className="w-full bg-transparent py-4 pr-10 text-[#8E3E3F] text-3xl outline-none tracking-[0.3em] font-mono placeholder:tracking-normal placeholder:text-[#8E3E3F]/5"
-                                            autoFocus
-                                        />
-                                        <div className="absolute right-0 bottom-4 text-[#8E3E3F]/30 group-focus-within:text-[#8E3E3F] transition-colors">
-                                            <ShieldCheck size={26} />
-                                        </div>
-                                    </div>
-                                    {error && (
-                                        <motion.p 
-                                            initial={{ opacity: 0, scale: 0.9 }}
-                                            animate={{ opacity: 1, scale: 1 }}
-                                            className="absolute -bottom-10 left-0 text-red-600 text-[10px] font-bold uppercase tracking-[0.3em]"
-                                        >
-                                            Invalid Access Credentials
-                                        </motion.p>
-                                    )}
-                                </div>
-
-                                <div className="pt-4">
-                                    <button 
-                                        onClick={handleLogin}
-                                        className="w-full py-5 bg-[#8E3E3F] text-white font-black rounded-full shadow-[0_25px_50px_-10px_rgba(142,62,63,0.4)] hover:bg-[#a64f59] active:scale-95 transition-all duration-300 uppercase tracking-[0.4em] text-[12px]"
-                                    >
-                                        Login
-                                    </button>
-                                </div>
-
-                                <div className="flex justify-between items-center text-[10px] font-black text-[#8E3E3F]/40 pt-16 uppercase tracking-[0.2em]">
-                                    <button className="hover:text-[#8E3E3F] transition-colors">Create an account</button>
-                                    <button className="hover:text-[#8E3E3F] transition-colors">Forgot password</button>
-                                </div>
-                            </div>
-
-                            {/* Navigation Dots - White as in the image */}
-                            <div className="mt-24 flex justify-center gap-4">
-                                <div className="w-2.5 h-2.5 rounded-full bg-white shadow-xl" />
-                                <div className="w-2.5 h-2.5 rounded-full bg-white/20" />
-                                <div className="w-2.5 h-2.5 rounded-full bg-white/20" />
-                            </div>
-                        </motion.div>
+                            AUTHENTICATE
+                        </button>
                     </div>
                 </motion.div>
-
-                <style>{`
-                    input::placeholder { letter-spacing: normal !important; }
-                    body { overflow: hidden; height: 100vh; }
-                `}</style>
             </div>
         );
     }
 
-
-    if (loading && events.length === 0) return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-[#050505] text-[#C9A84C]">
-            <div className="relative">
-                <motion.div 
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                    className="w-16 h-16 border border-white/10 border-t-[#C9A84C] rounded-full shadow-[0_0_20px_rgba(201,168,76,0.1)]"
-                />
-                <div className="absolute inset-0 flex items-center justify-center">
-                    <Zap size={20} className="animate-pulse" />
-                </div>
-            </div>
-            <motion.p 
-                animate={{ opacity: [0.4, 1, 0.4] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="font-bold text-[10px] tracking-[0.6em] uppercase mt-10 text-white/40"
-            >
-                Authenticating
-            </motion.p>
-        </div>
-    );
-
     return (
-        <div className="flex min-h-screen bg-[#080808] text-white font-sans selection:bg-[#C9A84C]/30 p-4 md:p-6 lg:p-8 gap-6">
-            
-            {/* Sidebar - Neumorphic Style */}
-            <aside className="hidden xl:flex flex-col w-80 bg-[#0D0D0D] rounded-[3rem] border border-white/5 shadow-[20px_20px_60px_rgba(0,0,0,0.5)] p-10">
-                <div className="mb-14">
-                   <div className="flex items-center gap-3 mb-2">
-                        <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#C9A84C] to-[#E0C172] flex items-center justify-center text-black shadow-lg">
-                            <Shield size={20} />
-                        </div>
-                        <span className="font-black text-2xl tracking-tighter">Dash<span className="text-[#C9A84C]">Burd</span></span>
-                   </div>
-                   <p className="text-[10px] text-white/20 font-black uppercase tracking-[0.3em] ml-1">Creative OS v4.2</p>
+        <div className="flex h-screen bg-[#13121b] text-[#e4e1ee] overflow-hidden">
+            {/* Sidebar */}
+            <aside className="w-72 flex-shrink-0 bg-[#0e0d16] border-r border-white/5 p-8 flex flex-col">
+                <div className="flex items-center gap-3 mb-12">
+                    <div className="w-8 h-8 bg-[#4f46e5] rounded-lg flex items-center justify-center text-white">
+                        <Zap size={18} fill="currentColor" />
+                    </div>
+                    <span className="font-bold text-xl tracking-tight">Analytics</span>
                 </div>
 
-                <div className="space-y-10 flex-1">
-                    <div>
-                        <p className="text-[9px] text-white/20 font-black uppercase tracking-[0.4em] mb-6 ml-4">Main Menu</p>
-                        <nav className="space-y-3">
-                            {[
-                                { id: 'dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-                                { id: 'events', icon: Database, label: 'Inbox', count: '12' },
-                                { id: 'feed', icon: Activity, label: 'Feed' },
-                                { id: 'staff', icon: Users, label: 'Staff' },
-                                { id: 'geo', icon: PieChart, label: 'Statistics' },
-                            ].map((item) => (
-                                <button 
-                                    key={item.id}
-                                    onClick={() => setActiveTab(item.id)}
-                                    className={`w-full flex items-center justify-between px-6 py-4 rounded-2xl transition-all group ${activeTab === item.id ? 'bg-white font-black text-black shadow-xl scale-[1.02]' : 'text-white/40 hover:bg-white/5 hover:text-white'}`}
-                                >
-                                    <div className="flex items-center gap-4">
-                                        <item.icon size={20} className={activeTab === item.id ? 'text-[#C9A84C]' : ''} />
-                                        <span className="text-sm tracking-tight">{item.label}</span>
-                                    </div>
-                                    {item.count && (
-                                        <span className={`text-[9px] font-black px-2 py-0.5 rounded-full ${activeTab === item.id ? 'bg-[#C9A84C] text-black' : 'bg-white/5 text-white/30'}`}>
-                                            {item.count}
-                                        </span>
-                                    )}
-                                </button>
-                            ))}
-                        </nav>
-                    </div>
+                <nav className="space-y-2 flex-1">
+                    {[
+                        { id: 'dashboard', icon: LayoutDashboard, label: 'Overview' },
+                        { id: 'events', icon: Database, label: 'Event Log' },
+                        { id: 'audience', icon: Users, label: 'Audience' },
+                        { id: 'reports', icon: BarChart3, label: 'Reports' },
+                    ].map((item) => (
+                        <button 
+                            key={item.id}
+                            onClick={() => setActiveTab(item.id)}
+                            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${activeTab === item.id ? 'bg-[#4f46e5]/10 text-[#4f46e5] border border-[#4f46e5]/20' : 'text-[#c7c4d8] hover:bg-white/5'}`}
+                        >
+                            <item.icon size={18} />
+                            {item.label}
+                        </button>
+                    ))}
+                </nav>
 
-                    <div>
-                        <p className="text-[9px] text-white/20 font-black uppercase tracking-[0.4em] mb-6 ml-4">Organization</p>
-                        <nav className="space-y-3">
-                            {[
-                                { id: 'mentoring', label: 'Mentoring', color: '#C9A84C' },
-                                { id: 'gaming', label: 'Gaming', color: '#44DDFF' },
-                                { id: 'celebrating', label: 'Celebrating', color: '#FF44DD' },
-                            ].map((item) => (
-                                <button 
-                                    key={item.id}
-                                    className="w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-white/40 hover:bg-white/5 hover:text-white transition-all group"
-                                >
-                                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: item.color }} />
-                                    <span className="text-sm tracking-tight">{item.label}</span>
-                                </button>
-                            ))}
-                        </nav>
-                    </div>
-                </div>
-
-
-
-                <div className="mt-8 pt-8 border-t border-white/5">
+                <div className="pt-8 border-t border-white/5 space-y-2">
+                    <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-[#c7c4d8] hover:bg-white/5 transition-all">
+                        <Settings size={18} /> Settings
+                    </button>
                     <button 
                         onClick={handleLogout}
-                        className="w-full flex items-center gap-4 px-6 py-3 text-white/20 hover:text-white transition-colors text-[10px] font-black uppercase tracking-[0.3em]"
+                        className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-[#ef4444] hover:bg-[#ef4444]/10 transition-all"
                     >
-                        <LogOut size={16} />
-                        Terminate Session
+                        <LogOut size={18} /> Sign Out
                     </button>
                 </div>
             </aside>
 
             {/* Main Content */}
-            <main className="flex-1 min-w-0 p-8 lg:p-12 overflow-y-auto h-screen custom-scrollbar">
-                <div className="max-w-[1600px] mx-auto space-y-12">
-                    
-                    {/* Header: Hello Creative! */}
-                    <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-8 mb-4">
-                        <div className="space-y-4">
-                            <h1 className="text-4xl font-black tracking-tighter">Hello Creative! 👋</h1>
-                            <nav className="flex flex-wrap items-center gap-x-8 gap-y-4 text-[11px] font-black uppercase tracking-[0.2em] text-white/30">
-                                <button className="text-[#C9A84C] border-b-2 border-[#C9A84C] pb-2">Overview</button>
-                                <button className="hover:text-white transition-colors">Team Details</button>
-                                <button className="hover:text-white transition-colors">Tasks Statistic</button>
-                                <button className="hover:text-white transition-colors">My Plans</button>
-                                <button className="hover:text-white transition-colors">Notifications</button>
-                                <button className="hover:text-white transition-colors">Integrations</button>
-                            </nav>
-                        </div>
+            <main className="flex-1 flex flex-col min-w-0 overflow-y-auto">
+                <header className="h-20 flex-shrink-0 border-b border-white/5 px-10 flex items-center justify-between sticky top-0 bg-[#13121b]/80 backdrop-blur-md z-10">
+                    <div className="flex items-center gap-4 bg-[#1f1f28] border border-white/5 rounded-xl px-4 py-2 w-96 group focus-within:border-[#4f46e5]/30 transition-all">
+                        <Search size={16} className="text-[#c7c4d8]" />
+                        <input 
+                            type="text" 
+                            placeholder="Search parameters..." 
+                            className="bg-transparent border-none outline-none text-sm w-full placeholder:text-white/10"
+                        />
+                    </div>
 
-                        <div className="flex items-center gap-6">
-                            <div className="hidden lg:flex items-center gap-3 bg-[#0D0D0D] border border-white/5 rounded-full px-6 py-2.5 shadow-inner group focus-within:border-[#C9A84C]/30 transition-all">
-                                <Search size={18} className="text-white/20 group-focus-within:text-[#C9A84C] transition-colors" />
-                                <input 
-                                    type="text" 
-                                    placeholder="Search..." 
-                                    className="bg-transparent border-none outline-none text-xs font-bold text-white placeholder:text-white/10 w-32 focus:w-48 transition-all"
-                                />
+                    <div className="flex items-center gap-6">
+                        <button className="relative p-2 text-[#c7c4d8] hover:text-white transition-colors">
+                            <Bell size={20} />
+                            <span className="absolute top-2 right-2 w-2 h-2 bg-[#10b981] rounded-full ring-2 ring-[#13121b]" />
+                        </button>
+                        <div className="h-6 w-px bg-white/5" />
+                        <div className="flex items-center gap-3">
+                            <div className="text-right hidden sm:block">
+                                <p className="text-sm font-bold">Admin</p>
+                                <p className="text-[10px] text-[#10b981] font-bold uppercase tracking-widest">Active</p>
                             </div>
-
-                            <div className="bg-[#0D0D0D] p-1.5 rounded-full border border-white/5 shadow-inner flex items-center">
-                                <button className="px-6 py-2.5 bg-white text-black text-[10px] font-black rounded-full uppercase tracking-widest shadow-xl">General</button>
-                                <button className="px-6 py-2.5 text-white/30 text-[10px] font-black rounded-full uppercase tracking-widest hover:text-white/60 transition-colors">Workspace</button>
-                            </div>
-                            
-                            <div className="h-10 w-px bg-white/10" />
-
-                            <div className="flex items-center gap-3 bg-[#0D0D0D] border border-white/5 rounded-full pl-2 pr-6 py-2 hover:bg-white/5 transition-colors cursor-pointer group">
-                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#C9A84C] to-[#E0C172] p-1">
-                                    <div className="w-full h-full rounded-full bg-black flex items-center justify-center font-black text-[10px]">KTA</div>
-                                </div>
-                                <div>
-                                    <p className="text-[11px] font-black">Nathan KTA</p>
-                                    <p className="text-[9px] text-white/30 font-bold uppercase tracking-widest group-hover:text-[#C9A84C] transition-colors">Lead Designer</p>
-                                </div>
+                            <div className="w-10 h-10 rounded-full bg-[#2a2933] border border-white/10 flex items-center justify-center font-bold text-xs">
+                                AD
                             </div>
                         </div>
                     </div>
+                </header>
 
-                    {/* Bento Grid: Dashboard Layout */}
-                    {activeTab === 'dashboard' && (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                            
-                            {/* Projects Stats Bar Chart */}
-                            <GlassCard className="md:col-span-2 lg:col-span-2 h-[450px] flex flex-col" curl={true}>
-                                <div className="flex justify-between items-start mb-10">
-                                    <div>
-                                        <h3 className="text-xl font-black mb-1">Projects Stats</h3>
-                                        <p className="text-[10px] text-white/20 font-bold uppercase tracking-widest">Temporal Handshake Metrics</p>
-                                    </div>
-                                    <MoreVertical className="text-white/20" size={18} />
-                                </div>
-                                <div className="flex-1 w-full">
-                                    <ResponsiveContainer width="100%" height="100%">
-                                        <AreaChart data={chartData}>
-                                            <defs>
-                                                <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-                                                    <stop offset="5%" stopColor="#C9A84C" stopOpacity={0.8}/>
-                                                    <stop offset="95%" stopColor="#C9A84C" stopOpacity={0.1}/>
-                                                </linearGradient>
-                                            </defs>
-                                            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" vertical={false} />
-                                            <XAxis 
-                                                dataKey="name" 
-                                                stroke="rgba(255,255,255,0.1)" 
-                                                fontSize={10} 
-                                                tickLine={false} 
-                                                axisLine={false}
-                                                dy={10}
-                                                fontFamily="Arial"
-                                            />
-                                            <Tooltip 
-                                                contentStyle={{ background: '#151515', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '20px', fontSize: '10px' }}
-                                                itemStyle={{ color: '#C9A84C', fontWeight: 'bold' }}
-                                            />
-                                            <Area type="monotone" dataKey="views" stroke="#C9A84C" strokeWidth={3} fill="url(#barGradient)" />
-                                        </AreaChart>
-                                    </ResponsiveContainer>
-                                </div>
-                                
-                                <div className="mt-6 flex justify-around p-4 bg-white/5 rounded-3xl border border-white/5">
-                                    {[
-                                        { l: 'Completed', v: '84%', c: 'bg-[#C9A84C]' },
-                                        { l: 'In Progress', v: '12%', c: 'bg-white/20' }
-                                    ].map((s, i) => (
-                                        <div key={i} className="flex items-center gap-3">
-                                            <div className={`w-2.5 h-2.5 rounded-full ${s.c}`} />
-                                            <div>
-                                                <p className="text-[9px] text-white/30 font-black uppercase tracking-widest">{s.l}</p>
-                                                <p className="text-xs font-black">{s.v}</p>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </GlassCard>
+                <div className="p-10 space-y-10 max-w-7xl mx-auto w-full">
+                    <div className="flex justify-between items-end">
+                        <div>
+                            <h1 className="text-3xl font-bold tracking-tight">Intelligence Dashboard</h1>
+                            <p className="text-[#c7c4d8] mt-1">Global monitoring of portfolio interactive points.</p>
+                        </div>
+                        <button 
+                            onClick={fetchData}
+                            className="flex items-center gap-2 px-4 py-2.5 bg-[#1f1f28] border border-white/5 rounded-lg text-xs font-bold text-[#c7c4d8] hover:text-white hover:border-white/20 transition-all"
+                        >
+                            <RefreshCw size={14} className={loading ? 'animate-spin' : ''} /> REFRESH DATA
+                        </button>
+                    </div>
 
-                            {/* Tasks Donut Chart */}
-                            <GlassCard className="h-[450px] flex flex-col items-center justify-center relative shadow-[inset_0_2px_10px_rgba(255,255,255,0.02)]" curl={true}>
-                                <div className="absolute top-8 left-8">
-                                    <h3 className="text-xl font-black mb-1">Tasks Chart</h3>
-                                    <p className="text-[10px] text-white/20 font-bold uppercase tracking-widest">Core Distribution</p>
-                                </div>
-                                
-                                <div className="relative w-56 h-56 flex items-center justify-center">
-                                    <svg className="w-full h-full -rotate-90 transform">
-                                        <circle 
-                                            cx="112" cy="112" r="100" 
-                                            stroke="rgba(255,255,255,0.05)" strokeWidth="24" fill="transparent"
-                                        />
-                                        <motion.circle 
-                                            initial={{ strokeDasharray: "0, 628" }}
-                                            animate={{ strokeDasharray: "460, 628" }}
-                                            transition={{ duration: 2, ease: "easeOut" }}
-                                            cx="112" cy="112" r="100" 
-                                            stroke="#C9A84C" strokeWidth="24" fill="transparent"
-                                            strokeLinecap="round"
-                                        />
-                                    </svg>
-                                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                        <span className="text-5xl font-black tracking-tighter">73%</span>
-                                        <span className="text-[10px] text-white/20 font-black uppercase tracking-tighter">Total Tasks</span>
-                                    </div>
-                                </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <StatCard title="Total Impressions" value={stats.totalViews.toLocaleString()} growth={12.4} icon={Eye} />
+                        <StatCard title="Unique Visitors" value={stats.uniqueVisitors.toLocaleString()} growth={8.2} icon={Users} />
+                        <StatCard title="Avg. Retension" value={`${stats.avgDuration}s`} growth={-2.1} icon={Clock} />
+                        <StatCard title="Live Systems" value="99.9%" growth={0} icon={Activity} />
+                    </div>
 
-                                <div className="mt-10 flex gap-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        {/* Main Chart */}
+                        <div className="lg:col-span-2 bg-[#1f1f28] border border-white/5 rounded-xl p-8 shadow-xl">
+                            <div className="flex justify-between items-center mb-10">
+                                <div>
+                                    <h2 className="text-xl font-bold">Traffic Resonance</h2>
+                                    <p className="text-xs text-[#c7c4d8] mt-1 uppercase tracking-widest font-medium">Weekly throughput audit</p>
+                                </div>
+                                <div className="flex gap-4">
                                     <div className="flex items-center gap-2">
-                                        <div className="w-2 h-2 rounded-full bg-[#C9A84C]" />
-                                        <span className="text-[10px] font-black uppercase tracking-widest">Done</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-2 h-2 rounded-full bg-white/10" />
-                                        <span className="text-[10px] font-black uppercase tracking-widest text-white/30">Process</span>
+                                        <div className="w-3 h-3 rounded bg-[#4f46e5]" />
+                                        <span className="text-[10px] font-bold text-[#c7c4d8] uppercase">Active Load</span>
                                     </div>
                                 </div>
-                            </GlassCard>
-
-                            {/* Right Column Stack */}
-                            <div className="space-y-8 h-[450px]">
-                                <GlassCard className="h-[210px] bg-gradient-to-br from-[#C9A84C] to-[#E0C172] text-black" hover={true}>
-                                    <div className="flex flex-col h-full justify-between">
-                                        <div className="flex justify-between items-start">
-                                            <div className="p-3 bg-black/10 rounded-2xl">
-                                                <Zap size={24} />
-                                            </div>
-                                            <ArrowUpRight size={24} />
-                                        </div>
-                                        <div>
-                                            <h3 className="text-2xl font-black tracking-tighter">Projects Report</h3>
-                                            <p className="text-[10px] font-black uppercase tracking-[0.2em] opacity-60">We done 17 project this month</p>
-                                        </div>
-                                    </div>
-                                </GlassCard>
-
-                                <GlassCard className="h-[210px] bg-[#151515] border-[#C9A84C]/10" hover={true}>
-                                    <div className="flex flex-col h-full justify-between text-center items-center">
-                                         <div className="flex -space-x-4 mb-4">
-                                            {[1,2,3,4].map(i => (
-                                                <div key={i} className="w-10 h-10 rounded-full bg-[#0D0D0D] border-2 border-[#151515] flex items-center justify-center font-black text-[#C9A84C] text-[10px]">
-                                                    {i === 4 ? '+5' : `P${i}`}
-                                                </div>
-                                            ))}
-                                         </div>
-                                         <div>
-                                            <h4 className="text-sm font-black mb-1">Matrix Talk</h4>
-                                            <p className="text-[10px] text-white/30 font-bold uppercase tracking-widest">Join live intelligence feed</p>
-                                         </div>
-                                         <button className="w-full py-2.5 bg-[#C9A84C] text-black text-[10px] font-black rounded-xl uppercase tracking-widest shadow-lg mt-4">Join Meeting</button>
-                                    </div>
-                                </GlassCard>
                             </div>
+                            <div className="h-[350px]">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <AreaChart data={chartData}>
+                                        <defs>
+                                            <linearGradient id="colorViews" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.3}/>
+                                                <stop offset="95%" stopColor="#4f46e5" stopOpacity={0}/>
+                                            </linearGradient>
+                                        </defs>
+                                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" vertical={false} />
+                                        <XAxis 
+                                            dataKey="name" 
+                                            stroke="rgba(255,255,255,0.2)" 
+                                            fontSize={10} 
+                                            tickLine={false} 
+                                            axisLine={false}
+                                            dy={10}
+                                        />
+                                        <YAxis 
+                                            stroke="rgba(255,255,255,0.2)" 
+                                            fontSize={10} 
+                                            tickLine={false} 
+                                            axisLine={false}
+                                        />
+                                        <Tooltip 
+                                            contentStyle={{ background: '#1f1f28', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', fontSize: '12px' }}
+                                            itemStyle={{ color: '#4f46e5', fontWeight: 'bold' }}
+                                        />
+                                        <Area 
+                                            type="monotone" 
+                                            dataKey="views" 
+                                            stroke="#4f46e5" 
+                                            strokeWidth={3} 
+                                            fillOpacity={1} 
+                                            fill="url(#colorViews)" 
+                                            animationDuration={1500}
+                                        />
+                                    </AreaChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </div>
 
-                            {/* Bottom Row: Recent Activities & Tasks Comparison */}
-                            <GlassCard className="md:col-span-2 lg:col-span-1 min-h-[400px] flex flex-col" curl={true}>
-                                <div className="mb-8">
-                                    <h3 className="text-xl font-black tracking-tight">Recent Activities</h3>
-                                    <p className="text-[10px] text-white/20 font-black uppercase tracking-[0.3em]">Latest Signal Pulse</p>
-                                </div>
-                                <div className="space-y-4 overflow-y-auto custom-scrollbar pr-2 -mr-2">
-                                    {filteredEvents.slice(0, 5).map((e, i) => (
-                                        <div key={i} className="flex items-center gap-4 p-4 rounded-3xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] transition-all group">
-                                            <div className="w-10 h-10 rounded-2xl bg-black border border-white/5 flex items-center justify-center font-black text-[#C9A84C] text-[10px]">
-                                                {e.visitorId?.substring(0, 1).toUpperCase() || 'A'}
+                        {/* Recent Activity */}
+                        <div className="bg-[#1f1f28] border border-white/5 rounded-xl p-8 flex flex-col shadow-xl">
+                            <h2 className="text-xl font-bold mb-8">Real-time Pulse</h2>
+                            <div className="space-y-6 flex-1 overflow-y-auto pr-2 custom-scrollbar">
+                                {events.slice(0, 10).map((event, i) => (
+                                    <div key={i} className="flex items-start gap-4 group">
+                                        <div className="w-2 h-10 bg-gradient-to-b from-[#4f46e5] to-transparent rounded-full opacity-20 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                                        <div className="flex-1 min-w-0">
+                                            <div className="flex justify-between items-center mb-1">
+                                                <p className="text-sm font-bold text-[#e4e1ee] truncate">{event.type.replace('_', ' ').toUpperCase()}</p>
+                                                <span className="text-[9px] text-[#c7c4d8] tabular-nums">{new Date(event.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                                             </div>
-                                            <div className="flex-1 min-w-0">
-                                                <p className="text-xs font-black truncate">{e.visitorId || 'Anonymous User'}</p>
-                                                <p className="text-[9px] text-[#C9A84C] font-black uppercase tracking-widest">{e.type.replace('_', ' ')}</p>
+                                            <p className="text-xs text-[#c7c4d8] truncate">{event.visitorId || 'Anonymous'}</p>
+                                            <div className="flex items-center gap-2 mt-2">
+                                                <span className="text-[9px] px-1.5 py-0.5 bg-white/5 rounded text-[#c7c4d8]">{event.country || 'Unknown'}</span>
                                             </div>
-                                            <button className="px-3 py-1 bg-white/5 rounded-lg text-[9px] font-black text-white/20 group-hover:text-white/60 transition-colors">Details</button>
-                                        </div>
-                                    ))}
-                                </div>
-                            </GlassCard>
-
-                            <GlassCard className="md:col-span-2 lg:col-span-3 min-h-[400px] flex flex-col" curl={true}>
-                                <div className="flex justify-between items-start mb-10">
-                                    <div>
-                                        <h3 className="text-xl font-black tracking-tight">Tasks Comparison</h3>
-                                        <p className="text-[10px] text-white/20 font-black uppercase tracking-[0.3em]">Temporal Delta Analytics</p>
-                                    </div>
-                                    <div className="flex gap-4">
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-3 h-0.5 bg-[#C9A84C]" />
-                                            <span className="text-[10px] text-white/40 font-black uppercase">Now</span>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-3 h-0.5 bg-white/10" />
-                                            <span className="text-[10px] text-white/20 font-black uppercase font-medium">Prev</span>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="flex-1 w-full">
-                                    <ResponsiveContainer width="100%" height="100%">
-                                        <AreaChart data={chartData}>
-                                            <XAxis dataKey="name" hide />
-                                            <Tooltip 
-                                                contentStyle={{ background: '#151515', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '20px', fontSize: '10px' }}
-                                                itemStyle={{ color: '#C9A84C', fontWeight: 'bold' }}
-                                            />
-                                            <Area type="monotone" dataKey="views" stroke="#C9A84C" strokeWidth={4} fill="url(#barGradient)" />
-                                        </AreaChart>
-                                    </ResponsiveContainer>
-                                </div>
-                                <div className="mt-8 flex justify-between items-center text-[11px] font-black uppercase tracking-[0.4em] text-white/20 px-4">
-                                    <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
-                                </div>
-                            </GlassCard>
-
+                                ))}
+                            </div>
+                            <button className="w-full mt-10 py-3 bg-white/5 hover:bg-white/10 text-xs font-bold rounded-lg transition-all border border-white/5">
+                                VIEW LOG ARCHIVE
+                            </button>
                         </div>
-                    )}
-                    
-                    {/* Render Other Tabs if needed */}
-                    {activeTab !== 'dashboard' && (
-                        <div className="animate-in fade-in duration-500">
-                             {/* Re-use existing components for table results if needed */}
-                             <GlassCard className="p-10">
-                                <h2 className="text-2xl font-black uppercase tracking-tighter mb-10">{activeTab} VIEW</h2>
-                                <p className="text-white/40">This section is currently under development to match the new UI architecture.</p>
-                             </GlassCard>
-                        </div>
-                    )}
-
-                    {/* Footer */}
-                    <footer className="pt-20 pb-12 flex flex-col md:flex-row justify-between items-center gap-8 border-t border-white/5 opacity-20">
-                        <div className="flex items-center gap-2">
-                            <Shield size={14} />
-                            <span className="text-[10px] font-black uppercase tracking-[0.3em]">KTA PORTFOLIO OS v4.2.0</span>
-                        </div>
-                        <p className="text-[10px] font-black uppercase tracking-[0.2em]">&copy; {new Date().getFullYear()} ALL SYSTEMS ACTIVE</p>
-                    </footer>
+                    </div>
                 </div>
             </main>
 
-            {/* Global Styles */}
             <style>{`
-                @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
-                
-                .serif {
-                    font-family: 'Libre Baskerville', serif;
-                }
-
                 .custom-scrollbar::-webkit-scrollbar {
                     width: 4px;
                 }
@@ -662,23 +393,17 @@ const AdminDashboard = () => {
                     background: transparent;
                 }
                 .custom-scrollbar::-webkit-scrollbar-thumb {
-                    background: rgba(201, 168, 76, 0.1);
+                    background: rgba(79, 70, 229, 0.2);
                     border-radius: 10px;
                 }
                 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-                    background: rgba(201, 168, 76, 0.4);
-                }
-
-                /* Text Shadows */
-                .text-glow {
-                    text-shadow: 0 0 20px rgba(201, 168, 76, 0.3);
+                    background: rgba(79, 70, 229, 0.5);
                 }
             `}</style>
         </div>
     );
 };
 
-// Mount 
 const mount = () => {
     try {
         const container = document.getElementById('admin-root');

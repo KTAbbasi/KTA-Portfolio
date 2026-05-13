@@ -9,24 +9,25 @@
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
     <style>
         body { 
             cursor: auto !important; 
             overflow: auto !important; 
-            background: #0E0505;
-            color: white;
-            font-family: 'Montserrat', sans-serif;
+            background: #13121b;
+            color: #e4e1ee;
+            font-family: 'Inter', sans-serif;
         }
         #admin-root { 
             min-height: 100vh; 
         }
-        /* Fix for scrollings and hidden dashboard */
-        .admin-view {
-            animation: fadeIn 0.8s ease-out;
+        /* Professional Analytics Framework Overrides */
+        .analytics-view {
+            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(10px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
     </style>
 </head>
