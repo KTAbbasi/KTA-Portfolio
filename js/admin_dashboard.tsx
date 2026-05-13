@@ -38,29 +38,35 @@ const COLORS = {
     outline: 'rgba(255, 255, 255, 0.1)',
 };
 
-const StatCard = ({ title, value, growth, icon: Icon }: any) => (
+const StatCard = ({ title, value, growth, icon: Icon, color }: any) => (
     <motion.div 
-        whileHover={{ y: -4 }}
-        className="bg-[#1f1f28] border border-white/10 rounded-xl p-6 shadow-lg relative overflow-hidden"
+        whileHover={{ y: -6, shadow: '0 20px 25px -5px rgba(79, 70, 229, 0.15)' }}
+        className="bg-[#1f1f28] border border-white/10 rounded-xl p-7 shadow-lg relative overflow-hidden group transition-all duration-300"
     >
-        <div className="flex justify-between items-start mb-4">
-            <div className="p-2.5 bg-[#4f46e5]/10 rounded-lg text-[#4f46e5]">
-                <Icon size={20} />
+        <div className="flex justify-between items-start mb-6 relative z-10">
+            <div 
+                className="p-3 rounded-xl shadow-lg transition-transform duration-300 group-hover:scale-110"
+                style={{ backgroundColor: `${color || '#4f46e5'}20`, color: color || '#4f46e5' }}
+            >
+                <Icon size={24} />
             </div>
-            {growth && (
-                <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-bold ${growth >= 0 ? 'bg-[#10b981]/10 text-[#10b981]' : 'bg-[#ef4444]/10 text-[#ef4444]'}`}>
-                    {growth >= 0 ? <TrendingUp size={10} /> : <TrendingUp size={10} className="rotate-180" />}
-                    {growth}%
+            {growth !== undefined && (
+                <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold tracking-tight ${growth >= 0 ? 'bg-[#10b981]/10 text-[#10b981]' : 'bg-[#ef4444]/10 text-[#ef4444]'}`}>
+                    {growth >= 0 ? <TrendingUp size={12} /> : <TrendingUp size={12} className="rotate-180" />}
+                    {Math.abs(growth)}%
                 </div>
             )}
         </div>
-        <div>
-            <p className="text-[#c7c4d8] text-xs font-medium uppercase tracking-wider mb-1">{title}</p>
-            <p className="text-3xl font-bold text-[#e4e1ee] tabular-nums">{value}</p>
+        <div className="relative z-10">
+            <p className="text-[#c7c4d8] text-[11px] font-bold uppercase tracking-[0.15em] mb-2 opacity-80">{title}</p>
+            <p className="text-3xl sm:text-4xl font-black text-[#e4e1ee] tabular-nums tracking-tight">{value}</p>
         </div>
-        <div className="absolute top-0 right-0 p-4 opacity-5">
-            <Icon size={64} />
-        </div>
+        
+        {/* Subtle background glow */}
+        <div 
+            className="absolute -bottom-8 -right-8 w-24 h-24 rounded-full blur-2xl transition-colors opacity-20"
+            style={{ backgroundColor: color || '#4f46e5' }}
+        />
     </motion.div>
 );
 
@@ -75,6 +81,7 @@ const AdminDashboard = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
     const [activeTab, setActiveTab] = useState('dashboard');
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [stats, setStats] = useState({
         totalViews: 0,
         uniqueVisitors: 0,
@@ -167,11 +174,11 @@ const AdminDashboard = () => {
 
     if (!isAuthed) {
         return (
-            <div className="flex items-center justify-center min-h-screen p-6 bg-[#0e0d16]">
+            <div className="flex items-center justify-center min-h-screen p-4 sm:p-6 bg-[#0e0d16]">
                 <motion.div 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="w-full max-w-md bg-[#1f1f28] border border-white/10 rounded-2xl p-10 shadow-2xl"
+                    className="w-full max-w-md bg-[#1f1f28] border border-white/10 rounded-2xl p-8 sm:p-10 shadow-2xl"
                 >
                     <div className="flex flex-col items-center mb-10">
                         <div className="w-16 h-16 bg-[#4f46e5] rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg shadow-[#4f46e5]/20">
@@ -208,149 +215,192 @@ const AdminDashboard = () => {
     }
 
     return (
-        <div className="flex h-screen bg-[#13121b] text-[#e4e1ee] overflow-hidden">
+        <div className="flex h-screen bg-[#13121b] text-[#e4e1ee] overflow-hidden relative font-['Inter']">
+            {/* Sidebar Overlay for Mobile */}
+            <AnimatePresence>
+                {isSidebarOpen && (
+                    <motion.div 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setIsSidebarOpen(false)}
+                        className="fixed inset-0 bg-black/70 backdrop-blur-md z-40 lg:hidden"
+                    />
+                )}
+            </AnimatePresence>
+
             {/* Sidebar */}
-            <aside className="w-72 flex-shrink-0 bg-[#0e0d16] border-r border-white/5 p-8 flex flex-col">
-                <div className="flex items-center gap-3 mb-12">
-                    <div className="w-8 h-8 bg-[#4f46e5] rounded-lg flex items-center justify-center text-white">
-                        <Zap size={18} fill="currentColor" />
+            <aside className={`
+                fixed lg:relative inset-y-0 left-0 w-72 bg-[#0e0d16] border-r border-white/5 p-8 flex flex-col z-50
+                transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1) lg:translate-x-0
+                ${isSidebarOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'}
+            `}>
+                <div className="flex items-center justify-between mb-12">
+                    <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 bg-[#4f46e5] rounded-xl flex items-center justify-center text-white shadow-lg shadow-[#4f46e5]/30">
+                            <Zap size={20} fill="currentColor" />
+                        </div>
+                        <span className="font-bold text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-[#c7c4d8]">Analytics</span>
                     </div>
-                    <span className="font-bold text-xl tracking-tight">Analytics</span>
+                    <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden p-1.5 text-[#c7c4d8] hover:text-white bg-white/5 rounded-lg border border-white/5">
+                        <XAxis size={18} />
+                    </button>
                 </div>
 
-                <nav className="space-y-2 flex-1">
+                <nav className="space-y-1.5 flex-1">
                     {[
-                        { id: 'dashboard', icon: LayoutDashboard, label: 'Overview' },
-                        { id: 'events', icon: Database, label: 'Event Log' },
-                        { id: 'audience', icon: Users, label: 'Audience' },
-                        { id: 'reports', icon: BarChart3, label: 'Reports' },
+                        { id: 'dashboard', icon: LayoutDashboard, label: 'Performance' },
+                        { id: 'events', icon: Database, label: 'Event Flow' },
+                        { id: 'audience', icon: Users, label: 'Demographics' },
+                        { id: 'reports', icon: BarChart3, label: 'Intelligence' },
                     ].map((item) => (
                         <button 
                             key={item.id}
-                            onClick={() => setActiveTab(item.id)}
-                            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${activeTab === item.id ? 'bg-[#4f46e5]/10 text-[#4f46e5] border border-[#4f46e5]/20' : 'text-[#c7c4d8] hover:bg-white/5'}`}
+                            onClick={() => {
+                                setActiveTab(item.id);
+                                if (window.innerWidth < 1024) setIsSidebarOpen(false);
+                            }}
+                            className={`w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-semibold transition-all duration-300 border ${activeTab === item.id ? 'bg-[#4f46e5] text-white border-[#4f46e5] shadow-lg shadow-[#4f46e5]/20' : 'text-[#c7c4d8] hover:bg-white/5 border-transparent'}`}
                         >
-                            <item.icon size={18} />
+                            <item.icon size={18} strokeWidth={activeTab === item.id ? 2.5 : 2} />
                             {item.label}
                         </button>
                     ))}
                 </nav>
 
                 <div className="pt-8 border-t border-white/5 space-y-2">
-                    <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-[#c7c4d8] hover:bg-white/5 transition-all">
-                        <Settings size={18} /> Settings
+                    <button className="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-medium text-[#c7c4d8] hover:bg-white/5 transition-all">
+                        <Settings size={18} /> Configuration
                     </button>
                     <button 
                         onClick={handleLogout}
-                        className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-[#ef4444] hover:bg-[#ef4444]/10 transition-all"
+                        className="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-xl text-sm font-bold text-[#ef4444] hover:bg-[#ef4444]/10 transition-all"
                     >
-                        <LogOut size={18} /> Sign Out
+                        <LogOut size={18} /> Terminate
                     </button>
                 </div>
             </aside>
 
             {/* Main Content */}
-            <main className="flex-1 flex flex-col min-w-0 overflow-y-auto">
-                <header className="h-20 flex-shrink-0 border-b border-white/5 px-10 flex items-center justify-between sticky top-0 bg-[#13121b]/80 backdrop-blur-md z-10">
-                    <div className="flex items-center gap-4 bg-[#1f1f28] border border-white/5 rounded-xl px-4 py-2 w-96 group focus-within:border-[#4f46e5]/30 transition-all">
-                        <Search size={16} className="text-[#c7c4d8]" />
-                        <input 
-                            type="text" 
-                            placeholder="Search parameters..." 
-                            className="bg-transparent border-none outline-none text-sm w-full placeholder:text-white/10"
-                        />
+            <main className="flex-1 flex flex-col min-w-0 overflow-y-auto bg-[#13121b]">
+                <header className="h-20 flex-shrink-0 border-b border-white/5 px-4 sm:px-6 lg:px-10 flex items-center justify-between sticky top-0 bg-[#13121b]/80 backdrop-blur-xl z-30">
+                    <div className="flex items-center gap-4">
+                        <button onClick={() => setIsSidebarOpen(true)} className="lg:hidden p-2.5 text-[#e4e1ee] bg-[#1f1f28] border border-white/10 rounded-xl shadow-lg">
+                            <Menu size={20} />
+                        </button>
+                        <div className="hidden sm:flex items-center gap-4 bg-[#1f1f28] border border-white/10 rounded-xl px-5 py-2.5 w-64 xl:w-[480px] group focus-within:border-[#4f46e5]/40 transition-all duration-300 shadow-inner">
+                            <Search size={18} className="text-[#c7c4d8] group-focus-within:text-[#4f46e5] transition-colors" />
+                            <input 
+                                type="text" 
+                                placeholder="Audit system logs..." 
+                                className="bg-transparent border-none outline-none text-sm w-full placeholder:text-white/10 text-[#e4e1ee]"
+                            />
+                        </div>
                     </div>
 
-                    <div className="flex items-center gap-6">
-                        <button className="relative p-2 text-[#c7c4d8] hover:text-white transition-colors">
-                            <Bell size={20} />
-                            <span className="absolute top-2 right-2 w-2 h-2 bg-[#10b981] rounded-full ring-2 ring-[#13121b]" />
+                    <div className="flex items-center gap-3 sm:gap-8">
+                        <button className="relative p-2.5 text-[#c7c4d8] hover:text-white transition-all hover:bg-white/5 rounded-xl">
+                            <Bell size={22} />
+                            <span className="absolute top-2.5 right-2.5 w-2.5 h-2.5 bg-[#4f46e5] rounded-full ring-4 ring-[#13121b]" />
                         </button>
-                        <div className="h-6 w-px bg-white/5" />
-                        <div className="flex items-center gap-3">
+                        <div className="hidden sm:block h-6 w-px bg-white/10" />
+                        <div className="flex items-center gap-4">
                             <div className="text-right hidden sm:block">
-                                <p className="text-sm font-bold">Admin</p>
-                                <p className="text-[10px] text-[#10b981] font-bold uppercase tracking-widest">Active</p>
+                                <p className="text-sm font-bold text-[#e4e1ee]">Admin Alpha</p>
+                                <p className="text-[10px] text-[#10b981] font-black uppercase tracking-[0.2em] mt-0.5">Verified</p>
                             </div>
-                            <div className="w-10 h-10 rounded-full bg-[#2a2933] border border-white/10 flex items-center justify-center font-bold text-xs">
-                                AD
+                            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#1f1f28] to-[#0e0d16] border border-white/15 flex items-center justify-center font-bold text-sm text-[#4f46e5] shadow-xl">
+                                KTA
                             </div>
                         </div>
                     </div>
                 </header>
 
-                <div className="p-10 space-y-10 max-w-7xl mx-auto w-full">
-                    <div className="flex justify-between items-end">
+                <div className="p-4 sm:p-8 lg:p-12 space-y-10 lg:space-y-16 max-w-7xl mx-auto w-full">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 border-b border-white/5 pb-10">
                         <div>
-                            <h1 className="text-3xl font-bold tracking-tight">Intelligence Dashboard</h1>
-                            <p className="text-[#c7c4d8] mt-1">Global monitoring of portfolio interactive points.</p>
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="h-px w-8 bg-[#4f46e5]" />
+                                <span className="text-[10px] font-black text-[#4f46e5] uppercase tracking-[0.3em]">System Overview</span>
+                            </div>
+                            <h1 className="text-3xl sm:text-5xl font-black tracking-tighter text-[#e4e1ee]">Pulse Monitor</h1>
+                            <p className="text-[#c7c4d8] text-sm sm:text-lg mt-3 max-w-2xl font-medium opacity-70">Unified intelligence dashboard for real-time traffic resonance and interaction analysis.</p>
                         </div>
                         <button 
                             onClick={fetchData}
-                            className="flex items-center gap-2 px-4 py-2.5 bg-[#1f1f28] border border-white/5 rounded-lg text-xs font-bold text-[#c7c4d8] hover:text-white hover:border-white/20 transition-all"
+                            className="w-full sm:w-auto flex items-center justify-center gap-3 px-8 py-4 bg-[#1f1f28] hover:bg-[#2a2933] border border-white/10 rounded-2xl text-[11px] font-black text-[#e4e1ee] shadow-2xl transition-all duration-300 active:scale-95 uppercase tracking-[0.2em]"
                         >
-                            <RefreshCw size={14} className={loading ? 'animate-spin' : ''} /> REFRESH DATA
+                            <RefreshCw size={16} className={loading ? 'animate-spin' : ''} /> Sync Neural Link
                         </button>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <StatCard title="Total Impressions" value={stats.totalViews.toLocaleString()} growth={12.4} icon={Eye} />
-                        <StatCard title="Unique Visitors" value={stats.uniqueVisitors.toLocaleString()} growth={8.2} icon={Users} />
-                        <StatCard title="Avg. Retension" value={`${stats.avgDuration}s`} growth={-2.1} icon={Clock} />
-                        <StatCard title="Live Systems" value="99.9%" growth={0} icon={Activity} />
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+                        <StatCard title="Total Resonance" value={stats.totalViews.toLocaleString()} growth={12.4} icon={Eye} />
+                        <StatCard title="Active Nodes" value={stats.uniqueVisitors.toLocaleString()} growth={8.2} icon={Users} />
+                        <StatCard title="Latency Audit" value={`${stats.avgDuration}ms`} growth={-2.1} icon={Clock} color="#ffb695" />
+                        <StatCard title="System Stability" value="100%" growth={0} icon={Activity} color="#10b981" />
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                         {/* Main Chart */}
-                        <div className="lg:col-span-2 bg-[#1f1f28] border border-white/5 rounded-xl p-8 shadow-xl">
-                            <div className="flex justify-between items-center mb-10">
+                        <div className="lg:col-span-8 bg-[#1f1f28] border border-white/10 rounded-3xl p-6 sm:p-12 shadow-2xl overflow-hidden relative">
+                            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#4f46e5]/5 rounded-full blur-[100px] -mr-64 -mt-64" />
+                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-16 relative z-10">
                                 <div>
-                                    <h2 className="text-xl font-bold">Traffic Resonance</h2>
-                                    <p className="text-xs text-[#c7c4d8] mt-1 uppercase tracking-widest font-medium">Weekly throughput audit</p>
+                                    <h2 className="text-2xl font-black text-[#e4e1ee] tracking-tight">Traffic Flux</h2>
+                                    <p className="text-[10px] text-[#c7c4d8] mt-2 uppercase tracking-[0.2em] font-black opacity-60">Temporal resonance analysis (Unified)</p>
                                 </div>
-                                <div className="flex gap-4">
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-3 h-3 rounded bg-[#4f46e5]" />
-                                        <span className="text-[10px] font-bold text-[#c7c4d8] uppercase">Active Load</span>
-                                    </div>
+                                <div className="flex items-center gap-4 bg-[#13121b] border border-white/10 p-2 rounded-xl">
+                                    <button className="px-4 py-2 bg-[#4f46e5] text-white text-[10px] font-black rounded-lg shadow-lg shadow-[#4f46e5]/30">LIVE</button>
+                                    <button className="px-4 py-2 text-[#c7c4d8] text-[10px] font-black hover:text-white transition-colors">HISTORY</button>
                                 </div>
                             </div>
-                            <div className="h-[350px]">
+                            <div className="h-[300px] sm:h-[450px] w-full relative z-10">
                                 <ResponsiveContainer width="100%" height="100%">
-                                    <AreaChart data={chartData}>
+                                    <AreaChart data={chartData} margin={{ top: 0, right: 0, left: -25, bottom: 0 }}>
                                         <defs>
-                                            <linearGradient id="colorViews" x1="0" y1="0" x2="0" y2="1">
-                                                <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.3}/>
+                                            <linearGradient id="colorViewsPro" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.5}/>
                                                 <stop offset="95%" stopColor="#4f46e5" stopOpacity={0}/>
                                             </linearGradient>
                                         </defs>
                                         <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" vertical={false} />
                                         <XAxis 
                                             dataKey="name" 
-                                            stroke="rgba(255,255,255,0.2)" 
+                                            stroke="#35343e" 
                                             fontSize={10} 
+                                            fontWeight={800}
                                             tickLine={false} 
                                             axisLine={false}
-                                            dy={10}
+                                            dy={20}
                                         />
                                         <YAxis 
-                                            stroke="rgba(255,255,255,0.2)" 
+                                            stroke="#35343e" 
                                             fontSize={10} 
+                                            fontWeight={800}
                                             tickLine={false} 
                                             axisLine={false}
                                         />
                                         <Tooltip 
-                                            contentStyle={{ background: '#1f1f28', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', fontSize: '12px' }}
-                                            itemStyle={{ color: '#4f46e5', fontWeight: 'bold' }}
+                                            cursor={{ stroke: '#4f46e5', strokeWidth: 2 }}
+                                            contentStyle={{ 
+                                                background: 'rgba(31, 31, 40, 0.95)', 
+                                                backdropFilter: 'blur(20px)',
+                                                border: '1px solid rgba(255,255,255,0.1)', 
+                                                borderRadius: '20px', 
+                                                fontSize: '11px',
+                                                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
+                                            }}
+                                            itemStyle={{ color: '#4f46e5', fontWeight: '900' }}
                                         />
                                         <Area 
                                             type="monotone" 
                                             dataKey="views" 
                                             stroke="#4f46e5" 
-                                            strokeWidth={3} 
+                                            strokeWidth={4} 
                                             fillOpacity={1} 
-                                            fill="url(#colorViews)" 
-                                            animationDuration={1500}
+                                            fill="url(#colorViewsPro)" 
+                                            animationDuration={2000}
                                         />
                                     </AreaChart>
                                 </ResponsiveContainer>
@@ -358,27 +408,34 @@ const AdminDashboard = () => {
                         </div>
 
                         {/* Recent Activity */}
-                        <div className="bg-[#1f1f28] border border-white/5 rounded-xl p-8 flex flex-col shadow-xl">
-                            <h2 className="text-xl font-bold mb-8">Real-time Pulse</h2>
-                            <div className="space-y-6 flex-1 overflow-y-auto pr-2 custom-scrollbar">
-                                {events.slice(0, 10).map((event, i) => (
-                                    <div key={i} className="flex items-start gap-4 group">
-                                        <div className="w-2 h-10 bg-gradient-to-b from-[#4f46e5] to-transparent rounded-full opacity-20 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                        <div className="lg:col-span-4 bg-[#0e0d16] border border-white/10 rounded-3xl p-8 flex flex-col shadow-2xl relative overflow-hidden">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-[#4f46e5]/5 rounded-full blur-3xl" />
+                            <div className="flex items-center justify-between mb-10 relative z-10">
+                                <h2 className="text-xl font-black text-[#e4e1ee]">Neural Log</h2>
+                                <div className="p-2 bg-[#4f46e5]/10 rounded-lg text-[#4f46e5]">
+                                    <Activity size={18} />
+                                </div>
+                            </div>
+                            <div className="space-y-6 flex-1 overflow-y-auto pr-3 custom-scrollbar max-h-[600px] relative z-10">
+                                {events.slice(0, 20).map((event, i) => (
+                                    <div key={i} className="flex items-start gap-5 p-4 rounded-2xl hover:bg-white/[0.03] border border-transparent hover:border-white/5 transition-all duration-300 group">
+                                        <div className="w-2 h-12 bg-[#4f46e5] rounded-full opacity-10 group-hover:opacity-100 group-hover:shadow-[0_0_15px_rgba(79,70,229,0.5)] transition-all duration-500 flex-shrink-0" />
                                         <div className="flex-1 min-w-0">
-                                            <div className="flex justify-between items-center mb-1">
-                                                <p className="text-sm font-bold text-[#e4e1ee] truncate">{event.type.replace('_', ' ').toUpperCase()}</p>
-                                                <span className="text-[9px] text-[#c7c4d8] tabular-nums">{new Date(event.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                            <div className="flex justify-between items-center mb-1.5">
+                                                <p className="text-[11px] font-black text-[#e4e1ee] uppercase tracking-[0.1em] truncate">{event.type.replace('_', ' ')}</p>
+                                                <span className="text-[9px] font-bold text-[#4f46e5] bg-[#4f46e5]/10 px-2 py-0.5 rounded-md tabular-nums">{new Date(event.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                                             </div>
-                                            <p className="text-xs text-[#c7c4d8] truncate">{event.visitorId || 'Anonymous'}</p>
-                                            <div className="flex items-center gap-2 mt-2">
-                                                <span className="text-[9px] px-1.5 py-0.5 bg-white/5 rounded text-[#c7c4d8]">{event.country || 'Unknown'}</span>
+                                            <p className="text-[10px] text-[#c7c4d8] font-bold truncate opacity-50 mb-3">{event.visitorId || 'SYSTEM_NODE'}</p>
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-[8px] px-2 py-1 bg-white/5 rounded-full text-[#c7c4d8] font-bold uppercase tracking-wider">{event.country || 'Global'}</span>
+                                                {event.project && <span className="text-[8px] px-2 py-1 bg-[#10b981]/20 rounded-full text-[#10b981] font-bold uppercase tracking-wider border border-[#10b981]/30">{event.project}</span>}
                                             </div>
                                         </div>
                                     </div>
                                 ))}
                             </div>
-                            <button className="w-full mt-10 py-3 bg-white/5 hover:bg-white/10 text-xs font-bold rounded-lg transition-all border border-white/5">
-                                VIEW LOG ARCHIVE
+                            <button className="w-full mt-10 py-4 bg-[#1f1f28] hover:bg-[#2a2933] text-[10px] font-black rounded-2xl transition-all border border-white/10 uppercase tracking-[0.3em] text-[#c7c4d8] hover:text-white relative z-10">
+                                AUDIT FULL STACK
                             </button>
                         </div>
                     </div>
@@ -397,7 +454,10 @@ const AdminDashboard = () => {
                     border-radius: 10px;
                 }
                 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-                    background: rgba(79, 70, 229, 0.5);
+                    background: rgba(79, 70, 229, 0.4);
+                }
+                canvas {
+                    filter: drop-shadow(0 10px 10px rgba(79, 70, 229, 0.1));
                 }
             `}</style>
         </div>

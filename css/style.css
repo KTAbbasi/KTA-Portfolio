@@ -1035,14 +1035,28 @@ footer {
   background: none;
   border: none;
   cursor: pointer;
-  z-index: 2100;
+  z-index: 2500;
+  padding: 10px;
 }
 
 .mobile-nav-toggle span {
   width: 25px;
   height: 2px;
   background-color: var(--gold);
-  transition: 0.3s;
+  transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+.mobile-nav-toggle.active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.mobile-nav-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-nav-toggle.active span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
 }
 
 .mobile-nav-overlay {
@@ -1052,18 +1066,20 @@ footer {
   width: 100%;
   height: 100%;
   background-color: var(--bg-primary);
-  z-index: 2000;
+  z-index: 2400;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 30px;
-  transform: translateY(-100%);
-  transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 .mobile-nav-overlay.active {
-  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
 }
 
 .mobile-nav-overlay a {
@@ -1071,6 +1087,11 @@ footer {
   font-weight: 900;
   color: var(--text-white);
   text-decoration: none;
+  transition: color 0.3s;
+}
+
+.mobile-nav-overlay a:hover {
+    color: var(--gold);
 }
 
 /* Responsive Utility Classes */

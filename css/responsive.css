@@ -23,8 +23,26 @@
 }
 
 @media (max-width: 768px) {
+    /* Mobile Navigation */
+    .nav-center, .nav-right .btn-pill {
+        display: none !important;
+    }
+
+    .mobile-nav-toggle {
+        display: flex !important;
+    }
+
     nav {
-        padding: 0 20px;
+        padding: 0 20px !important;
+    }
+
+    /* Disable custom cursor on mobile */
+    .cursor-dot, .cursor-ring {
+        display: none !important;
+    }
+    
+    body {
+        cursor: auto !important;
     }
 
     .hero {
